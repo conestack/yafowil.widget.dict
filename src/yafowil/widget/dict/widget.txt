@@ -20,7 +20,8 @@ Create empty Dict widget
     ...                          })
     >>> form()
     u'<form action="myaction" enctype="multipart/form-data" id="form-myform" 
-    method="post"><table><thead><tr><th>Key</th><th>Value</th><th><div 
+    method="post"><table 
+    class="dictwidget"><thead><tr><th>Key</th><th>Value</th><th><div 
     class="dict_actions"><a class="dict_row_add" 
     href="#">&nbsp;</a></div></th></tr></thead><tbody></tbody></table></form>'
 
@@ -44,7 +45,8 @@ Create dict widget with preset values
     ...                          })
     >>> form()
     u'<form action="myaction" enctype="multipart/form-data" id="form-myform" 
-    method="post"><table><thead><tr><th>Key</th><th>Value</th><th><div 
+    method="post"><table 
+    class="dictwidget"><thead><tr><th>Key</th><th>Value</th><th><div 
     class="dict_actions"><a class="dict_row_add" 
     href="#">&nbsp;</a></div></th></tr></thead><tbody><tr><td><input 
     id="input-myform-mydict-entry0-key" name="myform.mydict.entry0.key" 

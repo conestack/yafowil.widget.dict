@@ -24,7 +24,12 @@ factory.register('dict_actions',
                  [actions_renderer])
 
 def dict_builder(widget, factory):
-    table = widget['table'] = factory('table', props={'structural': True})
+    table = widget['table'] = factory(
+        'table',
+        props={
+            'structural': True,
+            'class': 'dictwidget',
+        })
     head = table['head'] = factory('thead', props={'structural': True})
     row = head['row'] = factory('tr', props={'structural': True})
     row['key'] = factory(
