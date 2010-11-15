@@ -1,7 +1,25 @@
-Load requirements.
+Import requirements
 ::
 
     >>> import yafowil.loader
     >>> import yafowil.widget.dict
+    >>> from yafowil.base import factory
+
+Create empty Dict widget
+::
     
-    
+    >>> form = factory('form',
+    ...                name='myform',
+    ...                props={'action': 'myaction'})
+    >>> form['mydict'] = factory('dict',
+    ...                          props={
+    ...                              'head': {
+    ...                                  'key': 'Key',
+    ...                                  'value': 'Value',
+    ...                              }
+    ...                          })
+    >>> form()
+    u'<form action="myaction" enctype="multipart/form-data" id="form-myform" 
+    method="post"><table><thead><tr><th>Key</th><th>Value</th><th><a 
+    class="add_dict_row" 
+    href="">&nbsp;</a></th></tr></thead><tbody></tbody></table></form>'
