@@ -1,5 +1,12 @@
-from yafowil.base import factory
-from yafowil.compound import compound_renderer
+from odict import odict
+from yafowil.base import (
+    UNSET,
+    factory,
+)
+from yafowil.compound import (
+    compound_extractor,
+    compound_renderer,
+)
 from yafowil.common import _value
 from yafowil.utils import tag
 
@@ -17,33 +24,33 @@ factory.register('dict_actions',
                  [actions_renderer])
 
 def dict_builder(widget, factory):
-    widget.clear()
     table = widget['table'] = factory('table', props={'structural': True})
-    head = table['head'] = factory('thead')
-    row = head['row'] = factory('tr')
+    head = table['head'] = factory('thead', props={'structural': True})
+    row = head['row'] = factory('tr', props={'structural': True})
     row['key'] = factory(
         'th',
         props = {
+            'structural': True,
             'label': widget.attrs['head']['key'],
         })
     row['value'] = factory(
         'th',
         props={
+            'structural': True,
             'label': widget.attrs['head']['value'],
         })
     row['actions'] = factory(
         'th:dict_actions',
         props = {
+            'structural': True,
             'add': True,
         }
     )
     table['body'] = factory('tbody', props={'structural': True})
 
-def dict_extractor(widget, data):
-    pass
-
 def dict_renderer(widget, data):
     body = widget['table']['body']
+    body.clear()
     value = _value(widget, data)
     if not value:
         return
@@ -68,8 +75,14 @@ def dict_renderer(widget, data):
             })
         i += 1
 
+def dict_extractor(widget, data):
+    ret = odict()
+    for key in data.keys():
+        ret[data[key]['key'].extracted] = data[key]['value'].extracted
+    return ret
+
 factory.register('dict',
-                 [dict_extractor],
+                 [compound_extractor, dict_extractor],
                  [dict_renderer, compound_renderer],
                  [],
                  [dict_builder])

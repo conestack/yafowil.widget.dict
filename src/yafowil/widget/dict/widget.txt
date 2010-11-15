@@ -63,3 +63,22 @@ Create dict widget with preset values
     href="#">&nbsp;</a><a class="dict_row_up" href="#">&nbsp;</a><a 
     class="dict_row_down" 
     href="#">&nbsp;</a></div></td></tr></tbody></table></form>'
+
+Extraction
+::
+
+    >>> request = {
+    ...     'myform.mydict.entry0.key': 'key1',
+    ...     'myform.mydict.entry0.value': 'New Value 1',
+    ...     'myform.mydict.entry1.key': 'key2',
+    ...     'myform.mydict.entry1.value': 'New Value 2',
+    ... }
+    >>> data = form.extract(request=request)
+    >>> data.fetch('myform.mydict.entry0.value').extracted
+    'New Value 1'
+    
+    >>> data.fetch('myform.mydict.entry1.value').extracted
+    'New Value 2'
+    
+    >>> data.fetch('myform.mydict').extracted
+    odict([('key1', 'New Value 1'), ('key2', 'New Value 2')])
