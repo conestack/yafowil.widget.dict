@@ -1,9 +1,16 @@
 from yafowil.base import factory
 from yafowil.compound import compound_renderer
+from yafowil.common import _value
 from yafowil.utils import tag
 
 def actions_renderer(widget, data):
-    return tag('a', '&nbsp;', href='', class_='add_dict_row')
+    actions = list()
+    for key in ['add', 'remove', 'up', 'down']:
+        if widget.attrs.get(key):
+            class_ = 'dict_row_%s' % key
+            action = tag('a', '&nbsp;', href='#', class_=class_)
+            actions.append(action)
+    return tag('div', *actions, class_='dict_actions')
 
 factory.register('dict_actions',
                  [],
@@ -27,6 +34,7 @@ def dict_builder(widget, factory):
     row['actions'] = factory(
         'th:dict_actions',
         props = {
+            'add': True,
         }
     )
     table['body'] = factory('tbody', props={'structural': True})
@@ -35,10 +43,30 @@ def dict_extractor(widget, data):
     pass
 
 def dict_renderer(widget, data):
-    pass
-    #widget['table']['row1'] = factory('tr',
-    #                                  props={'structural': True})
-    #widget['table']['row1']['field1'] = factory('td:text', name='field1')
+    body = widget['table']['body']
+    value = _value(widget, data)
+    if not value:
+        return
+    i = 0
+    for key, val in value.items():
+        row = body['entry%i' % i] = factory('tr')
+        row['key'] = factory(
+            'td:text',
+            value = key,
+            name = 'key')
+        row['value'] = factory(
+            'td:text',
+            value = val,
+            name = 'value')
+        row['actions'] = factory(
+            'td:dict_actions',
+            props = {
+                'add': True,
+                'remove': True,
+                'up': True,
+                'down': True,
+            })
+        i += 1
 
 factory.register('dict',
                  [dict_extractor],

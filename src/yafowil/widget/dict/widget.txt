@@ -20,6 +20,46 @@ Create empty Dict widget
     ...                          })
     >>> form()
     u'<form action="myaction" enctype="multipart/form-data" id="form-myform" 
-    method="post"><table><thead><tr><th>Key</th><th>Value</th><th><a 
-    class="add_dict_row" 
-    href="">&nbsp;</a></th></tr></thead><tbody></tbody></table></form>'
+    method="post"><table><thead><tr><th>Key</th><th>Value</th><th><div 
+    class="dict_actions"><a class="dict_row_add" 
+    href="#">&nbsp;</a></div></th></tr></thead><tbody></tbody></table></form>'
+
+Create dict widget with preset values
+::
+
+    >>> from odict import odict
+    >>> value = odict()
+    >>> value['key1'] = u'Value1'
+    >>> value['key2'] = u'Value2'
+    >>> form = factory('form',
+    ...                name='myform',
+    ...                props={'action': 'myaction'})
+    >>> form['mydict'] = factory('dict',
+    ...                          value=value,
+    ...                          props={
+    ...                              'head': {
+    ...                                  'key': 'Key',
+    ...                                  'value': 'Value',
+    ...                              }
+    ...                          })
+    >>> form()
+    u'<form action="myaction" enctype="multipart/form-data" id="form-myform" 
+    method="post"><table><thead><tr><th>Key</th><th>Value</th><th><div 
+    class="dict_actions"><a class="dict_row_add" 
+    href="#">&nbsp;</a></div></th></tr></thead><tbody><tr><td><input 
+    id="input-myform-mydict-entry0-key" name="myform.mydict.entry0.key" 
+    type="text" value="key1" /></td><td><input 
+    id="input-myform-mydict-entry0-value" name="myform.mydict.entry0.value" 
+    type="text" value="Value1" /></td><td><div class="dict_actions"><a 
+    class="dict_row_add" href="#">&nbsp;</a><a class="dict_row_remove" 
+    href="#">&nbsp;</a><a class="dict_row_up" href="#">&nbsp;</a><a 
+    class="dict_row_down" href="#">&nbsp;</a></div></td></tr><tr><td><input 
+    id="input-myform-mydict-entry1-key" name="myform.mydict.entry1.key" 
+    type="text" 
+    value="key2" /></td><td><input id="input-myform-mydict-entry1-value" 
+    name="myform.mydict.entry1.value" type="text" 
+    value="Value2" /></td><td><div class="dict_actions"><a 
+    class="dict_row_add" href="#">&nbsp;</a><a class="dict_row_remove" 
+    href="#">&nbsp;</a><a class="dict_row_up" href="#">&nbsp;</a><a 
+    class="dict_row_down" 
+    href="#">&nbsp;</a></div></td></tr></tbody></table></form>'
