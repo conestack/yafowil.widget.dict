@@ -1,0 +1,7 @@
+Load requirements.
+::
+
+    >>> import yafowil.loader
+    >>> import yafowil.widget.dict
+    
+    
