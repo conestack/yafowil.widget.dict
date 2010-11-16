@@ -56,9 +56,24 @@ if (typeof(window['yafowil']) == "undefined") yafowil = {};
                     index++;
                 });
                 yafowil.dictwidget.binder(context);
+                yafowil.dictwidget.mark_disabled(context);
+            },
+            
+            mark_disabled: function(context) {
+                $('a.dict_row_up', context)
+                    .removeClass('dict_row_up_disabled');
+                $('a.dict_row_up', context)
+                    .first()
+                    .addClass('dict_row_up_disabled');
+                $('a.dict_row_down', context)
+                    .removeClass('dict_row_down_disabled');
+                $('a.dict_row_down', context)
+                    .last()
+                    .addClass('dict_row_down_disabled');
             },
             
             binder: function(context) {
+                yafowil.dictwidget.mark_disabled(context);
                 $('a.dict_row_add', context)
                     .unbind()
                     .bind('click', function(event) {
