@@ -65,11 +65,17 @@ def dict_renderer(widget, data):
         row['key'] = factory(
             'td:text',
             value = key,
-            name = 'key')
+            name = 'key',
+            props = {
+                'class': 'key',
+            })
         row['value'] = factory(
             'td:text',
             value = val,
-            name = 'value')
+            name = 'value',
+            props = {
+                'class': 'value',
+            })
         row['actions'] = factory(
             'td:dict_actions',
             props = {
@@ -82,8 +88,18 @@ def dict_renderer(widget, data):
 
 def dict_extractor(widget, data):
     ret = odict()
-    for key in data.keys():
-        ret[data[key]['key'].extracted] = data[key]['value'].extracted
+    body = widget['table']['body']
+    basename = '%s.entry' % body.dottedpath
+    req = data.request
+    index = 0
+    while True:
+        keyname = '%s%i.key' % (basename, index)
+        valuename = '%s%i.value' % (basename, index)
+        if data.request.has_key(keyname):
+            ret[req[keyname]] = req[valuename]
+            index += 1
+            continue
+        break
     return ret
 
 factory.register('dict',
