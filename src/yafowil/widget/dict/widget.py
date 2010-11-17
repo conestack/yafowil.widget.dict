@@ -81,7 +81,7 @@ def dict_renderer(widget, data):
                 name = 'key',
                 props = {
                     'class': 'key',
-                    'disabled': 'disabled',
+                    #'disabled': 'disabled',
                 })
         row['value'] = factory(
             'td:text',
