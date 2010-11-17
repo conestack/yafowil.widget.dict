@@ -36,20 +36,20 @@ if (typeof(window['yafowil']) == "undefined") yafowil = {};
             get_row: function(action) {
                 return $(action).parent().parent().parent();
             },
-			
-			base_name: function(context) {
-				//while (!context.hasClass('dictwidget')) {
-				//	context = context.parent();
-				//}
-				//return context.attr('id');
-				return context.parents('.dictwidget').attr('id');
-			},
+            
+            base_name: function(context) {
+                //while (!context.hasClass('dictwidget')) {
+                //    context = context.parent();
+                //}
+                //return context.attr('id');
+                return context.parents('.dictwidget').attr('id');
+            },
             
             reset_indices: function(context) {
                 var index = 0;
-				var base_name = yafowil.dictwidget.base_name(context);
-				base_name = base_name.substring(11, base_name.length);
-				var base_id = base_name.replace(/\./g, '-');
+                var base_name = yafowil.dictwidget.base_name(context);
+                base_name = base_name.substring(11, base_name.length);
+                var base_id = base_name.replace(/\./g, '-');
                 $('tr', context).each(function() {
                     row = $(this);
                     key = $('td.key input', row);
@@ -103,7 +103,7 @@ if (typeof(window['yafowil']) == "undefined") yafowil = {};
                         event.preventDefault();
                         var row = yafowil.dictwidget.get_row(this);
                         var container = row.parent();
-						row.remove();
+                        row.remove();
                         yafowil.dictwidget.reset_indices(container);
                     });
                 
