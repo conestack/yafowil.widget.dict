@@ -8,10 +8,7 @@ from yafowil.compound import (
     compound_extractor,
     compound_renderer,
 )
-from yafowil.common import (
-    _value,
-    error_renderer,
-)
+from yafowil.common import _value
 from yafowil.utils import tag
 
 def actions_renderer(widget, data):
@@ -114,10 +111,11 @@ def dict_extractor(widget, data):
         raise ExtractionError(widget.attrs['required_message'])
     return ret
 
+factory.defaults['dict.default'] = odict()
 factory.defaults['dict.error_class'] = 'error'
 factory.defaults['dict.message_class'] = 'errormessage'
 factory.register('dict',
                  [compound_extractor, dict_extractor],
-                 [dict_renderer, compound_renderer, error_renderer],
+                 [dict_renderer, compound_renderer],
                  [],
                  [dict_builder])

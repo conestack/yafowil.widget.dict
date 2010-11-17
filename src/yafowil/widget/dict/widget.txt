@@ -133,7 +133,7 @@ Empty keys are ignored
 Check required
 ::
 
-    >>> form['mydict'] = factory('dict',
+    >>> form['mydict'] = factory('error:dict',
     ...                          props={
     ...                              'required': 'I am required',
     ...                              'head': {
