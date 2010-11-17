@@ -12,10 +12,6 @@ if (typeof(window['yafowil']) == "undefined") yafowil = {};
         
         dictwidget: {
             
-            base_id: 'input-editform-users_attrmap-entry',
-            
-            base_name: 'editform.users_attrmap.entry',
-            
             create_row: function() {
                 var row = '';
                 row += '<tr>';
@@ -40,18 +36,25 @@ if (typeof(window['yafowil']) == "undefined") yafowil = {};
             get_row: function(action) {
                 return $(action).parent().parent().parent();
             },
+			
+			base_name: function(context) {
+				return context.parent().attr('id');
+			},
             
             reset_indices: function(context) {
                 var index = 0;
+				var base_name = yafowil.dictwidget.base_name(context);
+				base_name = base_name.substring(11, base_name.length);
+				var base_id = base_name.replace(/\./g, '-');
                 $('tr', context).each(function() {
                     row = $(this);
                     key = $('td.key input', row);
-                    key_id = yafowil.dictwidget.base_id + index + '-key';
-                    key_name = yafowil.dictwidget.base_name + index + '.key';
+                    key_id = base_id + index + '-key';
+                    key_name = base_name + index + '.key';
                     key.attr('id', key_id).attr('name', key_name);
                     value = $('td.value input', row);
-                    value_id = yafowil.dictwidget.base_id + index + '-value';
-                    value_name = yafowil.dictwidget.base_name + index + '.value';
+                    value_id = base_id + index + '-value';
+                    value_name = base_name + index + '.value';
                     value.attr('id', value_id).attr('name', value_name);
                     index++;
                 });

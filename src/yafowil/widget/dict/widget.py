@@ -45,17 +45,20 @@ def dict_builder(widget, factory):
             'structural': True,
             'label': widget.attrs['head']['value'],
         })
-    row['actions'] = factory(
-        'th:dict_actions',
-        props = {
-            'structural': True,
-            'add': True,
-        }
-    )
+    if not widget.attrs['static']:
+        row['actions'] = factory(
+            'th:dict_actions',
+            props = {
+                'structural': True,
+                'add': True,
+            }
+        )
     table['body'] = factory('tbody', props={'structural': True})
 
 def dict_renderer(widget, data):
-    body = widget['table']['body']
+    table = widget['table']
+    table.attrs['id'] = 'dictwidget_%s.entry' % widget.dottedpath
+    body = table['body']
     body.clear()
     value = _value(widget, data)
     if not value:
@@ -63,13 +66,23 @@ def dict_renderer(widget, data):
     i = 0
     for key, val in value.items():
         row = body['entry%i' % i] = factory('tr')
-        row['key'] = factory(
-            'td:text',
-            value = key,
-            name = 'key',
-            props = {
-                'class': 'key',
-            })
+        if not widget.attrs['static']:
+            row['key'] = factory(
+                'td:text',
+                value = key,
+                name = 'key',
+                props = {
+                    'class': 'key',
+                })
+        else:
+            row['key'] = factory(
+                'td:text',
+                value = key,
+                name = 'key',
+                props = {
+                    'class': 'key',
+                    'disabled': 'disabled',
+                })
         row['value'] = factory(
             'td:text',
             value = val,
@@ -77,15 +90,21 @@ def dict_renderer(widget, data):
             props = {
                 'class': 'value',
             })
-        row['actions'] = factory(
-            'td:dict_actions',
-            props = {
-                'add': True,
-                'remove': True,
-                'up': True,
-                'down': True,
-            })
+        if not widget.attrs['static']:
+            row['actions'] = factory(
+                'td:dict_actions',
+                props = {
+                    'add': True,
+                    'remove': True,
+                    'up': True,
+                    'down': True,
+                })
         i += 1
+
+def raise_extraction_error(widget):
+    if isinstance(widget.attrs['required'], basestring):
+        raise ExtractionError(widget.attrs['required'])
+    raise ExtractionError(widget.attrs['required_message'])
 
 def dict_extractor(widget, data):
     ret = odict()
@@ -105,13 +124,17 @@ def dict_extractor(widget, data):
         break
     if len(ret) == 0:
         ret = UNSET
-    if widget.attrs.get('required') and ret is UNSET:
-        if isinstance(widget.attrs['required'], basestring):
-            raise ExtractionError(widget.attrs['required'])
-        raise ExtractionError(widget.attrs['required_message'])
+    if widget.attrs.get('required'):
+        if ret is UNSET:
+            raise_extraction_error(widget)
+        if widget.attrs['static']:
+            for val in ret.values():
+                if not val:
+                    raise_extraction_error(widget)
     return ret
 
 factory.defaults['dict.default'] = odict()
+factory.defaults['dict.static'] = False
 factory.defaults['dict.error_class'] = 'error'
 factory.defaults['dict.message_class'] = 'errormessage'
 factory.register('dict',

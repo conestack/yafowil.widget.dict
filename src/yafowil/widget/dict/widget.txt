@@ -20,8 +20,8 @@ Create empty Dict widget
     ...                          })
     >>> form()
     u'<form action="myaction" enctype="multipart/form-data" id="form-myform" 
-    method="post"><table 
-    class="dictwidget"><thead><tr><th>Key</th><th>Value</th><th><div 
+    method="post"><table class="dictwidget" 
+    id="dictwidget_myform.mydict.entry"><thead><tr><th>Key</th><th>Value</th><th><div 
     class="dict_actions"><a class="dict_row_add" 
     href="#">&nbsp;</a></div></th></tr></thead><tbody></tbody></table></form>'
 
@@ -151,7 +151,8 @@ Check required
     method="post"><div 
     class="error"><div 
     class="errormessage">I am required</div><table 
-    class="dictwidget"><thead><tr><th>Key</th><th>Value</th><th><div 
+    class="dictwidget" 
+    id="dictwidget_myform.mydict.entry"><thead><tr><th>Key</th><th>Value</th><th><div 
     class="dict_actions"><a class="dict_row_add" 
     href="#">&nbsp;</a></div></th></tr></thead><tbody></tbody></table></div></form>'
     
@@ -171,3 +172,42 @@ Check required
     
     >>> form(data=data).find('error')
     -1
+
+Use dict widget as static widget
+::
+
+    >>> form['mydict'] = factory('error:dict',
+    ...                          value=odict([('k1', 'v1')]),
+    ...                          props={
+    ...                              'required': 'I am required',
+    ...                              'static': True,
+    ...                              'head': {
+    ...                                  'key': 'Key',
+    ...                                  'value': 'Value',
+    ...                              }
+    ...                          })
+    >>> form()
+    u'<form action="myaction" enctype="multipart/form-data" id="form-myform" 
+    method="post"><table class="dictwidget" 
+    id="dictwidget_myform.mydict.entry"><thead><tr><th>Key</th><th>Value</th></tr></thead><tbody><tr><td 
+    class="key"><input disabled="disabled" id="input-myform-mydict-entry0-key" 
+    name="myform.mydict.entry0.key" type="text" value="k1" /></td><td 
+    class="value"><input id="input-myform-mydict-entry0-value" 
+    name="myform.mydict.entry0.value" type="text" 
+    value="v1" /></td></tr></tbody></table></form>'
+
+Static dicts required. By default checks if there's a value in every entry
+::
+
+    >>> request = {}
+    >>> data = form.extract(request=request)
+    >>> data.fetch('myform.mydict').errors
+    [ExtractionError('I am required',)]
+
+    >>> request = {
+    ...     'myform.mydict.entry0.key': 'k1',
+    ...     'myform.mydict.entry0.value': '',
+    ... }
+    >>> data = form.extract(request=request)
+    >>> data.fetch('myform.mydict').errors
+    [ExtractionError('I am required',)]
