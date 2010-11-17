@@ -2,12 +2,16 @@ from odict import odict
 from yafowil.base import (
     UNSET,
     factory,
+    ExtractionError,
 )
 from yafowil.compound import (
     compound_extractor,
     compound_renderer,
 )
-from yafowil.common import _value
+from yafowil.common import (
+    _value,
+    error_renderer,
+)
 from yafowil.utils import tag
 
 def actions_renderer(widget, data):
@@ -96,14 +100,24 @@ def dict_extractor(widget, data):
         keyname = '%s%i.key' % (basename, index)
         valuename = '%s%i.value' % (basename, index)
         if data.request.has_key(keyname):
-            ret[req[keyname]] = req[valuename]
+            key = req[keyname].strip()
+            if key:
+                ret[key] = req[valuename]
             index += 1
             continue
         break
+    if len(ret) == 0:
+        ret = UNSET
+    if widget.attrs.get('required') and ret is UNSET:
+        if isinstance(widget.attrs['required'], basestring):
+            raise ExtractionError(widget.attrs['required'])
+        raise ExtractionError(widget.attrs['required_message'])
     return ret
 
+factory.defaults['dict.error_class'] = 'error'
+factory.defaults['dict.message_class'] = 'errormessage'
 factory.register('dict',
                  [compound_extractor, dict_extractor],
-                 [dict_renderer, compound_renderer],
+                 [dict_renderer, compound_renderer, error_renderer],
                  [],
                  [dict_builder])

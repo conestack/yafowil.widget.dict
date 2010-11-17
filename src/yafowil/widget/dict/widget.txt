@@ -116,3 +116,58 @@ Dict entries decreased in UI
     
     >>> form(data=data).find('New Value 2')
     -1
+
+Empty keys are ignored
+::
+
+    >>> request = {
+    ...     'myform.mydict.entry0.key': 'key1',
+    ...     'myform.mydict.entry0.value': 'Very New Value 1',
+    ...     'myform.mydict.entry1.key': '',
+    ...     'myform.mydict.entry1.value': '',
+    ... }
+    >>> data = form.extract(request=request)
+    >>> data.fetch('myform.mydict').extracted
+    odict([('key1', 'Very New Value 1')])
+
+Check required
+::
+
+    >>> form['mydict'] = factory('dict',
+    ...                          props={
+    ...                              'required': 'I am required',
+    ...                              'head': {
+    ...                                  'key': 'Key',
+    ...                                  'value': 'Value',
+    ...                              }
+    ...                          })
+    >>> request = {}
+    >>> data = form.extract(request=request)
+    >>> data.fetch('myform.mydict').errors
+    [ExtractionError('I am required',)]
+    
+    >>> form(data=data)
+    u'<form action="myaction" enctype="multipart/form-data" id="form-myform" 
+    method="post"><div 
+    class="error"><div 
+    class="errormessage">I am required</div><table 
+    class="dictwidget"><thead><tr><th>Key</th><th>Value</th><th><div 
+    class="dict_actions"><a class="dict_row_add" 
+    href="#">&nbsp;</a></div></th></tr></thead><tbody></tbody></table></div></form>'
+    
+    >>> request = {
+    ...     'myform.mydict.entry0.key': 'key1',
+    ...     'myform.mydict.entry0.value': 'Very New Value 1',
+    ... }
+    >>> data = form.extract(request=request)
+    >>> data.fetch('myform.mydict').errors
+    []
+    
+    >>> form(data=data)
+    u'<form action="myaction" enctype="multipart/form-data" 
+    ... 
+    value="Very New Value 1" 
+    ...
+    
+    >>> form(data=data).find('error')
+    -1
