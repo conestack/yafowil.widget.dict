@@ -30,7 +30,8 @@ def dict_builder(widget, factory):
         props={
             'structural': True,
             'class': 'dictwidget',
-        })
+        }
+    )
     head = table['head'] = factory('thead', props={'structural': True})
     row = head['row'] = factory('tr', props={'structural': True})
     row['key'] = factory(
@@ -38,13 +39,15 @@ def dict_builder(widget, factory):
         props = {
             'structural': True,
             'label': widget.attrs['head']['key'],
-        })
+        }
+    )
     row['value'] = factory(
         'th',
         props={
             'structural': True,
             'label': widget.attrs['head']['value'],
-        })
+        }
+    )
     if not widget.attrs['static']:
         row['actions'] = factory(
             'th:dict_actions',
@@ -73,7 +76,8 @@ def dict_renderer(widget, data):
                 name = 'key',
                 props = {
                     'class': 'key',
-                })
+                },
+            )
         else:
             row['key'] = factory(
                 'td:text',
@@ -81,15 +85,17 @@ def dict_renderer(widget, data):
                 name = 'key',
                 props = {
                     'class': 'key',
-                    #'disabled': 'disabled',
-                })
+                    'disabled': 'disabled',
+                },
+            )
         row['value'] = factory(
             'td:text',
             value = val,
             name = 'value',
             props = {
                 'class': 'value',
-            })
+            },
+        )
         if not widget.attrs['static']:
             row['actions'] = factory(
                 'td:dict_actions',
@@ -98,7 +104,8 @@ def dict_renderer(widget, data):
                     'remove': True,
                     'up': True,
                     'down': True,
-                })
+                },
+            )
         i += 1
 
 def raise_extraction_error(widget):

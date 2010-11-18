@@ -124,6 +124,10 @@ if (typeof(window['yafowil']) == "undefined") yafowil = {};
                         row.insertAfter(row.next());
                         yafowil.dictwidget.reset_indices(row.parent());
                     });
+				
+				$('form', context).bind('submit', function(event) {
+					$('table.dictwidget td.key input').removeAttr('disabled');
+				});
             }
         }
     });
