@@ -38,10 +38,6 @@ if (typeof(window['yafowil']) == "undefined") yafowil = {};
             },
             
             base_name: function(context) {
-                //while (!context.hasClass('dictwidget')) {
-                //    context = context.parent();
-                //}
-                //return context.attr('id');
                 return context.parents('.dictwidget').attr('id');
             },
             
@@ -124,10 +120,6 @@ if (typeof(window['yafowil']) == "undefined") yafowil = {};
                         row.insertAfter(row.next());
                         yafowil.dictwidget.reset_indices(row.parent());
                     });
-				
-				$('form', context).bind('submit', function(event) {
-					$('table.dictwidget td.key input').removeAttr('disabled');
-				});
             }
         }
     });

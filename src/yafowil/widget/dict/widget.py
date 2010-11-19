@@ -63,7 +63,11 @@ def dict_renderer(widget, data):
     table.attrs['id'] = 'dictwidget_%s.entry' % widget.dottedpath
     body = table['body']
     body.clear()
-    value = _value(widget, data)
+    if data.errors and widget.attrs['static']:
+        basename = '%s.entry' % body.dottedpath
+        value = extract_static(data, basename)
+    else:
+        value = _value(widget, data)
     if not value:
         return
     i = 0
@@ -113,28 +117,52 @@ def raise_extraction_error(widget):
         raise ExtractionError(widget.attrs['required'])
     raise ExtractionError(widget.attrs['required_message'])
 
-def dict_extractor(widget, data):
+def extract_static(data, basename):
+    request = data.request
     ret = odict()
-    body = widget['table']['body']
-    basename = '%s.entry' % body.dottedpath
-    req = data.request
+    index = 0
+    keys = data.value.keys()
+    while True:
+        valuename = '%s%i.value' % (basename, index)
+        if request.has_key(valuename):
+            ret[keys[index]] = request[valuename]
+            index += 1
+            continue
+        break
+    return ret
+
+def extract_dynamic(data, basename):
+    request = data.request
+    ret = odict()
     index = 0
     while True:
         keyname = '%s%i.key' % (basename, index)
         valuename = '%s%i.value' % (basename, index)
-        if data.request.has_key(keyname):
-            key = req[keyname].strip()
+        if request.has_key(keyname):
+            key = request[keyname].strip()
             if key:
-                ret[key] = req[valuename]
+                ret[key] = request[valuename]
             index += 1
             continue
         break
+    return ret
+
+def dict_extractor(widget, data):
+    static = widget.attrs['static']
+    body = widget['table']['body']
+    basename = '%s.entry' % body.dottedpath
+    req = data.request
+    index = 0
+    if static:
+        ret = extract_static(data, basename)
+    else:
+        ret = extract_dynamic(data, basename)
     if len(ret) == 0:
         ret = UNSET
     if widget.attrs.get('required'):
         if ret is UNSET:
             raise_extraction_error(widget)
-        if widget.attrs['static']:
+        if static:
             for val in ret.values():
                 if not val:
                     raise_extraction_error(widget)

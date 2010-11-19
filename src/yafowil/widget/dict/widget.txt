@@ -196,6 +196,17 @@ Use dict widget as static widget
     name="myform.mydict.entry0.value" type="text" 
     value="v1" /></td></tr></tbody></table></form>'
 
+Static dict extraction. Disabled form fields are not transmitted, but since
+order is fixed dict could be reconstructed from original value
+::
+
+    >>> request = {
+    ...     'myform.mydict.entry0.value': 'New Value 1',
+    ... }
+    >>> data = form.extract(request=request)
+    >>> data.fetch('myform.mydict').extracted
+    odict([('k1', 'New Value 1')])
+
 Static dicts required. By default checks if there's a value in every entry
 ::
 
@@ -205,7 +216,6 @@ Static dicts required. By default checks if there's a value in every entry
     [ExtractionError('I am required',)]
 
     >>> request = {
-    ...     'myform.mydict.entry0.key': 'k1',
     ...     'myform.mydict.entry0.value': '',
     ... }
     >>> data = form.extract(request=request)
