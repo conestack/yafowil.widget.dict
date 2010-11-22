@@ -59,11 +59,12 @@ def dict_builder(widget, factory):
     table['body'] = factory('tbody', props={'structural': True})
 
 def dict_renderer(widget, data):
+    static = widget.attrs['static']
     table = widget['table']
     table.attrs['id'] = 'dictwidget_%s.entry' % widget.dottedpath
     body = table['body']
     body.clear()
-    if data.errors and widget.attrs['static']:
+    if data.errors and static:
         basename = '%s.entry' % body.dottedpath
         value = extract_static(data, basename)
     else:
@@ -73,25 +74,15 @@ def dict_renderer(widget, data):
     i = 0
     for key, val in value.items():
         row = body['entry%i' % i] = factory('tr')
-        if not widget.attrs['static']:
-            row['key'] = factory(
-                'td:text',
-                value = key,
-                name = 'key',
-                props = {
-                    'class': 'key',
-                },
-            )
-        else:
-            row['key'] = factory(
-                'td:text',
-                value = key,
-                name = 'key',
-                props = {
-                    'class': 'key',
-                    'disabled': 'disabled',
-                },
-            )
+        k_props = {'class': 'key'}
+        if static:
+            k_props['disabled'] = 'disabled'
+        row['key'] = factory(
+            'td:text',
+            value = key,
+            name = 'key',
+            props = k_props,
+        )
         row['value'] = factory(
             'td:text',
             value = val,
@@ -100,7 +91,7 @@ def dict_renderer(widget, data):
                 'class': 'value',
             },
         )
-        if not widget.attrs['static']:
+        if not static:
             row['actions'] = factory(
                 'td:dict_actions',
                 props = {
