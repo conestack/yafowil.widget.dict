@@ -1,0 +1,37 @@
+.dictwidget {
+    border-collapse:collapse;
+}
+.dictwidget input {
+    width:150px;
+}
+.dictwidget th {
+    width:150px;
+    color:#333;
+    font-weight:normal;
+}
+.dict_actions a {
+    line-height:16px;
+    font-size:16px;
+    padding-left:16px;
+    text-decoration:none;
+    float:right;
+    margin-top:1px;
+}
+.dict_actions a.dict_row_add {
+    background:url('/++resource++yafowil.widget.dict/images/icon_add.png') 50% 50% no-repeat;
+}
+.dict_actions a.dict_row_remove {
+    background:url('/++resource++yafowil.widget.dict/images/icon_remove.png') 50% 50% no-repeat;
+}
+.dict_actions a.dict_row_up {
+    background:url('/++resource++yafowil.widget.dict/images/icon_up.png') 50% 50% no-repeat;
+}
+.dict_actions a.dict_row_up_disabled {
+    background:url('/++resource++yafowil.widget.dict/images/icon_up_disabled.png') 50% 50% no-repeat !important;
+}
+.dict_actions a.dict_row_down {
+    background:url('/++resource++yafowil.widget.dict/images/icon_down.png') 50% 50% no-repeat;
+}
+.dict_actions a.dict_row_down_disabled {
+    background:url('/++resource++yafowil.widget.dict/images/icon_down_disabled.png') 50% 50% no-repeat !important;
+}
