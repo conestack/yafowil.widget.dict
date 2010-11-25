@@ -1,5 +1,8 @@
 if (typeof(window['yafowil']) == "undefined") yafowil = {};
 
+// XXX:hack - remove
+if (typeof(window['bdajax']) == "undefined") bdajax = {binders:{}};
+
 (function($) {
 
     $(document).ready(function() {
