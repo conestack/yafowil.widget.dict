@@ -9,9 +9,9 @@ from yafowil.compound import (
     compound_renderer,
 )
 from yafowil.common import _value
-from yafowil.utils import tag
 
 def actions_renderer(widget, data):
+    tag = data.tag
     actions = list()
     for key in ['add', 'remove', 'up', 'down']:
         if widget.attrs.get(key):

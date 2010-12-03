@@ -186,15 +186,28 @@ Use dict widget as static widget
     ...                                  'value': 'Value',
     ...                              }
     ...                          })
-    >>> form()
-    u'<form action="myaction" enctype="multipart/form-data" id="form-myform" 
-    method="post"><table class="dictwidget" 
-    id="dictwidget_myform.mydict.entry"><thead><tr><th>Key</th><th>Value</th></tr></thead><tbody><tr><td 
-    class="key"><input disabled="disabled" id="input-myform-mydict-entry0-key" 
-    name="myform.mydict.entry0.key" type="text" value="k1" /></td><td 
-    class="value"><input id="input-myform-mydict-entry0-value" 
-    name="myform.mydict.entry0.value" type="text" 
-    value="v1" /></td></tr></tbody></table></form>'
+    >>> pxml(form())
+    <form action="myaction" enctype="multipart/form-data" id="form-myform" method="post">
+      <table class="dictwidget" id="dictwidget_myform.mydict.entry">
+        <thead>
+          <tr>
+            <th>Key</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="key">
+              <input class="key" disabled="disabled" id="input-myform-mydict-entry0-key" name="myform.mydict.entry0.key" type="text" value="k1"/>
+            </td>
+            <td class="value">
+              <input class="value" id="input-myform-mydict-entry0-value" name="myform.mydict.entry0.value" type="text" value="v1"/>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+    <BLANKLINE>
 
 Static dict extraction. Disabled form fields are not transmitted, but since
 order is fixed dict could be reconstructed from original value

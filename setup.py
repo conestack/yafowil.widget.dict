@@ -33,6 +33,7 @@ setup(name='yafowil.widget.dict',
       extras_require = dict(),
       tests_require=[
           'interlude',
+          'lxml',
       ],
       test_suite="yafowil.widget.dict.tests.test_suite",
       entry_points = """\
