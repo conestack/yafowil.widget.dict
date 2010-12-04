@@ -4,6 +4,7 @@ import sys, os
 version = '1.0'
 shortdesc = 'yafowil.widget.dict'
 longdesc = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
+longdesc += open(os.path.join(os.path.dirname(__file__), 'LICENSE.rst')).read()
 
 setup(name='yafowil.widget.dict',
       version=version,
