@@ -1,13 +1,12 @@
 if (typeof(window['yafowil']) == "undefined") yafowil = {};
 
-// XXX:hack - remove
-if (typeof(window['bdajax']) == "undefined") bdajax = {binders:{}};
-
 (function($) {
 
     $(document).ready(function() {
         yafowil.dictwidget.binder();
-        bdajax.binders.dictwidget_binder = yafowil.dictwidget.binder;
+		if (typeof(window['bdajax']) != "undefined") {
+			bdajax.binders.dictwidget_binder = yafowil.dictwidget.binder;
+		}
     });
     
     // yafowil dictwidget
