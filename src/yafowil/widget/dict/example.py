@@ -39,20 +39,28 @@ def app(environ, start_response):
     elif environ['PATH_INFO'] != '/':
         response = Response(status=404)
         return response(environ, start_response)
-    form = factory(u'form', name='example', props={
-        'action': url})
-    form['dict'] = factory('field:label:error:dict', props={
-        'label': 'Fill the dict',
-        'head': {'key': 'Key', 'value': 'Value'} })
-    form['submit'] = factory('field:submit', props={        
-        'label': 'submit',
-        'action': 'save',
-        'handler': lambda widget, data: None,
-        'next': lambda request: url})
+    form = factory(
+        u'form',
+        name='example',
+        props={
+            'action': url})
+    form['dict'] = factory(
+        'field:label:error:dict',
+        name='mydict',
+        props={
+            'label': 'Fill the dict',
+            'head': {'key': 'Key', 'value': 'Value'}})
+    form['submit'] = factory(
+        'field:submit',
+        props={        
+            'label': 'submit',
+            'action': 'save',
+            'handler': lambda widget, data: None,
+            'next': lambda request: url})
     controller = Controller(form, Request(environ))
     tag = controller.data.tag
     jq = tag('script', ' ',
-             src='https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.js',
+             src='https://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.js',
              type='text/javascript')
     ywd = tag('script', ' ',
               src='%sywd.js' % url,

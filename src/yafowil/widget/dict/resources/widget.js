@@ -72,18 +72,16 @@ if (typeof(window['yafowil']) == "undefined") yafowil = {};
                     index++;
                 });
                 yafowil.dict.binder(context);
-                yafowil.dict.mark_disabled(context);
             },
             
             mark_disabled: function(context) {
-                $('a.dict_row_up', context)
-                    .removeClass('dict_row_up_disabled');
-                $('a.dict_row_up', context)
+                context = $(context);
+				$('a.dict_row_up', context)
+                    .removeClass('dict_row_up_disabled')
                     .first()
                     .addClass('dict_row_up_disabled');
                 $('a.dict_row_down', context)
-                    .removeClass('dict_row_down_disabled');
-                $('a.dict_row_down', context)
+                    .removeClass('dict_row_down_disabled')
                     .last()
                     .addClass('dict_row_down_disabled');
             },
@@ -100,8 +98,15 @@ if (typeof(window['yafowil']) == "undefined") yafowil = {};
                         if (container.get(0).tagName.toLowerCase() == 'tbody') {
                             row.after(new_row);
                         } else {
-                            container = $('tbody', container.parent());
-                            container.prepend(new_row);
+                            var table = container.parent();
+							var body = $('tbody', table);
+							// jq 1.4.4 fails atm
+							//if (!body.length) {
+							//	body = $('<tbody />');
+							//	table.append(body);
+							//}
+                            container = body;
+							container.prepend(new_row);
                         }
                         yafowil.dict.reset_indices(container);
                     });

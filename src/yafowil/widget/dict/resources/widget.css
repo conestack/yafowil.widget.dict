@@ -30,8 +30,8 @@
     background:url('images/icon_up_disabled.png') 50% 50% no-repeat !important;
 }
 .dict_actions a.dict_row_down {
-    background:url('icon_down.png') 50% 50% no-repeat;
+    background:url('images/icon_down.png') 50% 50% no-repeat;
 }
 .dict_actions a.dict_row_down_disabled {
-    background:url('icon_down_disabled.png') 50% 50% no-repeat !important;
+    background:url('images/icon_down_disabled.png') 50% 50% no-repeat !important;
 }
