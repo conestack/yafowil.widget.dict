@@ -18,20 +18,20 @@
     margin-top:1px;
 }
 .dict_actions a.dict_row_add {
-    background:url('/++resource++yafowil.widget.dict/images/icon_add.png') 50% 50% no-repeat;
+    background:url('images/icon_add.png') 50% 50% no-repeat;
 }
 .dict_actions a.dict_row_remove {
-    background:url('/++resource++yafowil.widget.dict/images/icon_remove.png') 50% 50% no-repeat;
+    background:url('images/icon_remove.png') 50% 50% no-repeat;
 }
 .dict_actions a.dict_row_up {
-    background:url('/++resource++yafowil.widget.dict/images/icon_up.png') 50% 50% no-repeat;
+    background:url('images/icon_up.png') 50% 50% no-repeat;
 }
 .dict_actions a.dict_row_up_disabled {
-    background:url('/++resource++yafowil.widget.dict/images/icon_up_disabled.png') 50% 50% no-repeat !important;
+    background:url('images/icon_up_disabled.png') 50% 50% no-repeat !important;
 }
 .dict_actions a.dict_row_down {
-    background:url('/++resource++yafowil.widget.dict/images/icon_down.png') 50% 50% no-repeat;
+    background:url('icon_down.png') 50% 50% no-repeat;
 }
 .dict_actions a.dict_row_down_disabled {
-    background:url('/++resource++yafowil.widget.dict/images/icon_down_disabled.png') 50% 50% no-repeat !important;
+    background:url('icon_down_disabled.png') 50% 50% no-repeat !important;
 }
