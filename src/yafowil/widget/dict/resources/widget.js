@@ -1,18 +1,29 @@
+/* 
+ * yafowil dict widget
+ * 
+ * Requires: jquery
+ * Optional: bdajax
+ */
+
 if (typeof(window['yafowil']) == "undefined") yafowil = {};
 
 (function($) {
 
     $(document).ready(function() {
-        yafowil.dictwidget.binder();
-		if (typeof(window['bdajax']) != "undefined") {
-			bdajax.binders.dictwidget_binder = yafowil.dictwidget.binder;
-		}
+        // initial binding
+        yafowil.dict.binder();
+        
+        // add after ajax binding if bdajax present
+        if (typeof(window['bdajax']) != "undefined") {
+            $.extend(bdajax.binders, {
+                dictwidget_binder: yafowil.dict.binder
+            });
+        }
     });
     
-    // yafowil dictwidget
     $.extend(yafowil, {
         
-        dictwidget: {
+        dict: {
             
             create_row: function() {
                 var row = '';
@@ -45,7 +56,7 @@ if (typeof(window['yafowil']) == "undefined") yafowil = {};
             
             reset_indices: function(context) {
                 var index = 0;
-                var base_name = yafowil.dictwidget.base_name(context);
+                var base_name = yafowil.dict.base_name(context);
                 base_name = base_name.substring(11, base_name.length);
                 var base_id = base_name.replace(/\./g, '-');
                 $('tr', context).each(function() {
@@ -60,8 +71,8 @@ if (typeof(window['yafowil']) == "undefined") yafowil = {};
                     value.attr('id', value_id).attr('name', value_name);
                     index++;
                 });
-                yafowil.dictwidget.binder(context);
-                yafowil.dictwidget.mark_disabled(context);
+                yafowil.dict.binder(context);
+                yafowil.dict.mark_disabled(context);
             },
             
             mark_disabled: function(context) {
@@ -78,13 +89,13 @@ if (typeof(window['yafowil']) == "undefined") yafowil = {};
             },
             
             binder: function(context) {
-                yafowil.dictwidget.mark_disabled(context);
+                yafowil.dict.mark_disabled(context);
                 $('a.dict_row_add', context)
                     .unbind()
                     .bind('click', function(event) {
                         event.preventDefault();
-                        var row = yafowil.dictwidget.get_row(this);
-                        var new_row = yafowil.dictwidget.create_row();
+                        var row = yafowil.dict.get_row(this);
+                        var new_row = yafowil.dict.create_row();
                         var container = row.parent();
                         if (container.get(0).tagName.toLowerCase() == 'tbody') {
                             row.after(new_row);
@@ -92,35 +103,35 @@ if (typeof(window['yafowil']) == "undefined") yafowil = {};
                             container = $('tbody', container.parent());
                             container.prepend(new_row);
                         }
-                        yafowil.dictwidget.reset_indices(container);
+                        yafowil.dict.reset_indices(container);
                     });
                 
                 $('a.dict_row_remove', context)
                     .unbind()
                     .bind('click', function(event) {
                         event.preventDefault();
-                        var row = yafowil.dictwidget.get_row(this);
+                        var row = yafowil.dict.get_row(this);
                         var container = row.parent();
                         row.remove();
-                        yafowil.dictwidget.reset_indices(container);
+                        yafowil.dict.reset_indices(container);
                     });
                 
                 $('a.dict_row_up', context)
                     .unbind()
                     .bind('click', function(event) {
                         event.preventDefault();
-                        var row = yafowil.dictwidget.get_row(this);
+                        var row = yafowil.dict.get_row(this);
                         row.insertBefore(row.prev());
-                        yafowil.dictwidget.reset_indices(row.parent());
+                        yafowil.dict.reset_indices(row.parent());
                     });
                 
                 $('a.dict_row_down', context)
                     .unbind()
                     .bind('click', function(event) {
                         event.preventDefault();
-                        var row = yafowil.dictwidget.get_row(this);
+                        var row = yafowil.dict.get_row(this);
                         row.insertAfter(row.next());
-                        yafowil.dictwidget.reset_indices(row.parent());
+                        yafowil.dict.reset_indices(row.parent());
                     });
             }
         }
