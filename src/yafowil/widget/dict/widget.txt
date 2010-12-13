@@ -23,7 +23,7 @@ Create empty Dict widget
     method="post"><table class="dictwidget" 
     id="dictwidget_myform.mydict.entry"><thead><tr><th>Key</th><th>Value</th><th><div 
     class="dict_actions"><a class="dict_row_add" 
-    href="#">&nbsp;</a></div></th></tr></thead><tbody></tbody></table></form>'
+    href="#">&#160;</a></div></th></tr></thead><tbody></tbody></table></form>'
 
 Create dict widget with preset values
 ::
@@ -154,7 +154,7 @@ Check required
     class="dictwidget" 
     id="dictwidget_myform.mydict.entry"><thead><tr><th>Key</th><th>Value</th><th><div 
     class="dict_actions"><a class="dict_row_add" 
-    href="#">&nbsp;</a></div></th></tr></thead><tbody></tbody></table></div></form>'
+    href="#">&#160;</a></div></th></tr></thead><tbody></tbody></table></div></form>'
     
     >>> request = {
     ...     'myform.mydict.entry0.key': 'key1',

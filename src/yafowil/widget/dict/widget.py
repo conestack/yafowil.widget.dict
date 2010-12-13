@@ -16,7 +16,7 @@ def actions_renderer(widget, data):
     for key in ['add', 'remove', 'up', 'down']:
         if widget.attrs.get(key):
             class_ = 'dict_row_%s' % key
-            action = tag('a', '&nbsp;', href='#', class_=class_)
+            action = tag('a', '&#160;', href='#', class_=class_)
             actions.append(action)
     return tag('div', *actions, class_='dict_actions')
 
