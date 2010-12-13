@@ -69,7 +69,7 @@ def app(environ, start_response):
               '@import url(%sywd.css)' % url,
               type='text/css')
     head = tag('head', jq, ywd, css)
-    h1 = tag('h1', 'YAFOWIL Widget Autocomplete Example')
+    h1 = tag('h1', 'YAFOWIL Widget Dict Example')
     body = tag('body', h1, controller.rendered)
     response = Response(body=fxml(tag('html', head, body)))
     return response(environ, start_response)
