@@ -76,7 +76,7 @@ if (typeof(window['yafowil']) == "undefined") yafowil = {};
             
             mark_disabled: function(context) {
                 context = $(context);
-				$('a.dict_row_up', context)
+                $('a.dict_row_up', context)
                     .removeClass('dict_row_up_disabled')
                     .first()
                     .addClass('dict_row_up_disabled');
@@ -99,14 +99,14 @@ if (typeof(window['yafowil']) == "undefined") yafowil = {};
                             row.after(new_row);
                         } else {
                             var table = container.parent();
-							var body = $('tbody', table);
-							// jq 1.4.4 fails atm
-							//if (!body.length) {
-							//	body = $('<tbody />');
-							//	table.append(body);
-							//}
+                            var body = $('tbody', table);
+                            // jq 1.4.4 fails atm
+                            //if (!body.length) {
+                            //    body = $('<tbody />');
+                            //    table.append(body);
+                            //}
                             container = body;
-							container.prepend(new_row);
+                            container.prepend(new_row);
                         }
                         yafowil.dict.reset_indices(container);
                     });
