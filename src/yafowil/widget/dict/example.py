@@ -15,6 +15,12 @@ def javascript_response(environ, start_response):
         response.write(js.read())
     return response(environ, start_response)
 
+def css_response(environ, start_response):
+    response = Response(content_type='text/css')
+    with open(os.path.join(dir, 'resources', 'widget.css')) as js:
+        response.write(js.read())
+    return response(environ, start_response)
+
 def img_response(environ, start_response):
     response = Response(content_type='image/png')    
     with open(os.path.join(dir, 'resources', 'images', 
@@ -26,6 +32,8 @@ def app(environ, start_response):
     url = 'http://%s/' % environ['HTTP_HOST']
     if environ['PATH_INFO'] == '/ywd.js':
         return javascript_response(environ, start_response)
+    elif environ['PATH_INFO'] == '/ywd.css':
+        return css_response(environ, start_response)
     elif environ['PATH_INFO'].startswith('/images/'):
         return img_response(environ, start_response)
     elif environ['PATH_INFO'] != '/':
@@ -46,19 +54,13 @@ def app(environ, start_response):
     jq = tag('script', ' ',
              src='https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.js',
              type='text/javascript')
-    jqui = tag('script', ' ', 
-               src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.js',
-               type='text/javascript')
     ywd = tag('script', ' ',
               src='%sywd.js' % url,
               type='text/javascript')
-    css = tag("style",
-              "@import url(https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/themes/base/jquery-ui.css)",
+    css = tag('style',
+              '@import url(%sywd.css)' % url,
               type='text/css')
-    css += tag('style',
-              '.hiddenStructure { display: none; }', 
-              type='text/css')
-    head = tag('head', jq, jqui, ywd, css)
+    head = tag('head', jq, ywd, css)
     h1 = tag('h1', 'YAFOWIL Widget Autocomplete Example')
     body = tag('body', h1, controller.rendered)
     response = Response(body=fxml(tag('html', head, body)))
