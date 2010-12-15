@@ -3,12 +3,12 @@ from yafowil.base import (
     UNSET,
     factory,
     ExtractionError,
+    fetch_value
 )
 from yafowil.compound import (
     compound_extractor,
     compound_renderer,
 )
-from yafowil.common import _value
 
 def actions_renderer(widget, data):
     tag = data.tag
@@ -68,7 +68,7 @@ def dict_renderer(widget, data):
         basename = '%s.entry' % body.dottedpath
         value = extract_static(data, basename)
     else:
-        value = _value(widget, data)
+        value = fetch_value(widget, data)
     if not value:
         return
     i = 0
