@@ -159,6 +159,11 @@ def dict_extractor(widget, data):
                     raise_extraction_error(widget)
     return ret
 
+factory.doc['widget']['dict'] = \
+"""Add-on widget `yafowil.widget.dict 
+<http://github.com/bluedynamics/yafowil.widget.dict/>`_.
+"""
+
 factory.defaults['dict.default'] = odict()
 factory.defaults['dict.static'] = False
 factory.defaults['dict.error_class'] = 'error'
