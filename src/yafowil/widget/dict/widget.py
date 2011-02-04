@@ -20,6 +20,7 @@ def actions_renderer(widget, data):
             actions.append(action)
     return tag('div', *actions, class_='dict_actions')
 
+factory.doc['widget']['dict_actions'] = UNSET # dont document internal widget
 factory.register('dict_actions',
                  [],
                  [actions_renderer])
