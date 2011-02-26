@@ -18,7 +18,9 @@ def actions_renderer(widget, data):
             class_ = 'dict_row_%s' % key
             action = tag('a', '&#160;', href='#', class_=class_)
             actions.append(action)
-    return tag('div', *actions, class_='dict_actions')
+    # XXX: bypass for py24 (and py25?). py26 can deal with kw after *actions
+    kw = dict(class_='dict_actions')
+    return tag('div', *actions, **kw)
 
 factory.doc['widget']['dict_actions'] = UNSET # dont document internal widget
 factory.register('dict_actions',
