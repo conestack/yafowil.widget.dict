@@ -10,6 +10,7 @@ from yafowil.compound import (
     compound_renderer,
 )
 
+
 def actions_renderer(widget, data):
     tag = data.tag
     actions = list()
@@ -26,6 +27,7 @@ factory.doc['widget']['dict_actions'] = UNSET # dont document internal widget
 factory.register('dict_actions',
                  [],
                  [actions_renderer])
+
 
 def dict_builder(widget, factory):
     table = widget['table'] = factory(
@@ -60,6 +62,7 @@ def dict_builder(widget, factory):
             }
         )
     table['body'] = factory('tbody', props={'structural': True})
+
 
 def dict_renderer(widget, data):
     static = widget.attrs['static']
@@ -106,10 +109,12 @@ def dict_renderer(widget, data):
             )
         i += 1
 
+
 def raise_extraction_error(widget):
     if isinstance(widget.attrs['required'], basestring):
         raise ExtractionError(widget.attrs['required'])
     raise ExtractionError(widget.attrs['required_message'])
+
 
 def extract_static(data, basename):
     request = data.request
@@ -124,6 +129,7 @@ def extract_static(data, basename):
             continue
         break
     return ret
+
 
 def extract_dynamic(data, basename):
     request = data.request
@@ -140,6 +146,7 @@ def extract_dynamic(data, basename):
             continue
         break
     return ret
+
 
 def dict_extractor(widget, data):
     static = widget.attrs['static']

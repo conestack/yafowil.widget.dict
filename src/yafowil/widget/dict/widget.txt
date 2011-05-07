@@ -1,12 +1,10 @@
-Import requirements
-::
+Import requirements::
 
     >>> import yafowil.loader
     >>> import yafowil.widget.dict
     >>> from yafowil.base import factory
 
-Create empty Dict widget
-::
+Create empty Dict widget::
     
     >>> form = factory('form',
     ...                name='myform',
@@ -25,8 +23,7 @@ Create empty Dict widget
     class="dict_actions"><a class="dict_row_add" 
     href="#">&#160;</a></div></th></tr></thead><tbody></tbody></table></form>'
 
-Create dict widget with preset values
-::
+Create dict widget with preset values::
 
     >>> from odict import odict
     >>> value = odict()
@@ -51,8 +48,7 @@ Create dict widget with preset values
     value="Value2" 
     ...
 
-Base Extraction
-::
+Base Extraction::
 
     >>> request = {
     ...     'myform.mydict.entry0.key': 'key1',
@@ -70,8 +66,7 @@ Base Extraction
     >>> data.fetch('myform.mydict').extracted
     odict([('key1', 'New Value 1'), ('key2', 'New Value 2')])
 
-Dict entries increased in UI
-::
+Dict entries increased in UI::
 
     >>> request = {
     ...     'myform.mydict.entry0.key': 'key1',
@@ -97,8 +92,7 @@ Dict entries increased in UI
     value="New Value 3" 
     ...
 
-Dict entries decreased in UI
-::
+Dict entries decreased in UI::
 
     >>> request = {
     ...     'myform.mydict.entry0.key': 'key1',
@@ -117,8 +111,7 @@ Dict entries decreased in UI
     >>> form(data=data).find('New Value 2')
     -1
 
-Empty keys are ignored
-::
+Empty keys are ignored::
 
     >>> request = {
     ...     'myform.mydict.entry0.key': 'key1',
@@ -130,8 +123,7 @@ Empty keys are ignored
     >>> data.fetch('myform.mydict').extracted
     odict([('key1', 'Very New Value 1')])
 
-Check required
-::
+Check required::
 
     >>> form['mydict'] = factory('error:dict',
     ...                          props={
@@ -173,8 +165,7 @@ Check required
     >>> form(data=data).find('error')
     -1
 
-Use dict widget as static widget
-::
+Use dict widget as static widget::
 
     >>> form['mydict'] = factory('error:dict',
     ...                          value=odict([('k1', 'v1')]),
@@ -210,8 +201,7 @@ Use dict widget as static widget
     <BLANKLINE>
 
 Static dict extraction. Disabled form fields are not transmitted, but since
-order is fixed dict could be reconstructed from original value
-::
+order is fixed dict could be reconstructed from original value::
 
     >>> request = {
     ...     'myform.mydict.entry0.value': 'New Value 1',
@@ -220,8 +210,7 @@ order is fixed dict could be reconstructed from original value
     >>> data.fetch('myform.mydict').extracted
     odict([('k1', 'New Value 1')])
 
-Static dicts required. By default checks if there's a value in every entry
-::
+Static dicts required. By default checks if there's a value in every entry::
 
     >>> request = {}
     >>> data = form.extract(request=request)
@@ -234,3 +223,41 @@ Static dicts required. By default checks if there's a value in every entry
     >>> data = form.extract(request=request)
     >>> data.fetch('myform.mydict').errors
     [ExtractionError('I am required',)]
+
+Static required rendering::
+
+    >>> pxml(form(data))
+    <form action="myaction" enctype="multipart/form-data" id="form-myform" method="post">
+      <div class="error">
+        <div class="errormessage">I am required</div>
+        <table class="dictwidget" id="dictwidget_myform.mydict.entry">
+          <thead>
+            <tr>
+              <th>Key</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="key">
+                <input class="key" disabled="disabled" id="input-myform-mydict-entry0-key" name="myform.mydict.entry0.key" type="text" value="k1"/>
+              </td>
+              <td class="value">
+                <input class="value" id="input-myform-mydict-entry0-value" name="myform.mydict.entry0.value" type="text" value=""/>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </form>
+    <BLANKLINE>
+
+Required message not set directly in widget props::
+
+    >>> form['mydict'].attrs['required'] = True
+    >>> request = {
+    ...     'myform.mydict.entry0.value': '',
+    ... }
+    >>> data = form.extract(request=request)
+    >>> data.fetch('myform.mydict').errors
+    [ExtractionError('Mandatory field was empty',)]

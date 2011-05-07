@@ -9,11 +9,13 @@ from webob import Request, Response
 
 dir = os.path.dirname(__file__)
 
+
 def javascript_response(environ, start_response):
     response = Response(content_type='text/javascript')
     with open(os.path.join(dir, 'resources', 'widget.js')) as js:
         response.write(js.read())
     return response(environ, start_response)
+
 
 def css_response(environ, start_response):
     response = Response(content_type='text/css')
@@ -21,12 +23,14 @@ def css_response(environ, start_response):
         response.write(js.read())
     return response(environ, start_response)
 
+
 def img_response(environ, start_response):
     response = Response(content_type='image/png')    
     with open(os.path.join(dir, 'resources', 'images', 
                            environ['PATH_INFO'][8:])) as img:
         response.write(img.read())
     return response(environ, start_response)
+
 
 def app(environ, start_response):
     url = 'http://%s/' % environ['HTTP_HOST']

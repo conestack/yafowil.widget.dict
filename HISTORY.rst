@@ -2,10 +2,14 @@
 History
 =======
 
-0.9.1 (unreleased)
-------------------
+0.9.1dev
+--------
 
-- python 2.4 fix [chaoflow, 2011-03-01]
+- test coverage
+  [rnix, 2011-05-07]
+
+- python 2.4 fix
+  [chaoflow, 2011-03-01]
 
 0.9
 ---
