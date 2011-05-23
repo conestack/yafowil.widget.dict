@@ -18,7 +18,7 @@ Create empty Dict widget::
     ...                          })
     >>> form()
     u'<form action="myaction" enctype="multipart/form-data" id="form-myform" 
-    method="post"><table class="dictwidget" 
+    method="post" novalidate="novalidate"><table class="dictwidget" 
     id="dictwidget_myform.mydict.entry"><thead><tr><th>Key</th><th>Value</th><th><div 
     class="dict_actions"><a class="dict_row_add" 
     href="#">&#160;</a></div></th></tr></thead><tbody></tbody></table></form>'
@@ -140,7 +140,7 @@ Check required::
     
     >>> form(data=data)
     u'<form action="myaction" enctype="multipart/form-data" id="form-myform" 
-    method="post"><div 
+    method="post" novalidate="novalidate"><div 
     class="error"><div 
     class="errormessage">I am required</div><table 
     class="dictwidget" 
@@ -178,7 +178,7 @@ Use dict widget as static widget::
     ...                              }
     ...                          })
     >>> pxml(form())
-    <form action="myaction" enctype="multipart/form-data" id="form-myform" method="post">
+    <form action="myaction" enctype="multipart/form-data" id="form-myform" method="post" novalidate="novalidate">
       <table class="dictwidget" id="dictwidget_myform.mydict.entry">
         <thead>
           <tr>
@@ -227,7 +227,7 @@ Static dicts required. By default checks if there's a value in every entry::
 Static required rendering::
 
     >>> pxml(form(data))
-    <form action="myaction" enctype="multipart/form-data" id="form-myform" method="post">
+    <form action="myaction" enctype="multipart/form-data" id="form-myform" method="post" novalidate="novalidate">
       <div class="error">
         <div class="errormessage">I am required</div>
         <table class="dictwidget" id="dictwidget_myform.mydict.entry">
