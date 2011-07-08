@@ -23,10 +23,12 @@ def actions_renderer(widget, data):
     kw = dict(class_='dict_actions')
     return tag('div', *actions, **kw)
 
+
+factory.register(
+    'dict_actions',
+    edit_renderers=[actions_renderer])
+
 factory.doc['widget']['dict_actions'] = UNSET # dont document internal widget
-factory.register('dict_actions',
-                 [],
-                 [actions_renderer])
 
 
 def dict_builder(widget, factory):
@@ -169,17 +171,22 @@ def dict_extractor(widget, data):
                     raise_extraction_error(widget)
     return ret
 
+
+factory.register(
+    'dict',
+    extractors=[compound_extractor, dict_extractor],
+    edit_renderers=[dict_renderer, compound_renderer],
+    builders=[dict_builder])
+
 factory.doc['widget']['dict'] = \
 """Add-on widget `yafowil.widget.dict 
 <http://github.com/bluedynamics/yafowil.widget.dict/>`_.
 """
 
 factory.defaults['dict.default'] = odict()
+
 factory.defaults['dict.static'] = False
+
 factory.defaults['dict.error_class'] = 'error'
+
 factory.defaults['dict.message_class'] = 'errormessage'
-factory.register('dict',
-                 [compound_extractor, dict_extractor],
-                 [dict_renderer, compound_renderer],
-                 [],
-                 [dict_builder])

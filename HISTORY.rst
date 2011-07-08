@@ -2,8 +2,11 @@
 History
 =======
 
-0.9.2dev
---------
+1.0dev
+------
+
+- adopt to yafowil 1.1
+  [rnix, 2011-07-08]
 
 - adopt tests for form novalidate property
   [rnix, 2011-05-23]
