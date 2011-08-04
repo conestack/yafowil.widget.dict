@@ -66,7 +66,7 @@ def dict_builder(widget, factory):
     table['body'] = factory('tbody', props={'structural': True})
 
 
-def dict_renderer(widget, data):
+def dict_edit_renderer(widget, data):
     static = widget.attrs['static']
     table = widget['table']
     table.attrs['id'] = 'dictwidget_%s.entry' % widget.dottedpath
@@ -172,10 +172,26 @@ def dict_extractor(widget, data):
     return ret
 
 
+def dict_display_renderer(widget, data):
+    value = data.value
+    if not value:
+        value = dict()
+    values = list()
+    for key, val in value.items():
+        values.append(data.tag('dt', key) + data.tag('dd', val))
+    head = u''
+    if widget.attrs.get('head'):
+        head = '%s: %s' % (widget.attrs['head']['key'],
+                           widget.attrs['head']['value'])
+        head = data.tag('h5', head)
+    return head + data.tag('dl', *values)
+
+
 factory.register(
     'dict',
     extractors=[compound_extractor, dict_extractor],
-    edit_renderers=[dict_renderer, compound_renderer],
+    edit_renderers=[dict_edit_renderer, compound_renderer],
+    display_renderers=[dict_display_renderer],
     builders=[dict_builder])
 
 factory.doc['widget']['dict'] = \

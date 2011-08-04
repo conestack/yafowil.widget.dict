@@ -261,3 +261,30 @@ Required message not set directly in widget props::
     >>> data = form.extract(request=request)
     >>> data.fetch('myform.mydict').errors
     [ExtractionError('Mandatory field was empty',)]
+
+Dict display renderer::
+
+    >>> value = odict()
+    >>> value['foo'] = 'Foo'
+    >>> value['bar'] = 'Bar'
+    >>> widget = factory('dict',
+    ...                  name='display_dict',
+    ...                  value=value,
+    ...                  props={
+    ...                      'head': {
+    ...                          'key': 'Key',
+    ...                          'value': 'Value',
+    ...                      }
+    ...                  },
+    ...                  mode='display')
+    >>> pxml('<div>' + widget() + '</div>')
+    <div>
+      <h5>Key: Value</h5>
+      <dl>
+        <dt>foo</dt>
+        <dd>Foo</dd>
+        <dt>bar</dt>
+        <dd>Bar</dd>
+      </dl>
+    </div>
+    <BLANKLINE>
