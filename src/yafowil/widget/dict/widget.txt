@@ -288,3 +288,20 @@ Dict display renderer::
       </dl>
     </div>
     <BLANKLINE>
+
+    >>> widget = factory('dict',
+    ...                  name='display_dict',
+    ...                  props={
+    ...                      'head': {
+    ...                          'key': 'Key',
+    ...                          'value': 'Value',
+    ...                      }
+    ...                  },
+    ...                  mode='display')
+    >>> pxml('<div>' + widget() + '</div>')
+    <div>
+      <h5>Key: Value</h5>
+      <dl/>
+    </div>
+    <BLANKLINE>
+    
