@@ -11,10 +11,10 @@
         path="resources"
     />
     
-    <!-- Plone specific -->
+    <!-- Zope2 specific -->
     
     <browser:resourceDirectory
-        zcml:condition="installed Products.CMFPlone"
+        zcml:condition="installed Zope2"
         name="yafowil.widget.dict"
         directory="resources"
     />
