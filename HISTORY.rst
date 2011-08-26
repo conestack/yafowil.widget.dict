@@ -2,6 +2,12 @@
 History
 =======
 
+1.0.1
+-----
+
+- make conditional resource registration more general for Zope2 available.
+  [jensens, 2011-08-26]
+
 1.0
 ---
 
