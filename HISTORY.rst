@@ -2,6 +2,13 @@
 History
 =======
 
+1.0.2
+-----
+
+- be gentle and playe an error if for some reason a static dict is feeded
+  with additional values. 
+  [jensens - 2011-09-01]
+
 1.0.1
 -----
 

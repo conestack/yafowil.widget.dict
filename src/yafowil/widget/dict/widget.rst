@@ -210,6 +210,17 @@ order is fixed dict could be reconstructed from original value::
     >>> data.fetch('myform.mydict').extracted
     odict([('k1', 'New Value 1')])
 
+Since its static, we expect an extraction error if someone tries to add values::
+
+    >>> request = {
+    ...     'myform.mydict.entry0.value': 'New Value 1',
+    ...     'myform.mydict.entry1.key'  : 'Wrong Key 2',
+    ...     'myform.mydict.entry1.value': 'Wrong Value 2',
+    ... }
+    >>> data = form.extract(request=request)
+    >>> data['mydict'].errors
+    [ExtractionError('invalid number of static values',)]    
+    
 Static dicts required. By default checks if there's a value in every entry::
 
     >>> request = {}

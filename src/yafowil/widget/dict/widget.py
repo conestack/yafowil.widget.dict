@@ -126,6 +126,8 @@ def extract_static(data, basename):
     while True:
         valuename = '%s%i.value' % (basename, index)
         if request.has_key(valuename):
+            if index >= len(keys):
+                raise ExtractionError('invalid number of static values')
             ret[keys[index]] = request[valuename]
             index += 1
             continue
