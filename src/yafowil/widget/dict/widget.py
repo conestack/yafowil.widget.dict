@@ -28,7 +28,7 @@ factory.register(
     'dict_actions',
     edit_renderers=[actions_renderer])
 
-factory.doc['widget']['dict_actions'] = UNSET # dont document internal widget
+factory.doc['blueprint']['dict_actions'] = UNSET # dont document internal widget
 
 
 def dict_builder(widget, factory):
@@ -196,7 +196,7 @@ factory.register(
     display_renderers=[dict_display_renderer],
     builders=[dict_builder])
 
-factory.doc['widget']['dict'] = \
+factory.doc['blueprint']['dict'] = \
 """Add-on widget `yafowil.widget.dict 
 <http://github.com/bluedynamics/yafowil.widget.dict/>`_.
 """

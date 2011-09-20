@@ -2,11 +2,20 @@
 History
 =======
 
+1.1
+---
+
+- adopt to yafowil 1.2
+  [jensens, 2011-09-20]
+
+- make ready for z2c.autoinclude+Plone (only if available).
+  [jensens, 2011-09-20]
+
 1.0.2
 -----
 
-- be gentle and playe an error if for some reason a static dict is feeded
-  with additional values. 
+- be gentle and display an error if for some reason a static dict is feeded
+  with additional values.
   [jensens - 2011-09-01]
 
 1.0.1

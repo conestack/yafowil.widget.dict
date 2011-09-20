@@ -38,6 +38,9 @@ setup(name='yafowil.widget.dict',
           test=tests_require,
       ),
       test_suite="yafowil.widget.dict.tests.test_suite",
-      entry_points = """\
-      """        
+      entry_points="""
+      # plone specific, ignore if not available
+      [z3c.autoinclude.plugin]
+      target = plone
+      """,      
       )
