@@ -155,6 +155,7 @@ def extract_dynamic(data, basename):
 def dict_extractor(widget, data):
     static = widget.attrs['static']
     body = widget['table']['body']
+    compound_extractor(body, data)
     basename = '%s.entry' % body.dottedpath
     req = data.request
     index = 0
@@ -191,7 +192,7 @@ def dict_display_renderer(widget, data):
 
 factory.register(
     'dict',
-    extractors=[compound_extractor, dict_extractor],
+    extractors=[dict_extractor],
     edit_renderers=[dict_edit_renderer, compound_renderer],
     display_renderers=[dict_display_renderer],
     builders=[dict_builder])
