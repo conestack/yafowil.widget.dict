@@ -19,6 +19,13 @@ if (typeof(window['yafowil']) == "undefined") yafowil = {};
                 dictwidget_binder: yafowil.dict.binder
             });
         }
+        
+        // add binder to yafowil.widget.array binders
+        if (typeof(window.yafowil['array']) != "undefined") {
+            $.extend(yafowil.array.binders, {
+                dictwidget_binder: yafowil.dict.binder
+            });
+        }
     });
     
     $.extend(yafowil, {
