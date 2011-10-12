@@ -5,7 +5,7 @@ History
 1.1.1dev
 --------
 
-- add dict binder function to ``yafowil.widget.array`` binders if found
+- add dict binder function to ``yafowil.widget.array`` hooks if found
   [rnix, 2011-10-05]
 
 1.1
