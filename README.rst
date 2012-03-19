@@ -6,3 +6,5 @@ Contributors
 ============
 
 - Robert Niederrreiter <rnix@squarewave.at>
+
+- Peter Holzer <peter.holzer@agitator.com>

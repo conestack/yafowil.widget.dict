@@ -2,8 +2,14 @@
 History
 =======
 
-1.1.1dev
---------
+1.2
+---
+
+- make ready for YAFOWIL 1.3
+  [agitator, 2012-02-19]
+
+1.1.1
+-----
 
 - add dict binder function to ``yafowil.widget.array`` hooks if found
   [rnix, 2011-10-05]
@@ -14,7 +20,7 @@ History
 - adopt to yafowil 1.2
   [jensens, 2011-09-20]
 
-- make ready for z2c.autoinclude+Plone (only if available).
+- make ready for z3c.autoinclude+Plone (only if available).
   [jensens, 2011-09-20]
 
 1.0.2
