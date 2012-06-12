@@ -1,79 +1,12 @@
-import os
 from yafowil import loader
-import yafowil.webob
 from yafowil.base import factory
-from yafowil.controller import Controller
-import yafowil.widget.dict
-from yafowil.tests import fxml
-from webob import Request, Response
 
-dir = os.path.dirname(__file__)
-
-
-def javascript_response(environ, start_response):
-    response = Response(content_type='text/javascript')
-    with open(os.path.join(dir, 'resources', 'widget.js')) as js:
-        response.write(js.read())
-    return response(environ, start_response)
-
-
-def css_response(environ, start_response):
-    response = Response(content_type='text/css')
-    with open(os.path.join(dir, 'resources', 'widget.css')) as js:
-        response.write(js.read())
-    return response(environ, start_response)
-
-
-def img_response(environ, start_response):
-    response = Response(content_type='image/png')    
-    with open(os.path.join(dir, 'resources', 'images', 
-                           environ['PATH_INFO'][8:])) as img:
-        response.write(img.read())
-    return response(environ, start_response)
-
-
-def app(environ, start_response):
-    url = 'http://%s/' % environ['HTTP_HOST']
-    if environ['PATH_INFO'] == '/ywd.js':
-        return javascript_response(environ, start_response)
-    elif environ['PATH_INFO'] == '/ywd.css':
-        return css_response(environ, start_response)
-    elif environ['PATH_INFO'].startswith('/images/'):
-        return img_response(environ, start_response)
-    elif environ['PATH_INFO'] != '/':
-        response = Response(status=404)
-        return response(environ, start_response)
-    form = factory(
-        u'form',
-        name='example',
-        props={
-            'action': url})
-    form['dict'] = factory(
+def get_example():
+    part = factory(u'fieldset', name='yafowilwidgetdict')
+    part['dict'] = factory(
         'field:label:error:dict',
         name='mydict',
         props={
             'label': 'Fill the dict',
             'head': {'key': 'Key', 'value': 'Value'}})
-    form['submit'] = factory(
-        'field:submit',
-        props={        
-            'label': 'submit',
-            'action': 'save',
-            'handler': lambda widget, data: None,
-            'next': lambda request: url})
-    controller = Controller(form, Request(environ))
-    tag = controller.data.tag
-    jq = tag('script', ' ',
-             src='https://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.js',
-             type='text/javascript')
-    ywd = tag('script', ' ',
-              src='%sywd.js' % url,
-              type='text/javascript')
-    css = tag('style',
-              '@import url(%sywd.css)' % url,
-              type='text/css')
-    head = tag('head', jq, ywd, css)
-    h1 = tag('h1', 'YAFOWIL Widget Dict Example')
-    body = tag('body', h1, controller.rendered)
-    response = Response(body=fxml(tag('html', head, body)))
-    return response(environ, start_response)
+    return {'widget': part, 'routes': {}}
