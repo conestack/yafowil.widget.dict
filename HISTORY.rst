@@ -2,6 +2,15 @@
 History
 =======
 
+1.3dev
+------
+
+- Adopt resource providing
+  [jensens, 2012-06-12]
+
+- Remove example app
+  [jensens, 2012-06-12]
+
 1.2
 ---
 
