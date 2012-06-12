@@ -9,4 +9,4 @@ def get_example():
         props={
             'label': 'Fill the dict',
             'head': {'key': 'Key', 'value': 'Value'}})
-    return {'widget': part, 'routes': {}}
+    return [{'widget': part, 'doc': ''}]
