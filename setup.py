@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
 import sys, os
 
-version = '1.3dev'
-shortdesc = 'Dict Widget for YAFOWIL'
+version = '2.0dev'
+shortdesc = 'Dict/Mapping Widget for YAFOWIL'
 longdesc = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 longdesc += open(os.path.join(os.path.dirname(__file__), 'HISTORY.rst')).read()
 longdesc += open(os.path.join(os.path.dirname(__file__), 'LICENSE.rst')).read()
