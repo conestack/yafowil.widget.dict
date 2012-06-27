@@ -41,9 +41,6 @@ setup(name='yafowil.widget.dict',
       entry_points="""
       [yafowil.plugin]
       register = yafowil.widget.dict:register
-      resourcedir = yafowil.widget.dict:get_resource_dir
-      javascripts = yafowil.widget.dict:get_js
-      stylesheets = yafowil.widget.dict:get_css
       example = yafowil.widget.dict.example:get_example
       """,
       )
