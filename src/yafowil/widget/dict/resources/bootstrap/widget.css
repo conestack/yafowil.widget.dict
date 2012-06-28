@@ -1,0 +1,9 @@
+/* yafowil.widget.dict - bootstrap theme styles */
+.dict_actions a {
+    float:right;
+}
+.dict_actions a.array_row_up_disabled,
+.dict_actions a.array_row_down_disabled {
+    opacity:0.4;
+    filter:alpha(opacity=40);
+}

@@ -25,7 +25,9 @@ Create empty Dict widget::
             <th>Value</th>
             <th>
               <div class="dict_actions">
-                <a class="dict_row_add" href="#">&#160;</a>
+                <a class="dict_row_add" href="#">
+                  <i class="icon-plus-sign">&#160;</i>
+                </a>
               </div>
             </th>
           </tr>
@@ -61,7 +63,9 @@ Create dict widget with preset values::
             <th>Value</th>
             <th>
               <div class="dict_actions">
-                <a class="dict_row_add" href="#">&#160;</a>
+                <a class="dict_row_add" href="#">
+                  <i class="icon-plus-sign">&#160;</i>
+                </a>
               </div>
             </th>
           </tr>
@@ -76,10 +80,18 @@ Create dict widget with preset values::
             </td>
             <td>
               <div class="dict_actions">
-                <a class="dict_row_add" href="#">&#160;</a>
-                <a class="dict_row_remove" href="#">&#160;</a>
-                <a class="dict_row_up" href="#">&#160;</a>
-                <a class="dict_row_down" href="#">&#160;</a>
+                <a class="dict_row_add" href="#">
+                  <i class="icon-plus-sign">&#160;</i>
+                </a>
+                <a class="dict_row_remove" href="#">
+                  <i class="icon-minus-sign">&#160;</i>
+                </a>
+                <a class="dict_row_up" href="#">
+                  <i class="icon-circle-arrow-up">&#160;</i>
+                </a>
+                <a class="dict_row_down" href="#">
+                  <i class="icon-circle-arrow-down">&#160;</i>
+                </a>
               </div>
             </td>
           </tr>
@@ -92,10 +104,7 @@ Create dict widget with preset values::
             </td>
             <td>
               <div class="dict_actions">
-                <a class="dict_row_add" href="#">&#160;</a>
-                <a class="dict_row_remove" href="#">&#160;</a>
-                <a class="dict_row_up" href="#">&#160;</a>
-                <a class="dict_row_down" href="#">&#160;</a>
+                ...
               </div>
             </td>
           </tr>
@@ -228,7 +237,9 @@ Check required::
               <th>Value</th>
               <th>
                 <div class="dict_actions">
-                  <a class="dict_row_add" href="#">&#160;</a>
+                  <a class="dict_row_add" href="#">
+                    <i class="icon-plus-sign">&#160;</i>
+                  </a>
                 </div>
               </th>
             </tr>

@@ -11,15 +11,22 @@ from yafowil.compound import (
 )
 
 
+ICON_CSS = {
+    'add': 'icon-plus-sign',
+    'remove': 'icon-minus-sign',
+    'up': 'icon-circle-arrow-up',
+    'down': 'icon-circle-arrow-down',
+}
+
 def actions_renderer(widget, data):
     tag = data.tag
     actions = list()
     for key in ['add', 'remove', 'up', 'down']:
         if widget.attrs.get(key):
             class_ = 'dict_row_%s' % key
-            action = tag('a', '&#160;', href='#', class_=class_)
+            icon = tag('i', '&#160;', class_=ICON_CSS[key])
+            action = tag('a', icon, href='#', class_=class_)
             actions.append(action)
-    # XXX: bypass for py24 (and py25?). py26 can deal with kw after *actions
     kw = dict(class_='dict_actions')
     return tag('div', *actions, **kw)
 
@@ -32,37 +39,21 @@ factory.doc['blueprint']['dict_actions'] = UNSET # dont document internal widget
 
 
 def dict_builder(widget, factory):
-    table = widget['table'] = factory(
-        'table',
-        props={
-            'structural': True,
-            'class': 'dictwidget',
-        }
-    )
+    table = widget['table'] = factory('table', props={
+                                      'structural': True,
+                                      'class': widget.attrs['table_class']})
     head = table['head'] = factory('thead', props={'structural': True})
     row = head['row'] = factory('tr', props={'structural': True})
-    row['key'] = factory(
-        'th',
-        props = {
-            'structural': True,
-            'label': widget.attrs['head']['key'],
-        }
-    )
-    row['value'] = factory(
-        'th',
-        props={
-            'structural': True,
-            'label': widget.attrs['head']['value'],
-        }
-    )
+    row['key'] = factory('th', props={
+        'structural': True,
+        'label': widget.attrs['head']['key']})
+    row['value'] = factory('th', props={
+        'structural': True,
+        'label': widget.attrs['head']['value']})
     if not widget.attrs['static']:
-        row['actions'] = factory(
-            'th:dict_actions',
-            props = {
-                'structural': True,
-                'add': True,
-            }
-        )
+        row['actions'] = factory('th:dict_actions', props={
+            'structural': True,
+            'add': True})
     table['body'] = factory('tbody', props={'structural': True})
 
 
@@ -85,30 +76,15 @@ def dict_edit_renderer(widget, data):
         k_props = {'class': 'key'}
         if static:
             k_props['disabled'] = 'disabled'
-        row['key'] = factory(
-            'td:text',
-            value = key,
-            name = 'key',
-            props = k_props,
-        )
-        row['value'] = factory(
-            'td:text',
-            value = val,
-            name = 'value',
-            props = {
-                'class': 'value',
-            },
-        )
+        row['key'] = factory('td:text', value=key, name='key', props=k_props)
+        row['value'] = factory('td:text', value=val, name='value', props={
+            'class': 'value'})
         if not static:
-            row['actions'] = factory(
-                'td:dict_actions',
-                props = {
-                    'add': True,
-                    'remove': True,
-                    'up': True,
-                    'down': True,
-                },
-            )
+            row['actions'] = factory('td:dict_actions', props = {
+                'add': True,
+                'remove': True,
+                'up': True,
+                'down': True})
         i += 1
 
 
@@ -204,8 +180,15 @@ factory.doc['blueprint']['dict'] = \
 
 factory.defaults['dict.default'] = odict()
 
-factory.defaults['dict.static'] = False
-
 factory.defaults['dict.error_class'] = 'error'
 
 factory.defaults['dict.message_class'] = 'errormessage'
+
+factory.defaults['dict.table_class'] = 'dictwidget'
+factory.doc['props']['dict.table_class'] = \
+"""CSS classes rendered on dict table.
+"""
+
+factory.defaults['dict.static'] = False
+"""Flag whether dict is immutable.
+"""
