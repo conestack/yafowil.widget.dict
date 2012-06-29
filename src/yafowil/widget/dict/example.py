@@ -13,7 +13,7 @@ Dict where key/value pairs can be added, deleted and sorted.
     value = odict()
     value['foo'] = 'Foo'
     value['bar'] = 'Bar'
-    dict = factory('field:label:error:#dict', value=value, props={
+    dict = factory('#field:dict', value=value, props={
         'label': 'Fill the dict',
         'required': 'At least one entry is required',
         'head': {'key': 'Key', 'value': 'Value'}})
@@ -24,10 +24,10 @@ def mutable_dict():
     value = odict()
     value['foo'] = 'Foo'
     value['bar'] = 'Bar'
-    form['mutable_dict'] = factory('field:label:error:#dict',
-        value=value, props={'label': 'Fill the dict',
-                            'required': 'At least one entry is required',
-                            'head': {'key': 'Key', 'value': 'Value'}})
+    form['dict'] = factory('#field:dict', value=value, props={
+        'label': 'Fill the dict',
+        'required': 'At least one entry is required',
+        'head': {'key': 'Key', 'value': 'Value'}})
     return {'widget': form,
             'doc': DOC_MUTABLE_DICT,
             'title': 'Mutable Dict'}
@@ -44,7 +44,7 @@ Dict where only values can be edited.
     value = odict()
     value['baz'] = 'Baz'
     value['bam'] = 'Bam'
-    dict = factory('field:label:error:#dict', value=value, props={
+    dict = factory('#field:dict', value=value, props={
         'label': 'Modify the dict',
         'required': 'No Empty values allowed',
         'static': True,
@@ -56,11 +56,11 @@ def immutable_dict():
     value = odict()
     value['baz'] = 'Baz'
     value['bam'] = 'Bam'
-    form['immutable_dict'] = factory('field:label:error:#dict',
-        value=value, props={'label': 'Modify the dict',
-                            'required': 'No Empty values allowed',
-                            'static': True,
-                            'head': {'key': 'Key', 'value': 'Value'}})
+    form['dict'] = factory('#field:dict', value=value, props={
+        'label': 'Modify the dict',
+        'required': 'No Empty values allowed',
+        'static': True,
+        'head': {'key': 'Key', 'value': 'Value'}})
     return {'widget': form,
             'doc': DOC_IMMUTABLE_DICT,
             'title': 'Imutable Dict'}
