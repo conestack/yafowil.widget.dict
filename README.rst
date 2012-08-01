@@ -5,6 +5,6 @@ This is a **dictionary widget** for for `YAFOWIL
 Contributors
 ============
 
-- Robert Niederrreiter <rnix@squarewave.at>
+- Robert Niederrreiter <rnix [at] squarewave [dot] at>
 
-- Peter Holzer <peter.holzer@agitator.com>
+- Peter Holzer <peter [dot] holzer [at] agitator [dot] com>
