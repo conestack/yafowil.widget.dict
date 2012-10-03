@@ -4,17 +4,17 @@ from yafowil.base import factory
 
 resourcedir = os.path.join(os.path.dirname(__file__), 'resources')
 js = [{
-    'group': 'yafowil.widget.dict',
+    'group': 'yafowil.widget.dict.common',
     'resource': 'widget.js',
     'order': 20,
 }]
 default_css = [{
-    'group': 'yafowil.widget.dict',
+    'group': 'yafowil.widget.dict.common',
     'resource': 'default/widget.css',
     'order': 20,
 }]
 bootstrap_css = [{
-    'group': 'yafowil.widget.dict',
+    'group': 'yafowil.widget.dict.common',
     'resource': 'bootstrap/widget.css',
     'order': 20,
 }]
