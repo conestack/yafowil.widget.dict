@@ -9,7 +9,10 @@ from yafowil.compound import (
     compound_extractor,
     compound_renderer,
 )
-
+from yafowil.utils import (
+    managedprops,
+    css_managed_props,
+)
 
 ICON_CSS = {
     'add': 'icon-plus-sign',
@@ -38,6 +41,7 @@ factory.register(
 factory.doc['blueprint']['dict_actions'] = UNSET # dont document internal widget
 
 
+@managedprops('static', 'table_class', *css_managed_props)
 def dict_builder(widget, factory):
     table = widget['table'] = factory('table', props={
                                       'structural': True,
@@ -57,6 +61,7 @@ def dict_builder(widget, factory):
     table['body'] = factory('tbody', props={'structural': True})
 
 
+@managedprops('static', *css_managed_props)
 def dict_edit_renderer(widget, data):
     static = widget.attrs['static']
     table = widget['table']
@@ -80,7 +85,7 @@ def dict_edit_renderer(widget, data):
         row['value'] = factory('td:text', value=val, name='value', props={
             'class': 'value'})
         if not static:
-            row['actions'] = factory('td:dict_actions', props = {
+            row['actions'] = factory('td:dict_actions', props={
                 'add': True,
                 'remove': True,
                 'up': True,
@@ -127,7 +132,7 @@ def extract_dynamic(data, basename):
         break
     return ret
 
-
+@managedprops('static', 'required')
 def dict_extractor(widget, data):
     static = widget.attrs['static']
     body = widget['table']['body']
@@ -174,7 +179,7 @@ factory.register(
     builders=[dict_builder])
 
 factory.doc['blueprint']['dict'] = \
-"""Add-on widget `yafowil.widget.dict 
+"""Add-on widget `yafowil.widget.dict
 <http://github.com/bluedynamics/yafowil.widget.dict/>`_.
 """
 
@@ -191,4 +196,7 @@ factory.doc['props']['dict.table_class'] = \
 
 factory.defaults['dict.static'] = False
 """Flag whether dict is immutable.
+"""
+factory.doc['props']['dict.static'] = \
+"""Makes keys immutable.
 """
