@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import sys, os
 
-version = '1.3dev'
+version = '1.3'
 shortdesc = 'Dict/Mapping Widget for YAFOWIL'
 longdesc = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 longdesc += open(os.path.join(os.path.dirname(__file__), 'HISTORY.rst')).read()
@@ -22,7 +22,7 @@ setup(name='yafowil.widget.dict',
       keywords='',
       author='BlueDynamics Alliance',
       author_email='dev@bluedynamics.com',
-      url=u'https://github.com/bluedynamics/yafowil.widget.dict',
+      url=u'http://pypi.python.org/pypi/yafowil.widget.dict',
       license='Simplified BSD',
       packages=find_packages('src'),
       package_dir = {'': 'src'},
