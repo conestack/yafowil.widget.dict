@@ -3,7 +3,7 @@ from yafowil.base import (
     UNSET,
     factory,
     ExtractionError,
-    fetch_value
+    fetch_value,
 )
 from yafowil.compound import (
     compound_extractor,
@@ -12,6 +12,7 @@ from yafowil.compound import (
 from yafowil.utils import (
     managedprops,
     css_managed_props,
+    attr_value,
 )
 
 ICON_CSS = {
@@ -93,10 +94,12 @@ def dict_edit_renderer(widget, data):
         i += 1
 
 
-def raise_extraction_error(widget):
-    if isinstance(widget.attrs['required'], basestring):
-        raise ExtractionError(widget.attrs['required'])
-    raise ExtractionError(widget.attrs['required_message'])
+def raise_extraction_error(widget, data):
+    required = attr_value('required', widget, data)
+    if isinstance(required, basestring):
+        raise ExtractionError(required)
+    required_message = attr_value('required_message', widget, data)
+    raise ExtractionError(required_message)
 
 
 def extract_static(data, basename):
@@ -146,13 +149,13 @@ def dict_extractor(widget, data):
         ret = extract_dynamic(data, basename)
     if len(ret) == 0:
         ret = UNSET
-    if widget.attrs.get('required'):
+    if attr_value('required', widget, data):
         if ret is UNSET:
-            raise_extraction_error(widget)
+            raise_extraction_error(widget, data)
         if static:
             for val in ret.values():
                 if not val:
-                    raise_extraction_error(widget)
+                    raise_extraction_error(widget, data)
     return ret
 
 
