@@ -321,7 +321,7 @@ Since its static, we expect an extraction error if someone tries to add values::
     ... }
     >>> data = form.extract(request=request)
     >>> data['mydict'].errors
-    [ExtractionError('invalid number of static values',)]    
+    [ExtractionError('Invalid number of static values',)]
     
 Static dicts required. By default checks if there's a value in every entry::
 

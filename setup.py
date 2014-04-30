@@ -5,7 +5,7 @@ from setuptools import (
 )
 
 
-version = '1.3.1'
+version = '1.4dev'
 shortdesc = 'Dict/Mapping Widget for YAFOWIL'
 longdesc = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 longdesc += open(os.path.join(os.path.dirname(__file__), 'HISTORY.rst')).read()
@@ -43,6 +43,11 @@ setup(name='yafowil.widget.dict',
           test=tests_require,
       ),
       test_suite="yafowil.widget.dict.tests.test_suite",
+      message_extractors = {
+          '.': [
+              ('**.py', 'lingua_python', None),
+          ]
+      },
       entry_points="""
       [yafowil.plugin]
       register = yafowil.widget.dict:register

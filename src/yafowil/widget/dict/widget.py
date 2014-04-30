@@ -14,6 +14,11 @@ from yafowil.utils import (
     css_managed_props,
     attr_value,
 )
+from yafowil.tsf import TSF
+
+
+_ = TSF('yafowil.widget.dict')
+
 
 ICON_CSS = {
     'add': 'icon-plus-sign',
@@ -111,7 +116,9 @@ def extract_static(data, basename):
         valuename = '%s%i.value' % (basename, index)
         if request.has_key(valuename):
             if index >= len(keys):
-                raise ExtractionError('invalid number of static values')
+                message = _('invalid_number_static_values',
+                            default=u'Invalid number of static values')
+                raise ExtractionError(message)
             ret[keys[index]] = request[valuename]
             index += 1
             continue
