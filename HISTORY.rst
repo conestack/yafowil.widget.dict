@@ -2,8 +2,8 @@
 History
 =======
 
-1.4dev
-------
+1.4
+---
 
 - Add translations, package depends now ``yafowil`` >= 2.1
   [rnix, 2014-04-30]
