@@ -2,10 +2,16 @@
 History
 =======
 
-1.5.dev0
---------
+1.5 (unreleased)
+----------------
 
-- No changes yet.
+- Bootstrap 3 compatibility.
+  [rnix, 2014-08-06]
+
+- Introduce ``key_class`` and ``value_class`` properties which gets rendered
+  to corresponding input fields.
+  [rnix, 2014-08-06]
+
 
 1.4
 ---
@@ -13,11 +19,13 @@ History
 - Add translations, package depends now ``yafowil`` >= 2.1
   [rnix, 2014-04-30]
 
+
 1.3.1
 -----
 
 - use ``yafowil.utils.attr_value`` wherever possible.
   [rnix, 2012-10-25]
+
 
 1.3
 ---
@@ -28,17 +36,20 @@ History
 - Remove example app
   [rnix, 2012-06-12]
 
+
 1.2
 ---
 
 - make ready for YAFOWIL 1.3
   [agitator, 2012-02-19]
 
+
 1.1.1
 -----
 
 - add dict binder function to ``yafowil.widget.array`` hooks if found
   [rnix, 2011-10-05]
+
 
 1.1
 ---
@@ -49,6 +60,7 @@ History
 - make ready for z3c.autoinclude+Plone (only if available).
   [jensens, 2011-09-20]
 
+
 1.0.2
 -----
 
@@ -56,11 +68,13 @@ History
   with additional values.
   [jensens - 2011-09-01]
 
+
 1.0.1
 -----
 
 - make conditional resource registration more general for Zope2 available.
   [jensens, 2011-08-26]
+
 
 1.0
 ---
@@ -74,6 +88,7 @@ History
 - adopt tests for form novalidate property
   [rnix, 2011-05-23]
 
+
 0.9.1
 -----
 
@@ -82,6 +97,7 @@ History
 
 - python 2.4 fix
   [chaoflow, 2011-03-01]
+
 
 0.9
 ---

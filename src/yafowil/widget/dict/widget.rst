@@ -5,7 +5,7 @@ Import requirements::
     >>> from yafowil.base import factory
 
 Create empty Dict widget::
-    
+
     >>> form = factory('form',
     ...                name='myform',
     ...                props={'action': 'myaction'})
@@ -18,15 +18,15 @@ Create empty Dict widget::
     ...                          })
     >>> pxml(form())
     <form action="myaction" enctype="multipart/form-data" id="form-myform" method="post" novalidate="novalidate">
-      <table class="dictwidget" id="dictwidget_myform.mydict.entry">
+      <table class="dictwidget key-keyfield value-valuefield" id="dictwidget_myform.mydict.entry">
         <thead>
           <tr>
             <th>Key</th>
             <th>Value</th>
-            <th>
+            <th class="actions">
               <div class="dict_actions">
                 <a class="dict_row_add" href="#">
-                  <i class="icon-plus-sign">&#160;</i>
+                  <span class="icon-plus-sign"> </span>
                 </a>
               </div>
             </th>
@@ -56,15 +56,15 @@ Create dict widget with preset values::
     ...                          })
     >>> pxml(form())
     <form action="myaction" enctype="multipart/form-data" id="form-myform" method="post" novalidate="novalidate">
-      <table class="dictwidget" id="dictwidget_myform.mydict.entry">
+      <table class="dictwidget key-keyfield value-valuefield" id="dictwidget_myform.mydict.entry">
         <thead>
           <tr>
             <th>Key</th>
             <th>Value</th>
-            <th>
+            <th class="actions">
               <div class="dict_actions">
                 <a class="dict_row_add" href="#">
-                  <i class="icon-plus-sign">&#160;</i>
+                  <span class="icon-plus-sign"> </span>
                 </a>
               </div>
             </th>
@@ -73,36 +73,36 @@ Create dict widget with preset values::
         <tbody>
           <tr>
             <td class="key">
-              <input class="key" id="input-myform-mydict-entry0-key" name="myform.mydict.entry0.key" type="text" value="key1"/>
+              <input class="keyfield" id="input-myform-mydict-entry0-key" name="myform.mydict.entry0.key" type="text" value="key1"/>
             </td>
             <td class="value">
-              <input class="value" id="input-myform-mydict-entry0-value" name="myform.mydict.entry0.value" type="text" value="Value1"/>
+              <input class="valuefield" id="input-myform-mydict-entry0-value" name="myform.mydict.entry0.value" type="text" value="Value1"/>
             </td>
-            <td>
+            <td class="actions">
               <div class="dict_actions">
                 <a class="dict_row_add" href="#">
-                  <i class="icon-plus-sign">&#160;</i>
+                  <span class="icon-plus-sign"> </span>
                 </a>
                 <a class="dict_row_remove" href="#">
-                  <i class="icon-minus-sign">&#160;</i>
+                  <span class="icon-minus-sign"> </span>
                 </a>
                 <a class="dict_row_up" href="#">
-                  <i class="icon-circle-arrow-up">&#160;</i>
+                  <span class="icon-circle-arrow-up"> </span>
                 </a>
                 <a class="dict_row_down" href="#">
-                  <i class="icon-circle-arrow-down">&#160;</i>
+                  <span class="icon-circle-arrow-down"> </span>
                 </a>
               </div>
             </td>
           </tr>
           <tr>
             <td class="key">
-              <input class="key" id="input-myform-mydict-entry1-key" name="myform.mydict.entry1.key" type="text" value="key2"/>
+              <input class="keyfield" id="input-myform-mydict-entry1-key" name="myform.mydict.entry1.key" type="text" value="key2"/>
             </td>
             <td class="value">
-              <input class="value" id="input-myform-mydict-entry1-value" name="myform.mydict.entry1.value" type="text" value="Value2"/>
+              <input class="valuefield" id="input-myform-mydict-entry1-value" name="myform.mydict.entry1.value" type="text" value="Value2"/>
             </td>
-            <td>
+            <td class="actions">
               <div class="dict_actions">
                 ...
               </div>
@@ -133,7 +133,7 @@ Base Extraction::
               <class 'yafowil.base.Widget'>: key
               <class 'yafowil.base.Widget'>: value
               <class 'yafowil.base.Widget'>: actions
-    
+
     >>> request = {
     ...     'myform.mydict.entry0.key': 'key1',
     ...     'myform.mydict.entry0.value': 'New Value 1',
@@ -143,10 +143,10 @@ Base Extraction::
     >>> data = form.extract(request=request)
     >>> data.fetch('myform.mydict.entry0.value').extracted
     'New Value 1'
-    
+
     >>> data.fetch('myform.mydict.entry1.value').extracted
     'New Value 2'
-    
+
     >>> data.fetch('myform.mydict').extracted
     odict([('key1', 'New Value 1'), ('key2', 'New Value 2')])
 
@@ -165,7 +165,7 @@ Dict entries increased in UI::
     odict([('key1', 'New Value 1'), 
     ('key2', 'New Value 2'), 
     ('key3', 'New Value 3')])
-    
+
     >>> form(data=data)
     u'<form action="myaction" enctype="multipart/form-data" 
     ... 
@@ -185,13 +185,13 @@ Dict entries decreased in UI::
     >>> data = form.extract(request=request)
     >>> data.fetch('myform.mydict').extracted
     odict([('key1', 'Very New Value 1')])
-    
+
     >>> form(data=data)
     u'<form action="myaction" enctype="multipart/form-data" 
     ... 
     value="Very New Value 1" 
     ...
-    
+
     >>> form(data=data).find('New Value 2')
     -1
 
@@ -221,24 +221,24 @@ Check required::
     >>> data = form.extract(request=request)
     >>> data.fetch('myform.mydict').errors
     [ExtractionError('I am required',)]
-    
+
     >>> data.printtree()
     <RuntimeData myform, value=<UNSET>, extracted=odict([('mydict', <UNSET>)]) at ...>
       <RuntimeData myform.mydict, value=<UNSET>, extracted=<UNSET>, 1 error(s) at ...>
-    
+
     >>> pxml(form(data=data))
     <form action="myaction" enctype="multipart/form-data" id="form-myform" method="post" novalidate="novalidate">
       <div class="error">
         <div class="errormessage">I am required</div>
-        <table class="dictwidget" id="dictwidget_myform.mydict.entry">
+        <table class="dictwidget key-keyfield value-valuefield" id="dictwidget_myform.mydict.entry">
           <thead>
             <tr>
               <th>Key</th>
               <th>Value</th>
-              <th>
+              <th class="actions">
                 <div class="dict_actions">
                   <a class="dict_row_add" href="#">
-                    <i class="icon-plus-sign">&#160;</i>
+                    <span class="icon-plus-sign"> </span>
                   </a>
                 </div>
               </th>
@@ -249,7 +249,7 @@ Check required::
       </div>
     </form>
     <BLANKLINE>
-    
+
     >>> request = {
     ...     'myform.mydict.entry0.key': 'key1',
     ...     'myform.mydict.entry0.value': 'Very New Value 1',
@@ -257,13 +257,13 @@ Check required::
     >>> data = form.extract(request=request)
     >>> data.fetch('myform.mydict').errors
     []
-    
+
     >>> form(data=data)
     u'<form action="myaction" enctype="multipart/form-data" 
     ... 
     value="Very New Value 1" 
     ...
-    
+
     >>> form(data=data).find('error')
     -1
 
@@ -281,7 +281,7 @@ Use dict widget as static widget::
     ...                          })
     >>> pxml(form())
     <form action="myaction" enctype="multipart/form-data" id="form-myform" method="post" novalidate="novalidate">
-      <table class="dictwidget" id="dictwidget_myform.mydict.entry">
+      <table class="dictwidget key-keyfield value-valuefield" id="dictwidget_myform.mydict.entry">
         <thead>
           <tr>
             <th>Key</th>
@@ -291,10 +291,10 @@ Use dict widget as static widget::
         <tbody>
           <tr>
             <td class="key">
-              <input class="key" disabled="disabled" id="input-myform-mydict-entry0-key" name="myform.mydict.entry0.key" type="text" value="k1"/>
+              <input class="keyfield" disabled="disabled" id="input-myform-mydict-entry0-key" name="myform.mydict.entry0.key" type="text" value="k1"/>
             </td>
             <td class="value">
-              <input class="value" id="input-myform-mydict-entry0-value" name="myform.mydict.entry0.value" type="text" value="v1"/>
+              <input class="valuefield" id="input-myform-mydict-entry0-value" name="myform.mydict.entry0.value" type="text" value="v1"/>
             </td>
           </tr>
         </tbody>
@@ -322,7 +322,7 @@ Since its static, we expect an extraction error if someone tries to add values::
     >>> data = form.extract(request=request)
     >>> data['mydict'].errors
     [ExtractionError('Invalid number of static values',)]
-    
+
 Static dicts required. By default checks if there's a value in every entry::
 
     >>> request = {}
@@ -343,7 +343,7 @@ Static required rendering::
     <form action="myaction" enctype="multipart/form-data" id="form-myform" method="post" novalidate="novalidate">
       <div class="error">
         <div class="errormessage">I am required</div>
-        <table class="dictwidget" id="dictwidget_myform.mydict.entry">
+        <table class="dictwidget key-keyfield value-valuefield" id="dictwidget_myform.mydict.entry">
           <thead>
             <tr>
               <th>Key</th>
@@ -353,10 +353,10 @@ Static required rendering::
           <tbody>
             <tr>
               <td class="key">
-                <input class="key" disabled="disabled" id="input-myform-mydict-entry0-key" name="myform.mydict.entry0.key" type="text" value="k1"/>
+                <input class="keyfield" disabled="disabled" id="input-myform-mydict-entry0-key" name="myform.mydict.entry0.key" type="text" value="k1"/>
               </td>
               <td class="value">
-                <input class="value" id="input-myform-mydict-entry0-value" name="myform.mydict.entry0.value" type="text" value=""/>
+                <input class="valuefield" id="input-myform-mydict-entry0-value" name="myform.mydict.entry0.value" type="text" value=""/>
               </td>
             </tr>
           </tbody>
@@ -417,4 +417,3 @@ Dict display renderer::
       <dl/>
     </div>
     <BLANKLINE>
-    

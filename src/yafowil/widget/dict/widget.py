@@ -33,7 +33,7 @@ def actions_renderer(widget, data):
     for key in ['add', 'remove', 'up', 'down']:
         if widget.attrs.get(key):
             class_ = 'dict_row_%s' % key
-            icon = tag('i', '&#160;', class_=ICON_CSS[key])
+            icon = tag('span', ' ', class_=ICON_CSS[key])
             action = tag('a', icon, href='#', class_=class_)
             actions.append(action)
     kw = dict(class_='dict_actions')
@@ -49,22 +49,36 @@ factory.doc['blueprint']['dict_actions'] = UNSET # dont document internal widget
 
 @managedprops('static', 'table_class', *css_managed_props)
 def dict_builder(widget, factory):
+    table_classes = [widget.attrs['table_class'],
+                     'key-{0}'.format(widget.attrs['key_class']),
+                     'value-{0}'.format(widget.attrs['value_class'])]
     table = widget['table'] = factory('table', props={
-                                      'structural': True,
-                                      'class': widget.attrs['table_class']})
-    head = table['head'] = factory('thead', props={'structural': True})
-    row = head['row'] = factory('tr', props={'structural': True})
+        'structural': True,
+        'class': ' '.join(table_classes),
+    })
+    head = table['head'] = factory('thead', props={
+        'structural': True,
+    })
+    row = head['row'] = factory('tr', props={
+        'structural': True,
+    })
     row['key'] = factory('th', props={
         'structural': True,
-        'label': widget.attrs['head']['key']})
+        'label': widget.attrs['head']['key'],
+    })
     row['value'] = factory('th', props={
         'structural': True,
-        'label': widget.attrs['head']['value']})
+        'label': widget.attrs['head']['value'],
+    })
     if not widget.attrs['static']:
         row['actions'] = factory('th:dict_actions', props={
             'structural': True,
-            'add': True})
-    table['body'] = factory('tbody', props={'structural': True})
+            'add': True,
+            'class': 'actions',
+        })
+    table['body'] = factory('tbody', props={
+        'structural': True,
+    })
 
 
 @managedprops('static', *css_managed_props)
@@ -84,18 +98,25 @@ def dict_edit_renderer(widget, data):
     i = 0
     for key, val in value.items():
         row = body['entry%i' % i] = factory('tr')
-        k_props = {'class': 'key'}
+        k_props = {
+            'td.class': 'key',
+            'text.class': attr_value('key_class', widget, data),
+        }
         if static:
             k_props['disabled'] = 'disabled'
         row['key'] = factory('td:text', value=key, name='key', props=k_props)
         row['value'] = factory('td:text', value=val, name='value', props={
-            'class': 'value'})
+            'td.class': 'value',
+            'text.class': attr_value('value_class', widget, data),
+        })
         if not static:
             row['actions'] = factory('td:dict_actions', props={
                 'add': True,
                 'remove': True,
                 'up': True,
-                'down': True})
+                'down': True,
+                'class': 'actions',
+            })
         i += 1
 
 
@@ -202,6 +223,16 @@ factory.defaults['dict.message_class'] = 'errormessage'
 factory.defaults['dict.table_class'] = 'dictwidget'
 factory.doc['props']['dict.table_class'] = \
 """CSS classes rendered on dict table.
+"""
+
+factory.defaults['dict.key_class'] = 'keyfield'
+factory.doc['props']['dict.key_class'] = \
+"""CSS classes rendered on key input fields.
+"""
+
+factory.defaults['dict.value_class'] = 'valuefield'
+factory.doc['props']['dict.value_class'] = \
+"""CSS classes rendered on value input fields.
 """
 
 factory.defaults['dict.static'] = False

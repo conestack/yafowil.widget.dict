@@ -16,7 +16,11 @@ Dict where key/value pairs can be added, deleted and sorted.
     dict = factory('#field:dict', value=value, props={
         'label': 'Fill the dict',
         'required': 'At least one entry is required',
-        'head': {'key': 'Key', 'value': 'Value'}})
+        'head': {
+            'key': 'Key',
+            'value': 'Value',
+        },
+    })
 """
 
 def mutable_dict():
@@ -27,10 +31,16 @@ def mutable_dict():
     form['dict'] = factory('#field:dict', value=value, props={
         'label': 'Fill the dict',
         'required': 'At least one entry is required',
-        'head': {'key': 'Key', 'value': 'Value'}})
-    return {'widget': form,
-            'doc': DOC_MUTABLE_DICT,
-            'title': 'Mutable Dict'}
+        'head': {
+            'key': 'Key',
+            'value': 'Value',
+        },
+    })
+    return {
+        'widget': form,
+        'doc': DOC_MUTABLE_DICT,
+        'title': 'Mutable Dict',
+    }
 
 
 DOC_IMMUTABLE_DICT = """
@@ -48,7 +58,11 @@ Dict where only values can be edited.
         'label': 'Modify the dict',
         'required': 'No Empty values allowed',
         'static': True,
-        'head': {'key': 'Key', 'value': 'Value'}})
+        'head': {
+            'key': 'Key',
+            'value': 'Value',
+        },
+    })
 """
 
 def immutable_dict():
@@ -60,10 +74,16 @@ def immutable_dict():
         'label': 'Modify the dict',
         'required': 'No Empty values allowed',
         'static': True,
-        'head': {'key': 'Key', 'value': 'Value'}})
-    return {'widget': form,
-            'doc': DOC_IMMUTABLE_DICT,
-            'title': 'Imutable Dict'}
+        'head': {
+            'key': 'Key',
+            'value': 'Value',
+        },
+    })
+    return {
+        'widget': form,
+        'doc': DOC_IMMUTABLE_DICT,
+        'title': 'Imutable Dict',
+    }
 
 
 def get_example():
