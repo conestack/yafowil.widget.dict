@@ -43,11 +43,6 @@ setup(name='yafowil.widget.dict',
           test=tests_require,
       ),
       test_suite="yafowil.widget.dict.tests.test_suite",
-      message_extractors = {
-          '.': [
-              ('**.py', 'lingua_python', None),
-          ]
-      },
       entry_points="""
       [yafowil.plugin]
       register = yafowil.widget.dict:register
