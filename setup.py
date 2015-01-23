@@ -5,7 +5,7 @@ from setuptools import (
 )
 
 
-version = '1.5.dev0'
+version = '1.5'
 shortdesc = 'Dict/Mapping Widget for YAFOWIL'
 longdesc = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 longdesc += open(os.path.join(os.path.dirname(__file__), 'HISTORY.rst')).read()

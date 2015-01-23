@@ -2,7 +2,7 @@
 History
 =======
 
-1.5 (unreleased)
+1.5 (2015-01-23)
 ----------------
 
 - Bootstrap 3 compatibility.
