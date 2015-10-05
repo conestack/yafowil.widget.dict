@@ -1,20 +1,14 @@
+from node.utils import UNSET
 from odict import odict
-from yafowil.base import (
-    UNSET,
-    factory,
-    ExtractionError,
-    fetch_value,
-)
-from yafowil.compound import (
-    compound_extractor,
-    compound_renderer,
-)
-from yafowil.utils import (
-    managedprops,
-    css_managed_props,
-    attr_value,
-)
+from yafowil.base import ExtractionError
+from yafowil.base import factory
+from yafowil.base import fetch_value
+from yafowil.compound import compound_extractor
+from yafowil.compound import compound_renderer
 from yafowil.tsf import TSF
+from yafowil.utils import attr_value
+from yafowil.utils import css_managed_props
+from yafowil.utils import managedprops
 
 
 _ = TSF('yafowil.widget.dict')
