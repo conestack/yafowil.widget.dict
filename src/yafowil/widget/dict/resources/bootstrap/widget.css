@@ -4,7 +4,6 @@
 .icon-circle-arrow-up,
 .icon-circle-arrow-down {
     display:inline-block;
-    font-family:'Glyphicons Halflings';
     font-style:normal;
     font-weight:400;
     line-height:1;
@@ -14,15 +13,19 @@
 }
 .icon-plus-sign:before {
     content:"";
+    font-family:'Glyphicons Halflings';
 }
 .icon-minus-sign:before {
     content: "";
+    font-family:'Glyphicons Halflings';
 }
 .icon-circle-arrow-up:before {
     content:"";
+    font-family:'Glyphicons Halflings';
 }
 .icon-circle-arrow-down:before {
     content: "";
+    font-family:'Glyphicons Halflings';
 }
 .dictwidget th.actions,
 .dictwidget td.actions {
