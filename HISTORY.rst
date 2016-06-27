@@ -5,6 +5,9 @@ History
 1.5.1 (unreleased)
 ------------------
 
+- Minor bootstrap theme CSS changes.
+  [rnix, 2016-06-27]
+
 - Explicitely define ``font-family`` for each icon in bootstrap theme to avoid
   overwriting with CSS wild card selectors.
   [rnix, 2016-06-27]

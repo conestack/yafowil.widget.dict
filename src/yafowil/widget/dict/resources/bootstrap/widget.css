@@ -27,9 +27,18 @@
     content: "";
     font-family:'Glyphicons Halflings';
 }
+.dictwidget th {
+    vertical-align:middle;
+}
 .dictwidget th.actions,
 .dictwidget td.actions {
-    width:75px;
+    width:7em;
+}
+.dict_actions {
+    display:inline-block;
+    margin-top:0.6em;
+    padding-right:0.45em;
+    width:7em;
 }
 .dict_actions a {
     float:right;
