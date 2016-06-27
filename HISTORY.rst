@@ -2,8 +2,11 @@
 History
 =======
 
-1.5.1 (unreleased)
-------------------
+1.6 (unreleased)
+----------------
+
+- Use ``yafowil.utils.entry_point`` decorator.
+  [rnix]
 
 - Minor bootstrap theme CSS changes.
   [rnix, 2016-06-27]
