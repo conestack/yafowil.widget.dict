@@ -29,13 +29,13 @@
 }
 .dictwidget th.actions,
 .dictwidget td.actions {
-    width:7em;
+    width:5.5em;
 }
 .dict_actions {
     display:inline-block;
     margin-top:0.6em;
     padding-right:0.45em;
-    width:7em;
+    width:5.5em;
 }
 .dict_actions a {
     float:right;
