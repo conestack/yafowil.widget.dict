@@ -19,6 +19,11 @@ bootstrap_css = [{
     'resource': 'bootstrap/widget.css',
     'order': 20,
 }]
+plone5_css = [{
+    'group': 'yafowil.widget.dict.common',
+    'resource': 'plone5/widget.css',
+    'order': 20,
+}]
 
 
 @entry_point(order=10)
@@ -28,3 +33,5 @@ def register():
                            resourcedir, js=js, css=default_css)
     factory.register_theme('bootstrap', 'yafowil.widget.dict',
                            resourcedir, js=js, css=bootstrap_css)
+    factory.register_theme('plone5', 'yafowil.widget.dict',
+                           resourcedir, js=js, css=plone5_css)

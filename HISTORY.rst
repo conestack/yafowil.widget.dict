@@ -5,14 +5,13 @@ History
 1.6 (unreleased)
 ----------------
 
-- Use ``yafowil.utils.entry_point`` decorator.
-  [rnix]
+- Add dedicated CSS for ``plone5`` theme provided by ``yafowil.plone``.
+  [rnix, 2016-06-28]
 
-- Minor bootstrap theme CSS changes.
+- Use ``yafowil.utils.entry_point`` decorator.
   [rnix, 2016-06-27]
 
-- Explicitely define ``font-family`` for each icon in bootstrap theme to avoid
-  overwriting with CSS wild card selectors.
+- Minor bootstrap theme CSS changes.
   [rnix, 2016-06-27]
 
 
