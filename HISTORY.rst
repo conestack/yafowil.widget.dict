@@ -5,6 +5,10 @@ History
 1.6 (unreleased)
 ----------------
 
+- Use ``$.closest()`` for acquiring dict widget wrapper table
+  when adding row.
+  [rnix, 2016-06-28]
+
 - Add dedicated CSS for ``plone5`` theme provided by ``yafowil.plone``.
   [rnix, 2016-06-28]
 

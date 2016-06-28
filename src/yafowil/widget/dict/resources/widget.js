@@ -102,7 +102,7 @@ if (typeof(window['yafowil']) == "undefined") yafowil = {};
             },
 
             add_class: function(trigger, name) {
-                var table = $('table', $(trigger).parents());
+                var table = $(trigger).closest('table');
                 classes = table.attr('class').split(' ');
                 var idx, css;
                 for (idx in classes) {
