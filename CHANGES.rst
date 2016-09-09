@@ -2,7 +2,7 @@
 History
 =======
 
-1.6 (unreleased)
+1.6 (2016-09-09)
 ----------------
 
 - Use ``$.closest()`` for acquiring dict widget wrapper table
