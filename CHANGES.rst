@@ -2,10 +2,14 @@
 History
 =======
 
-1.6.1 (unreleased)
-------------------
+1.7 (unreleased)
+----------------
 
-- Nothing changed yet.
+- Add ``key_label`` and ``value_label`` blueprint properties. They replace
+  ``head`` dict property containing ``key`` and ``value``. Needed to make i18n
+  work when using dict blueprint in in yaml forms. ``head`` still works for
+  B/C reasons.
+  [rnix]
 
 
 1.6 (2016-09-09)

@@ -56,13 +56,25 @@ def dict_builder(widget, factory):
     row = head['row'] = factory('tr', props={
         'structural': True,
     })
+    key_label = widget.attrs.get('key_label', '')
+    # B/C
+    if not key_label:
+        key_label = widget.attrs.get('head', {}).get('key', ' ')
+    if callable(key_label):
+        key_label = key_label()
     row['key'] = factory('th', props={
         'structural': True,
-        'label': widget.attrs['head']['key'],
+        'label': key_label,
     })
+    value_label = widget.attrs.get('value_label', '')
+    # B/C
+    if not value_label:
+        value_label = widget.attrs.get('head', {}).get('value', ' ')
+    if callable(value_label):
+        value_label = value_label()
     row['value'] = factory('th', props={
         'structural': True,
-        'label': widget.attrs['head']['value'],
+        'label': value_label,
     })
     if not widget.attrs['static']:
         row['actions'] = factory('th:dict_actions', props={
@@ -189,9 +201,23 @@ def dict_display_renderer(widget, data):
     for key, val in value.items():
         values.append(data.tag('dt', key) + data.tag('dd', val))
     head = u''
-    if widget.attrs.get('head'):
-        head = '%s: %s' % (widget.attrs['head']['key'],
-                           widget.attrs['head']['value'])
+    key_label = widget.attrs.get('key_label')
+    # B/C
+    if not key_label:
+        key_label = widget.attrs.get('head', {}).get('key', '')
+    if callable(key_label):
+        key_label = key_label()
+    value_label = widget.attrs.get('value_label')
+    # B/C
+    if not value_label:
+        value_label = widget.attrs.get('head', {}).get('value', '')
+    if callable(value_label):
+        value_label = value_label()
+    if key_label and value_label:
+        head = u'{}: {}'.format(
+            data.tag.translate(key_label),
+            data.tag.translate(value_label)
+        )
         head = data.tag('h5', head)
     return head + data.tag('dl', *values)
 
@@ -229,9 +255,20 @@ factory.doc['props']['dict.value_class'] = \
 """CSS classes rendered on value input fields.
 """
 
+factory.defaults['dict.key_label'] = UNSET
+factory.doc['props']['dict.key_label'] = \
+"""Label for dict keys column.
+"""
+
+factory.defaults['dict.value_label'] = UNSET
+factory.doc['props']['dict.value_label'] = \
+"""Label for dict labels column.
+"""
+
 factory.defaults['dict.static'] = False
 """Flag whether dict is immutable.
 """
+
 factory.doc['props']['dict.static'] = \
 """Makes keys immutable.
 """

@@ -8,6 +8,5 @@ This is a **dictionary widget** for for `YAFOWIL
 Contributors
 ============
 
-- Robert Niederrreiter <rnix [at] squarewave [dot] at>
-
-- Peter Holzer <peter [dot] holzer [at] agitator [dot] com>
+- Robert Niederrreiter (Author)
+- Peter Holzer
