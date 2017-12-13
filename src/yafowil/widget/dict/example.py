@@ -16,10 +16,8 @@ Dict where key/value pairs can be added, deleted and sorted.
     dict = factory('#field:dict', value=value, props={
         'label': 'Fill the dict',
         'required': 'At least one entry is required',
-        'head': {
-            'key': 'Key',
-            'value': 'Value',
-        },
+        'key_label': 'Key',
+        'value_label': 'Value'
     })
 """
 
@@ -31,10 +29,8 @@ def mutable_dict():
     form['dict'] = factory('#field:dict', value=value, props={
         'label': 'Fill the dict',
         'required': 'At least one entry is required',
-        'head': {
-            'key': 'Key',
-            'value': 'Value',
-        },
+        'key_label': 'Key',
+        'value_label': 'Value'
     })
     return {
         'widget': form,
@@ -58,10 +54,8 @@ Dict where only values can be edited.
         'label': 'Modify the dict',
         'required': 'No Empty values allowed',
         'static': True,
-        'head': {
-            'key': 'Key',
-            'value': 'Value',
-        },
+        'key_label': 'Key',
+        'value_label': 'Value'
     })
 """
 
@@ -74,10 +68,8 @@ def immutable_dict():
         'label': 'Modify the dict',
         'required': 'No Empty values allowed',
         'static': True,
-        'head': {
-            'key': 'Key',
-            'value': 'Value',
-        },
+        'key_label': 'Key',
+        'value_label': 'Value'
     })
     return {
         'widget': form,

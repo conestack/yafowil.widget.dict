@@ -6,16 +6,18 @@ Import requirements::
 
 Create empty Dict widget::
 
-    >>> form = factory('form',
-    ...                name='myform',
-    ...                props={'action': 'myaction'})
-    >>> form['mydict'] = factory('dict',
-    ...                          props={
-    ...                              'head': {
-    ...                                  'key': 'Key',
-    ...                                  'value': 'Value',
-    ...                              }
-    ...                          })
+    >>> form = factory(
+    ...     'form',
+    ...     name='myform',
+    ...     props={
+    ...         'action': 'myaction'
+    ...     })
+    >>> form['mydict'] = factory(
+    ...     'dict',
+    ...     props={
+    ...         'key_label': 'Key',
+    ...         'value_label': 'Value',
+    ...     })
     >>> pxml(form())
     <form action="myaction" enctype="multipart/form-data" id="form-myform" method="post" novalidate="novalidate">
       <table class="dictwidget key-keyfield value-valuefield" id="dictwidget_myform.mydict.entry">
@@ -37,23 +39,110 @@ Create empty Dict widget::
     </form>
     <BLANKLINE>
 
+``key_label`` and ``value_label`` may be callables::
+
+    >>> form['mydict'] = factory(
+    ...     'dict',
+    ...     props={
+    ...         'key_label': lambda: 'Computed Key',
+    ...         'value_label': lambda: 'Computed Value'
+    ...     })
+    >>> pxml(form())
+    <form action="myaction" enctype="multipart/form-data" id="form-myform" method="post" novalidate="novalidate">
+      <table class="dictwidget key-keyfield value-valuefield" id="dictwidget_myform.mydict.entry">
+        <thead>
+          <tr>
+            <th>Computed Key</th>
+            <th>Computed Value</th>
+            ...
+          </tr>
+        </thead>
+        <tbody/>
+      </table>
+    </form>
+    <BLANKLINE>
+
+Test B/C ``head`` property::
+
+    >>> form['mydict'] = factory(
+    ...     'dict',
+    ...     props={
+    ...         'head': {
+    ...             'key': 'B/C Key',
+    ...             'value': 'B/C Value',
+    ...         }
+    ...     })
+    >>> pxml(form())
+    <form action="myaction" enctype="multipart/form-data" id="form-myform" method="post" novalidate="novalidate">
+      <table class="dictwidget key-keyfield value-valuefield" id="dictwidget_myform.mydict.entry">
+        <thead>
+          <tr>
+            <th>B/C Key</th>
+            <th>B/C Value</th>
+            ...
+          </tr>
+        </thead>
+        <tbody/>
+      </table>
+    </form>
+    <BLANKLINE>
+
+B/C labels might be computes as well::
+
+    >>> form['mydict'] = factory(
+    ...     'dict',
+    ...     props={
+    ...         'head': {
+    ...             'key': lambda: 'Computed B/C Key',
+    ...             'value': lambda: 'Computed B/C Value'
+    ...         }
+    ...     })
+    >>> pxml(form())
+    <form action="myaction" enctype="multipart/form-data" id="form-myform" method="post" novalidate="novalidate">
+      <table class="dictwidget key-keyfield value-valuefield" id="dictwidget_myform.mydict.entry">
+        <thead>
+          <tr>
+            <th>Computed B/C Key</th>
+            <th>Computed B/C Value</th>
+            ...
+          </tr>
+        </thead>
+        <tbody/>
+      </table>
+    </form>
+    <BLANKLINE>
+
+Skip labels::
+
+    >>> form['mydict'] = factory('dict')
+    >>> pxml(form())
+    <form action="myaction" enctype="multipart/form-data" id="form-myform" method="post" novalidate="novalidate">
+      <table class="dictwidget key-keyfield value-valuefield" id="dictwidget_myform.mydict.entry">
+        <thead>
+          <tr>
+            <th> </th>
+            <th> </th>
+            ...
+          </tr>
+        </thead>
+        <tbody/>
+      </table>
+    </form>
+    <BLANKLINE>
+
 Create dict widget with preset values::
 
     >>> from odict import odict
     >>> value = odict()
     >>> value['key1'] = u'Value1'
     >>> value['key2'] = u'Value2'
-    >>> form = factory('form',
-    ...                name='myform',
-    ...                props={'action': 'myaction'})
-    >>> form['mydict'] = factory('dict',
-    ...                          value=value,
-    ...                          props={
-    ...                              'head': {
-    ...                                  'key': 'Key',
-    ...                                  'value': 'Value',
-    ...                              }
-    ...                          })
+    >>> form['mydict'] = factory(
+    ...     'dict',
+    ...     value=value,
+    ...     props={
+    ...         'key_label': 'Key',
+    ...         'value_label': 'Value',
+    ...     })
     >>> pxml(form())
     <form action="myaction" enctype="multipart/form-data" id="form-myform" method="post" novalidate="novalidate">
       <table class="dictwidget key-keyfield value-valuefield" id="dictwidget_myform.mydict.entry">
@@ -209,14 +298,13 @@ Empty keys are ignored::
 
 Check required::
 
-    >>> form['mydict'] = factory('error:dict',
-    ...                          props={
-    ...                              'required': 'I am required',
-    ...                              'head': {
-    ...                                  'key': 'Key',
-    ...                                  'value': 'Value',
-    ...                              }
-    ...                          })
+    >>> form['mydict'] = factory(
+    ...     'error:dict',
+    ...     props={
+    ...         'required': 'I am required',
+    ...         'key_label': 'Key',
+    ...         'value_label': 'Value'
+    ...     })
     >>> request = {}
     >>> data = form.extract(request=request)
     >>> data.fetch('myform.mydict').errors
@@ -269,16 +357,15 @@ Check required::
 
 Use dict widget as static widget::
 
-    >>> form['mydict'] = factory('error:dict',
-    ...                          value=odict([('k1', 'v1')]),
-    ...                          props={
-    ...                              'required': 'I am required',
-    ...                              'static': True,
-    ...                              'head': {
-    ...                                  'key': 'Key',
-    ...                                  'value': 'Value',
-    ...                              }
-    ...                          })
+    >>> form['mydict'] = factory(
+    ...     'error:dict',
+    ...     value=odict([('k1', 'v1')]),
+    ...     props={
+    ...         'required': 'I am required',
+    ...         'static': True,
+    ...         'key_label': 'Key',
+    ...         'value_label': 'Value'
+    ...     })
     >>> pxml(form())
     <form action="myaction" enctype="multipart/form-data" id="form-myform" method="post" novalidate="novalidate">
       <table class="dictwidget key-keyfield value-valuefield" id="dictwidget_myform.mydict.entry">
@@ -380,16 +467,15 @@ Dict display renderer::
     >>> value = odict()
     >>> value['foo'] = 'Foo'
     >>> value['bar'] = 'Bar'
-    >>> widget = factory('dict',
-    ...                  name='display_dict',
-    ...                  value=value,
-    ...                  props={
-    ...                      'head': {
-    ...                          'key': 'Key',
-    ...                          'value': 'Value',
-    ...                      }
-    ...                  },
-    ...                  mode='display')
+    >>> widget = factory(
+    ...     'dict',
+    ...     name='display_dict',
+    ...     value=value,
+    ...     props={
+    ...         'key_label': 'Key',
+    ...         'value_label': 'Value',
+    ...     },
+    ...     mode='display')
     >>> pxml('<div>' + widget() + '</div>')
     <div>
       <h5>Key: Value</h5>
@@ -402,18 +488,87 @@ Dict display renderer::
     </div>
     <BLANKLINE>
 
-    >>> widget = factory('dict',
-    ...                  name='display_dict',
-    ...                  props={
-    ...                      'head': {
-    ...                          'key': 'Key',
-    ...                          'value': 'Value',
-    ...                      }
-    ...                  },
-    ...                  mode='display')
+Display dict empty values::
+
+    >>> widget = factory(
+    ...     'dict',
+    ...     name='display_dict',
+    ...     props={
+    ...         'key_label': 'Key',
+    ...         'value_label': 'Value'
+    ...     },
+    ...     mode='display')
     >>> pxml('<div>' + widget() + '</div>')
     <div>
       <h5>Key: Value</h5>
+      <dl/>
+    </div>
+    <BLANKLINE>
+
+Display dict callable labels::
+
+    >>> widget = factory(
+    ...     'dict',
+    ...     name='display_dict',
+    ...     props={
+    ...         'key_label': lambda: 'Computed Key',
+    ...         'value_label': lambda: 'Computed Value'
+    ...     },
+    ...     mode='display')
+    >>> pxml('<div>' + widget() + '</div>')
+    <div>
+      <h5>Computed Key: Computed Value</h5>
+      <dl/>
+    </div>
+    <BLANKLINE>
+
+Display dict, B/C labels::
+
+    >>> widget = factory(
+    ...     'dict',
+    ...     name='display_dict',
+    ...     props={
+    ...         'head': {
+    ...             'key': 'B/C Key',
+    ...             'value': 'B/C Value',
+    ...         }
+    ...     },
+    ...     mode='display')
+    >>> pxml('<div>' + widget() + '</div>')
+    <div>
+      <h5>B/C Key: B/C Value</h5>
+      <dl/>
+    </div>
+    <BLANKLINE>
+
+Display dict, computed B/C labels::
+
+    >>> widget = factory(
+    ...     'dict',
+    ...     name='display_dict',
+    ...     props={
+    ...         'head': {
+    ...             'key': lambda: 'Computed B/C Key',
+    ...             'value': lambda: 'Computed B/C Value',
+    ...         }
+    ...     },
+    ...     mode='display')
+    >>> pxml('<div>' + widget() + '</div>')
+    <div>
+      <h5>Computed B/C Key: Computed B/C Value</h5>
+      <dl/>
+    </div>
+    <BLANKLINE>
+
+Display dict, no labels::
+
+    >>> widget = factory(
+    ...     'dict',
+    ...     name='display_dict',
+    ...     mode='display'
+    ... )
+    >>> pxml('<div>' + widget() + '</div>')
+    <div>
       <dl/>
     </div>
     <BLANKLINE>

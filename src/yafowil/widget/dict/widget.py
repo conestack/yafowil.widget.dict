@@ -262,7 +262,13 @@ factory.doc['props']['dict.key_label'] = \
 
 factory.defaults['dict.value_label'] = UNSET
 factory.doc['props']['dict.value_label'] = \
-"""Label for dict labels column.
+"""Label for dict values column.
+"""
+
+factory.defaults['dict.head'] = {}
+factory.doc['props']['dict.head'] = \
+"""B/C Labels for dict keys and values columns. Expect a dict containing
+``key`` and ``value`` keys.
 """
 
 factory.defaults['dict.static'] = False
