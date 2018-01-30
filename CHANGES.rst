@@ -5,6 +5,9 @@ History
 1.7 (unreleased)
 ----------------
 
+- Convert doctests to unittests.
+  [rnix]
+
 - Add ``key_label`` and ``value_label`` blueprint properties. They replace
   ``head`` dict property containing ``key`` and ``value``. Needed to make i18n
   work when using dict blueprint in in yaml forms. ``head`` still works for
