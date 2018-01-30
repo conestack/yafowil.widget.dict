@@ -498,226 +498,286 @@ class TestDictWidget(NodeTestCase):
 
         self.assertEqual(form(data=data).find('error'), -1)
 
-"""
-Use dict widget as static widget::
+    def test_render_static_dict(self):
+        # Use dict widget as static widget
+        form = factory(
+            'form',
+            name='myform',
+            props={
+                'action': 'myaction'
+            })
+        form['mydict'] = factory(
+            'error:dict',
+            value=odict([('k1', 'v1')]),
+            props={
+                'required': 'I am required',
+                'static': True,
+                'key_label': 'Key',
+                'value_label': 'Value'
+            })
+        self.check_output("""
+        <form action="myaction" enctype="multipart/form-data" id="form-myform"
+              method="post" novalidate="novalidate">
+          <table class="dictwidget key-keyfield value-valuefield"
+                 id="dictwidget_myform.mydict.entry">
+            <thead>
+              <tr>
+                <th>Key</th>
+                <th>Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="key">
+                  <input class="keyfield" disabled="disabled"
+                         id="input-myform-mydict-entry0-key"
+                         name="myform.mydict.entry0.key"
+                         type="text" value="k1"/>
+                </td>
+                <td class="value">
+                  <input class="valuefield"
+                         id="input-myform-mydict-entry0-value"
+                         name="myform.mydict.entry0.value"
+                         type="text" value="v1"/>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+        """, fxml(form()))
 
-    >>> form['mydict'] = factory(
-    ...     'error:dict',
-    ...     value=odict([('k1', 'v1')]),
-    ...     props={
-    ...         'required': 'I am required',
-    ...         'static': True,
-    ...         'key_label': 'Key',
-    ...         'value_label': 'Value'
-    ...     })
-    >>> pxml(form())
-    <form action="myaction" enctype="multipart/form-data" id="form-myform" method="post" novalidate="novalidate">
-      <table class="dictwidget key-keyfield value-valuefield" id="dictwidget_myform.mydict.entry">
-        <thead>
-          <tr>
-            <th>Key</th>
-            <th>Value</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="key">
-              <input class="keyfield" disabled="disabled" id="input-myform-mydict-entry0-key" name="myform.mydict.entry0.key" type="text" value="k1"/>
-            </td>
-            <td class="value">
-              <input class="valuefield" id="input-myform-mydict-entry0-value" name="myform.mydict.entry0.value" type="text" value="v1"/>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </form>
-    <BLANKLINE>
+    def test_extract_static_dict(self):
+        # Static dict extraction. Disabled form fields are not transmitted, but
+        # since order is fixed dict could be reconstructed from original value
+        form = factory(
+            'form',
+            name='myform',
+            props={
+                'action': 'myaction'
+            })
+        form['mydict'] = factory(
+            'error:dict',
+            value=odict([('k1', 'v1')]),
+            props={
+                'static': True,
+                'key_label': 'Key',
+                'value_label': 'Value'
+            })
 
-Static dict extraction. Disabled form fields are not transmitted, but since
-order is fixed dict could be reconstructed from original value::
+        request = {
+            'myform.mydict.entry0.value': 'New Value 1',
+        }
+        data = form.extract(request=request)
+        self.assertEqual(
+            data.fetch('myform.mydict').extracted,
+            odict([('k1', 'New Value 1')])
+        )
 
-    >>> request = {
-    ...     'myform.mydict.entry0.value': 'New Value 1',
-    ... }
-    >>> data = form.extract(request=request)
-    >>> data.fetch('myform.mydict').extracted
-    odict([('k1', 'New Value 1')])
+        # Since its static, we expect an extraction error if someone tries to
+        # add values
+        request = {
+            'myform.mydict.entry0.value': 'New Value 1',
+            'myform.mydict.entry1.key'  : 'Wrong Key 2',
+            'myform.mydict.entry1.value': 'Wrong Value 2',
+        }
+        data = form.extract(request=request)
+        self.assertEqual(
+            data['mydict'].errors,
+            [ExtractionError('Invalid number of static values')]
+        )
 
-Since its static, we expect an extraction error if someone tries to add values::
+    def test_required_static_dict(self):
+        # Static dicts required. By default checks if there's a value in
+        # every entry
+        form = factory(
+            'form',
+            name='myform',
+            props={
+                'action': 'myaction'
+            })
+        form['mydict'] = factory(
+            'error:dict',
+            value=odict([('k1', 'v1')]),
+            props={
+                'required': 'I am required',
+                'static': True,
+                'key_label': 'Key',
+                'value_label': 'Value'
+            })
 
-    >>> request = {
-    ...     'myform.mydict.entry0.value': 'New Value 1',
-    ...     'myform.mydict.entry1.key'  : 'Wrong Key 2',
-    ...     'myform.mydict.entry1.value': 'Wrong Value 2',
-    ... }
-    >>> data = form.extract(request=request)
-    >>> data['mydict'].errors
-    [ExtractionError('Invalid number of static values',)]
+        request = {}
+        data = form.extract(request=request)
+        self.assertEqual(
+            data.fetch('myform.mydict').errors,
+            [ExtractionError('I am required')]
+        )
 
-Static dicts required. By default checks if there's a value in every entry::
+        request = {
+            'myform.mydict.entry0.value': '',
+        }
+        data = form.extract(request=request)
+        self.assertEqual(
+            data.fetch('myform.mydict').errors,
+            [ExtractionError('I am required')]
+        )
 
-    >>> request = {}
-    >>> data = form.extract(request=request)
-    >>> data.fetch('myform.mydict').errors
-    [ExtractionError('I am required',)]
+        # Static required rendering
+        self.check_output("""
+        <form action="myaction" enctype="multipart/form-data" id="form-myform"
+              method="post" novalidate="novalidate">
+          <div class="error">
+            <div class="errormessage">I am required</div>
+            <table class="dictwidget key-keyfield value-valuefield"
+                   id="dictwidget_myform.mydict.entry">
+              <thead>
+                <tr>
+                  <th>Key</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="key">
+                    <input class="keyfield" disabled="disabled"
+                           id="input-myform-mydict-entry0-key"
+                           name="myform.mydict.entry0.key"
+                           type="text" value="k1"/>
+                  </td>
+                  <td class="value">
+                    <input class="valuefield"
+                           id="input-myform-mydict-entry0-value"
+                           name="myform.mydict.entry0.value"
+                           type="text" value=""/>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </form>
+        """, fxml(form(data)))
 
-    >>> request = {
-    ...     'myform.mydict.entry0.value': '',
-    ... }
-    >>> data = form.extract(request=request)
-    >>> data.fetch('myform.mydict').errors
-    [ExtractionError('I am required',)]
+        # Required message not set directly in widget props
+        form['mydict'].attrs['required'] = True
+        request = {
+            'myform.mydict.entry0.value': '',
+        }
+        data = form.extract(request=request)
+        self.assertEqual(
+            data.fetch('myform.mydict').errors,
+            [ExtractionError('Mandatory field was empty')]
+        )
 
-Static required rendering::
+    def test_display_renderer(self):
+        # Dict display renderer
+        value = odict()
+        value['foo'] = 'Foo'
+        value['bar'] = 'Bar'
+        widget = factory(
+            'dict',
+            name='display_dict',
+            value=value,
+            props={
+                'key_label': 'Key',
+                'value_label': 'Value',
+            },
+            mode='display')
+        self.check_output("""
+        <div>
+          <h5>Key: Value</h5>
+          <dl>
+            <dt>foo</dt>
+            <dd>Foo</dd>
+            <dt>bar</dt>
+            <dd>Bar</dd>
+          </dl>
+        </div>
+        """, fxml('<div>{}</div>'.format(widget())))
 
-    >>> pxml(form(data))
-    <form action="myaction" enctype="multipart/form-data" id="form-myform" method="post" novalidate="novalidate">
-      <div class="error">
-        <div class="errormessage">I am required</div>
-        <table class="dictwidget key-keyfield value-valuefield" id="dictwidget_myform.mydict.entry">
-          <thead>
-            <tr>
-              <th>Key</th>
-              <th>Value</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="key">
-                <input class="keyfield" disabled="disabled" id="input-myform-mydict-entry0-key" name="myform.mydict.entry0.key" type="text" value="k1"/>
-              </td>
-              <td class="value">
-                <input class="valuefield" id="input-myform-mydict-entry0-value" name="myform.mydict.entry0.value" type="text" value=""/>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </form>
-    <BLANKLINE>
+    def test_display_renderer_empty_values(self):
+        # Display dict empty values
+        widget = factory(
+            'dict',
+            name='display_dict',
+            props={
+                'key_label': 'Key',
+                'value_label': 'Value'
+            },
+            mode='display')
+        self.check_output("""
+        <div>
+          <h5>Key: Value</h5>
+          <dl/>
+        </div>
+        """, fxml('<div>{}</div>'.format(widget())))
 
-Required message not set directly in widget props::
+    def test_display_renderer_callable_labels(self):
+        # Display dict callable labels
+        widget = factory(
+            'dict',
+            name='display_dict',
+            props={
+                'key_label': lambda: 'Computed Key',
+                'value_label': lambda: 'Computed Value'
+            },
+            mode='display')
+        self.check_output("""
+        <div>
+          <h5>Computed Key: Computed Value</h5>
+          <dl/>
+        </div>
+        """, fxml('<div>{}</div>'.format(widget())))
 
-    >>> form['mydict'].attrs['required'] = True
-    >>> request = {
-    ...     'myform.mydict.entry0.value': '',
-    ... }
-    >>> data = form.extract(request=request)
-    >>> data.fetch('myform.mydict').errors
-    [ExtractionError('Mandatory field was empty',)]
+    def test_display_renderer_bc_labels(self):
+        # Display dict, B/C labels
+        widget = factory(
+            'dict',
+            name='display_dict',
+            props={
+                'head': {
+                    'key': 'B/C Key',
+                    'value': 'B/C Value',
+                }
+            },
+            mode='display')
+        self.check_output("""
+        <div>
+          <h5>B/C Key: B/C Value</h5>
+          <dl/>
+        </div>
+        """, fxml('<div>{}</div>'.format(widget())))
 
-Dict display renderer::
+    def test_display_renderer_computed_bc_labels(self):
+        # Display dict, computed B/C labels
+        widget = factory(
+            'dict',
+            name='display_dict',
+            props={
+                'head': {
+                    'key': lambda: 'Computed B/C Key',
+                    'value': lambda: 'Computed B/C Value',
+                }
+            },
+            mode='display')
+        self.check_output("""
+        <div>
+          <h5>Computed B/C Key: Computed B/C Value</h5>
+          <dl/>
+        </div>
+        """, fxml('<div>{}</div>'.format(widget())))
 
-    >>> value = odict()
-    >>> value['foo'] = 'Foo'
-    >>> value['bar'] = 'Bar'
-    >>> widget = factory(
-    ...     'dict',
-    ...     name='display_dict',
-    ...     value=value,
-    ...     props={
-    ...         'key_label': 'Key',
-    ...         'value_label': 'Value',
-    ...     },
-    ...     mode='display')
-    >>> pxml('<div>' + widget() + '</div>')
-    <div>
-      <h5>Key: Value</h5>
-      <dl>
-        <dt>foo</dt>
-        <dd>Foo</dd>
-        <dt>bar</dt>
-        <dd>Bar</dd>
-      </dl>
-    </div>
-    <BLANKLINE>
+    def test_display_renderer_no_labels(self):
+        # Display dict, no labels
+        widget = factory(
+            'dict',
+            name='display_dict',
+            mode='display'
+        )
+        self.check_output("""
+        <div>
+          <dl/>
+        </div>
+        """, fxml('<div>{}</div>'.format(widget())))
 
-Display dict empty values::
-
-    >>> widget = factory(
-    ...     'dict',
-    ...     name='display_dict',
-    ...     props={
-    ...         'key_label': 'Key',
-    ...         'value_label': 'Value'
-    ...     },
-    ...     mode='display')
-    >>> pxml('<div>' + widget() + '</div>')
-    <div>
-      <h5>Key: Value</h5>
-      <dl/>
-    </div>
-    <BLANKLINE>
-
-Display dict callable labels::
-
-    >>> widget = factory(
-    ...     'dict',
-    ...     name='display_dict',
-    ...     props={
-    ...         'key_label': lambda: 'Computed Key',
-    ...         'value_label': lambda: 'Computed Value'
-    ...     },
-    ...     mode='display')
-    >>> pxml('<div>' + widget() + '</div>')
-    <div>
-      <h5>Computed Key: Computed Value</h5>
-      <dl/>
-    </div>
-    <BLANKLINE>
-
-Display dict, B/C labels::
-
-    >>> widget = factory(
-    ...     'dict',
-    ...     name='display_dict',
-    ...     props={
-    ...         'head': {
-    ...             'key': 'B/C Key',
-    ...             'value': 'B/C Value',
-    ...         }
-    ...     },
-    ...     mode='display')
-    >>> pxml('<div>' + widget() + '</div>')
-    <div>
-      <h5>B/C Key: B/C Value</h5>
-      <dl/>
-    </div>
-    <BLANKLINE>
-
-Display dict, computed B/C labels::
-
-    >>> widget = factory(
-    ...     'dict',
-    ...     name='display_dict',
-    ...     props={
-    ...         'head': {
-    ...             'key': lambda: 'Computed B/C Key',
-    ...             'value': lambda: 'Computed B/C Value',
-    ...         }
-    ...     },
-    ...     mode='display')
-    >>> pxml('<div>' + widget() + '</div>')
-    <div>
-      <h5>Computed B/C Key: Computed B/C Value</h5>
-      <dl/>
-    </div>
-    <BLANKLINE>
-
-Display dict, no labels::
-
-    >>> widget = factory(
-    ...     'dict',
-    ...     name='display_dict',
-    ...     mode='display'
-    ... )
-    >>> pxml('<div>' + widget() + '</div>')
-    <div>
-      <dl/>
-    </div>
-    <BLANKLINE>
-
-"""
 
 if __name__ == '__main__':
     unittest.main()                                          # pragma: no cover
