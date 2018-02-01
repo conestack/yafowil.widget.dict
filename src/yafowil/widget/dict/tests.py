@@ -1,14 +1,18 @@
-from node.tests import NodeTestCase
 from node.utils import UNSET
 from odict import odict
 from yafowil.base import ExtractionError
 from yafowil.base import factory
+from yafowil.tests import YafowilTestCase
 from yafowil.tests import fxml
-import yafowil.widget.dict
 import yafowil.loader
 
 
-class TestDictWidget(NodeTestCase):
+class TestDictWidget(YafowilTestCase):
+
+    def setUp(self):
+        super(TestDictWidget, self).setUp()
+        from yafowil.widget.dict import widget
+        reload(widget)
 
     def test_empty_dict(self):
         # Create empty Dict widget
