@@ -28,7 +28,7 @@ plone5_css = [{
 
 @entry_point(order=10)
 def register():
-    import widget
+    import yafowil.widget.dict.widget
     factory.register_theme('default', 'yafowil.widget.dict',
                            resourcedir, js=js, css=default_css)
     factory.register_theme('bootstrap', 'yafowil.widget.dict',

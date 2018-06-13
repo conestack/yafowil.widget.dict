@@ -8,5 +8,8 @@ This is a **dictionary widget** for for `YAFOWIL
 Contributors
 ============
 
-- Robert Niederrreiter (Author)
+- Robert Niederrreiter
+
 - Peter Holzer
+
+- Georg Bernhard

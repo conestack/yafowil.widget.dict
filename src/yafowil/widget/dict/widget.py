@@ -3,6 +3,7 @@ from odict import odict
 from yafowil.base import ExtractionError
 from yafowil.base import factory
 from yafowil.base import fetch_value
+from yafowil.compat import STR_TYPE
 from yafowil.compound import compound_extractor
 from yafowil.compound import compound_renderer
 from yafowil.tsf import TSF
@@ -128,7 +129,7 @@ def dict_edit_renderer(widget, data):
 
 def raise_extraction_error(widget, data):
     required = attr_value('required', widget, data)
-    if isinstance(required, basestring):
+    if isinstance(required, STR_TYPE):
         raise ExtractionError(required)
     required_message = attr_value('required_message', widget, data)
     raise ExtractionError(required_message)
@@ -141,7 +142,7 @@ def extract_static(data, basename):
     keys = data.value.keys()
     while True:
         valuename = '%s%i.value' % (basename, index)
-        if request.has_key(valuename):
+        if valuename in request:
             if index >= len(keys):
                 message = _('invalid_number_static_values',
                             default=u'Invalid number of static values')
@@ -160,7 +161,7 @@ def extract_dynamic(data, basename):
     while True:
         keyname = '%s%i.key' % (basename, index)
         valuename = '%s%i.value' % (basename, index)
-        if request.has_key(keyname):
+        if keyname in request:
             key = request[keyname].strip()
             if key:
                 ret[key] = request[valuename]
