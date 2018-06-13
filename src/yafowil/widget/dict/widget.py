@@ -1,3 +1,5 @@
+from yafowil.compat import IS_PY2
+
 from node.utils import UNSET
 from odict import odict
 from yafowil.base import ExtractionError
@@ -10,6 +12,8 @@ from yafowil.utils import attr_value
 from yafowil.utils import css_managed_props
 from yafowil.utils import managedprops
 
+if not IS_PY2:
+    basestring = str
 
 _ = TSF('yafowil.widget.dict')
 
@@ -141,7 +145,11 @@ def extract_static(data, basename):
     keys = data.value.keys()
     while True:
         valuename = '%s%i.value' % (basename, index)
-        if request.has_key(valuename):
+        if IS_PY2:
+            key_found = request.has_key(valuename)
+        else:
+            key_found = valuename in request
+        if key_found:
             if index >= len(keys):
                 message = _('invalid_number_static_values',
                             default=u'Invalid number of static values')
@@ -160,7 +168,11 @@ def extract_dynamic(data, basename):
     while True:
         keyname = '%s%i.key' % (basename, index)
         valuename = '%s%i.value' % (basename, index)
-        if request.has_key(keyname):
+        if IS_PY2:
+            key_found = request.has_key(keyname)
+        else:
+            key_found = keyname in request
+        if key_found:
             key = request[keyname].strip()
             if key:
                 ret[key] = request[valuename]
