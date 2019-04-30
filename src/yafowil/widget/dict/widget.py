@@ -22,6 +22,7 @@ ICON_CSS = {
     'down': 'icon-circle-arrow-down',
 }
 
+
 def actions_renderer(widget, data):
     tag = data.tag
     actions = list()
@@ -39,7 +40,8 @@ factory.register(
     'dict_actions',
     edit_renderers=[actions_renderer])
 
-factory.doc['blueprint']['dict_actions'] = UNSET # dont document internal widget
+
+factory.doc['blueprint']['dict_actions'] = UNSET  # dont document internal widget
 
 
 @managedprops('static', 'table_class', *css_managed_props)
@@ -170,14 +172,13 @@ def extract_dynamic(data, basename):
         break
     return ret
 
+
 @managedprops('static', 'required')
 def dict_extractor(widget, data):
     static = widget.attrs['static']
     body = widget['table']['body']
     compound_extractor(body, data)
     basename = '%s.entry' % body.dottedpath
-    req = data.request
-    index = 0
     if static:
         ret = extract_static(data, basename)
     else:
@@ -230,8 +231,8 @@ factory.register(
     display_renderers=[dict_display_renderer],
     builders=[dict_builder])
 
-factory.doc['blueprint']['dict'] = \
-"""Add-on widget `yafowil.widget.dict
+factory.doc['blueprint']['dict'] = """\
+Add-on widget `yafowil.widget.dict
 <http://github.com/bluedynamics/yafowil.widget.dict/>`_.
 """
 
@@ -242,40 +243,37 @@ factory.defaults['dict.error_class'] = 'error'
 factory.defaults['dict.message_class'] = 'errormessage'
 
 factory.defaults['dict.table_class'] = 'dictwidget'
-factory.doc['props']['dict.table_class'] = \
-"""CSS classes rendered on dict table.
+factory.doc['props']['dict.table_class'] = """\
+CSS classes rendered on dict table.
 """
 
 factory.defaults['dict.key_class'] = 'keyfield'
-factory.doc['props']['dict.key_class'] = \
-"""CSS classes rendered on key input fields.
+factory.doc['props']['dict.key_class'] = """\
+CSS classes rendered on key input fields.
 """
 
 factory.defaults['dict.value_class'] = 'valuefield'
-factory.doc['props']['dict.value_class'] = \
-"""CSS classes rendered on value input fields.
+factory.doc['props']['dict.value_class'] = """\
+CSS classes rendered on value input fields.
 """
 
 factory.defaults['dict.key_label'] = UNSET
-factory.doc['props']['dict.key_label'] = \
-"""Label for dict keys column.
+factory.doc['props']['dict.key_label'] = """\
+Label for dict keys column.
 """
 
 factory.defaults['dict.value_label'] = UNSET
-factory.doc['props']['dict.value_label'] = \
-"""Label for dict values column.
+factory.doc['props']['dict.value_label'] = """\
+Label for dict values column.
 """
 
 factory.defaults['dict.head'] = {}
-factory.doc['props']['dict.head'] = \
-"""B/C Labels for dict keys and values columns. Expect a dict containing
+factory.doc['props']['dict.head'] = """\
+B/C Labels for dict keys and values columns. Expect a dict containing
 ``key`` and ``value`` keys.
 """
 
 factory.defaults['dict.static'] = False
-"""Flag whether dict is immutable.
-"""
-
-factory.doc['props']['dict.static'] = \
-"""Makes keys immutable.
+factory.doc['props']['dict.static'] = """\
+Flag whether dict is immutable.
 """

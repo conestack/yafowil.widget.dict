@@ -3,8 +3,9 @@ from odict import odict
 from yafowil.base import ExtractionError
 from yafowil.base import factory
 from yafowil.compat import IS_PY2
-from yafowil.tests import YafowilTestCase
 from yafowil.tests import fxml
+from yafowil.tests import YafowilTestCase
+import unittest
 import yafowil.loader
 
 
@@ -586,7 +587,7 @@ class TestDictWidget(YafowilTestCase):
         # add values
         request = {
             'myform.mydict.entry0.value': 'New Value 1',
-            'myform.mydict.entry1.key'  : 'Wrong Key 2',
+            'myform.mydict.entry1.key': 'Wrong Key 2',
             'myform.mydict.entry1.value': 'Wrong Value 2',
         }
         data = form.extract(request=request)
