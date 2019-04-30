@@ -28,7 +28,7 @@ def actions_renderer(widget, data):
     actions = list()
     for key in ['add', 'remove', 'up', 'down']:
         if widget.attrs.get(key):
-            class_ = 'dict_row_%s' % key
+            class_ = 'dict_row_{}'.format(key)
             icon = tag('span', ' ', class_=ICON_CSS[key])
             action = tag('a', icon, href='#', class_=class_)
             actions.append(action)
@@ -46,9 +46,12 @@ factory.doc['blueprint']['dict_actions'] = UNSET  # dont document internal widge
 
 @managedprops('static', 'table_class', *css_managed_props)
 def dict_builder(widget, factory):
-    table_classes = [widget.attrs['table_class'],
-                     'key-{0}'.format(widget.attrs['key_class']),
-                     'value-{0}'.format(widget.attrs['value_class'])]
+    table_classes = [
+        widget.attrs['table_class'],
+        'key-{0}'.format(widget.attrs['key_class']),
+        'value-{0}'.format(widget.attrs['value_class'])
+    ]
+    widget['exists'] = factory('hidden', value='1')
     table = widget['table'] = factory('table', props={
         'structural': True,
         'class': ' '.join(table_classes),
@@ -94,7 +97,7 @@ def dict_builder(widget, factory):
 def dict_edit_renderer(widget, data):
     static = widget.attrs['static']
     table = widget['table']
-    table.attrs['id'] = 'dictwidget_%s.entry' % widget.dottedpath
+    table.attrs['id'] = 'dictwidget_{}.entry'.format(widget.dottedpath)
     body = table['body']
     body.clear()
     if data.errors and static:
@@ -143,11 +146,13 @@ def extract_static(data, basename):
     index = 0
     keys = data.value.keys()
     while True:
-        valuename = '%s%i.value' % (basename, index)
+        valuename = '{}{}.value'.format(basename, index)
         if valuename in request:
             if index >= len(keys):
-                message = _('invalid_number_static_values',
-                            default=u'Invalid number of static values')
+                message = _(
+                    'invalid_number_static_values',
+                    default=u'Invalid number of static values'
+                )
                 raise ExtractionError(message)
             ret[keys[index]] = request[valuename]
             index += 1
@@ -161,8 +166,8 @@ def extract_dynamic(data, basename):
     ret = odict()
     index = 0
     while True:
-        keyname = '%s%i.key' % (basename, index)
-        valuename = '%s%i.value' % (basename, index)
+        keyname = '{}{}.key'.format(basename, index)
+        valuename = '{}{}.value'.format(basename, index)
         if keyname in request:
             key = request[keyname].strip()
             if key:
@@ -175,18 +180,22 @@ def extract_dynamic(data, basename):
 
 @managedprops('static', 'required')
 def dict_extractor(widget, data):
+    if '{}.exists'.format(widget.dottedpath) not in data.request:
+        return UNSET
     static = widget.attrs['static']
     body = widget['table']['body']
     compound_extractor(body, data)
-    basename = '%s.entry' % body.dottedpath
+    basename = '{}.entry'.format(body.dottedpath)
     if static:
         ret = extract_static(data, basename)
     else:
         ret = extract_dynamic(data, basename)
-    if len(ret) == 0:
-        ret = UNSET
+    # if len(ret) == 0:
+    #     ret = UNSET
     if attr_value('required', widget, data):
-        if ret is UNSET:
+        if not ret:  # if ret is UNSET:
+            # HACK
+            data.extracted = ret
             raise_extraction_error(widget, data)
         if static:
             for val in ret.values():

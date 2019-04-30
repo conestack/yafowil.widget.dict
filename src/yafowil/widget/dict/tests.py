@@ -37,6 +37,8 @@ class TestDictWidget(YafowilTestCase):
         self.check_output("""
         <form action="myaction" enctype="multipart/form-data" id="form-myform"
               method="post" novalidate="novalidate">
+          <input class="hidden" id="input-myform-mydict-exists"
+                 name="myform.mydict.exists" type="hidden" value="1"/>
           <table class="dictwidget key-keyfield value-valuefield"
                  id="dictwidget_myform.mydict.entry">
             <thead>
@@ -74,6 +76,8 @@ class TestDictWidget(YafowilTestCase):
         self.check_output("""
         <form action="myaction" enctype="multipart/form-data" id="form-myform"
               method="post" novalidate="novalidate">
+          <input class="hidden" id="input-myform-mydict-exists"
+                 name="myform.mydict.exists" type="hidden" value="1"/>
           <table class="dictwidget key-keyfield value-valuefield"
                  id="dictwidget_myform.mydict.entry">
             <thead>
@@ -107,6 +111,8 @@ class TestDictWidget(YafowilTestCase):
         self.check_output("""
         <form action="myaction" enctype="multipart/form-data" id="form-myform"
               method="post" novalidate="novalidate">
+          <input class="hidden" id="input-myform-mydict-exists"
+                 name="myform.mydict.exists" type="hidden" value="1"/>
           <table class="dictwidget key-keyfield value-valuefield"
                  id="dictwidget_myform.mydict.entry">
             <thead>
@@ -140,6 +146,8 @@ class TestDictWidget(YafowilTestCase):
         self.check_output("""
         <form action="myaction" enctype="multipart/form-data" id="form-myform"
               method="post" novalidate="novalidate">
+          <input class="hidden" id="input-myform-mydict-exists"
+                 name="myform.mydict.exists" type="hidden" value="1"/>
           <table class="dictwidget key-keyfield value-valuefield"
                  id="dictwidget_myform.mydict.entry">
             <thead>
@@ -165,6 +173,8 @@ class TestDictWidget(YafowilTestCase):
         self.check_output("""
         <form action="myaction" enctype="multipart/form-data" id="form-myform"
               method="post" novalidate="novalidate">
+          <input class="hidden" id="input-myform-mydict-exists"
+                 name="myform.mydict.exists" type="hidden" value="1"/>
           <table class="dictwidget key-keyfield value-valuefield"
                  id="dictwidget_myform.mydict.entry">
             <thead>
@@ -200,6 +210,8 @@ class TestDictWidget(YafowilTestCase):
         self.check_output("""
         <form action="myaction" enctype="multipart/form-data" id="form-myform"
               method="post" novalidate="novalidate">
+          <input class="hidden" id="input-myform-mydict-exists"
+                 name="myform.mydict.exists" type="hidden" value="1"/>
           <table class="dictwidget key-keyfield value-valuefield"
                  id="dictwidget_myform.mydict.entry">
             <thead>
@@ -291,6 +303,7 @@ class TestDictWidget(YafowilTestCase):
         self.assertEqual(form.treerepr().split('\n'), [
             "<class 'yafowil.base.Widget'>: myform",
             "  <class 'yafowil.base.Widget'>: mydict",
+            "    <class 'yafowil.base.Widget'>: exists",
             "    <class 'yafowil.base.Widget'>: table",
             "      <class 'yafowil.base.Widget'>: head",
             "        <class 'yafowil.base.Widget'>: row",
@@ -310,6 +323,7 @@ class TestDictWidget(YafowilTestCase):
         ])
 
         request = {
+            'myform.mydict.exists': '1',
             'myform.mydict.entry0.key': 'key1',
             'myform.mydict.entry0.value': 'New Value 1',
             'myform.mydict.entry1.key': 'key2',
@@ -348,6 +362,7 @@ class TestDictWidget(YafowilTestCase):
                 'value_label': 'Value',
             })
         request = {
+            'myform.mydict.exists': '1',
             'myform.mydict.entry0.key': 'key1',
             'myform.mydict.entry0.value': 'New Value 1',
             'myform.mydict.entry1.key': 'key2',
@@ -392,6 +407,7 @@ class TestDictWidget(YafowilTestCase):
                 'value_label': 'Value',
             })
         request = {
+            'myform.mydict.exists': '1',
             'myform.mydict.entry0.key': 'key1',
             'myform.mydict.entry0.value': 'Very New Value 1',
         }
@@ -427,6 +443,7 @@ class TestDictWidget(YafowilTestCase):
                 'value_label': 'Value',
             })
         request = {
+            'myform.mydict.exists': '1',
             'myform.mydict.entry0.key': 'key1',
             'myform.mydict.entry0.value': 'Very New Value 1',
             'myform.mydict.entry1.key': '',
@@ -448,12 +465,16 @@ class TestDictWidget(YafowilTestCase):
             })
         form['mydict'] = factory(
             'error:dict',
+            value={'key': 'Value'},
             props={
                 'required': 'I am required',
                 'key_label': 'Key',
                 'value_label': 'Value'
             })
-        request = {}
+        request = {
+            'myform.mydict.exists': '1'
+        }
+        import pdb;pdb.set_trace()
         data = form.extract(request=request)
         self.assertEqual(
             [data.name, data.value, data.extracted, data.errors],
@@ -463,14 +484,17 @@ class TestDictWidget(YafowilTestCase):
         ddata = data['mydict']
         self.assertEqual(
             [ddata.name, ddata.value, ddata.extracted, ddata.errors],
-            ['mydict', UNSET, UNSET, [ExtractionError('I am required')]]
+            ['mydict', {'key': 'Value'}, odict(), [ExtractionError('I am required')]]
         )
+
 
         self.check_output("""
         <form action="myaction" enctype="multipart/form-data" id="form-myform"
               method="post" novalidate="novalidate">
           <div class="error">
             <div class="errormessage">I am required</div>
+            <input class="hidden" id="input-myform-mydict-exists"
+                   name="myform.mydict.exists" type="hidden" value="1"/>
             <table class="dictwidget key-keyfield value-valuefield"
                    id="dictwidget_myform.mydict.entry">
               <thead>
@@ -493,6 +517,7 @@ class TestDictWidget(YafowilTestCase):
         """, fxml(form(data=data)))
 
         request = {
+            'myform.mydict.exists': '1',
             'myform.mydict.entry0.key': 'key1',
             'myform.mydict.entry0.value': 'Very New Value 1',
         }
@@ -528,6 +553,8 @@ class TestDictWidget(YafowilTestCase):
         self.check_output("""
         <form action="myaction" enctype="multipart/form-data" id="form-myform"
               method="post" novalidate="novalidate">
+          <input class="hidden" id="input-myform-mydict-exists"
+                 name="myform.mydict.exists" type="hidden" value="1"/>
           <table class="dictwidget key-keyfield value-valuefield"
                  id="dictwidget_myform.mydict.entry">
             <thead>
@@ -575,6 +602,7 @@ class TestDictWidget(YafowilTestCase):
             })
 
         request = {
+            'myform.mydict.exists': '1',
             'myform.mydict.entry0.value': 'New Value 1',
         }
         data = form.extract(request=request)
@@ -586,6 +614,7 @@ class TestDictWidget(YafowilTestCase):
         # Since its static, we expect an extraction error if someone tries to
         # add values
         request = {
+            'myform.mydict.exists': '1',
             'myform.mydict.entry0.value': 'New Value 1',
             'myform.mydict.entry1.key': 'Wrong Key 2',
             'myform.mydict.entry1.value': 'Wrong Value 2',
@@ -615,7 +644,9 @@ class TestDictWidget(YafowilTestCase):
                 'value_label': 'Value'
             })
 
-        request = {}
+        request = {
+            'myform.mydict.exists': '1',
+        }
         data = form.extract(request=request)
         self.assertEqual(
             data.fetch('myform.mydict').errors,
@@ -623,6 +654,7 @@ class TestDictWidget(YafowilTestCase):
         )
 
         request = {
+            'myform.mydict.exists': '1',
             'myform.mydict.entry0.value': '',
         }
         data = form.extract(request=request)
@@ -637,6 +669,8 @@ class TestDictWidget(YafowilTestCase):
               method="post" novalidate="novalidate">
           <div class="error">
             <div class="errormessage">I am required</div>
+            <input class="hidden" id="input-myform-mydict-exists"
+                   name="myform.mydict.exists" type="hidden" value="1"/>
             <table class="dictwidget key-keyfield value-valuefield"
                    id="dictwidget_myform.mydict.entry">
               <thead>
@@ -669,6 +703,7 @@ class TestDictWidget(YafowilTestCase):
         # Required message not set directly in widget props
         form['mydict'].attrs['required'] = True
         request = {
+            'myform.mydict.exists': '1',
             'myform.mydict.entry0.value': '',
         }
         data = form.extract(request=request)
