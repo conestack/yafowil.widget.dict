@@ -5,7 +5,14 @@ History
 1.8 (unreleased)
 ----------------
 
-- No changes yet.
+- Fix re-rendering of widget if values required but empty dict passed.
+  [rnix]
+
+- Remove ``dict_builder``. Entire widget is rendered now in ``dict_renderer``
+  [rnix]
+
+- General code cleanup and modernization.
+  [rnix]
 
 
 1.7 (2018-07-16)
