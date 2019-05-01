@@ -6,6 +6,7 @@ from yafowil.base import fetch_value
 from yafowil.compat import STR_TYPE
 from yafowil.compound import compound_extractor
 from yafowil.compound import compound_renderer
+from yafowil.utils import callable_value
 from yafowil.tsf import TSF
 from yafowil.utils import attr_value
 from yafowil.utils import css_managed_props
@@ -38,97 +39,125 @@ def actions_renderer(widget, data):
 
 factory.register(
     'dict_actions',
-    edit_renderers=[actions_renderer])
-
+    edit_renderers=[
+        actions_renderer
+    ]
+)
 
 factory.doc['blueprint']['dict_actions'] = UNSET  # dont document internal widget
 
 
+def dict_label(widget, data, name, bc_name):
+    label = attr_value(name, widget, data)
+    if not label:  # B/C
+        label = callable_value(
+            attr_value('head', widget, data, default={}).get(bc_name, ' '),
+            widget,
+            data
+        )
+    return label
+
+
+def key_label(widget, data):
+    return dict_label(widget, data, 'key_label', 'key')
+
+
+def value_label(widget, data):
+    return dict_label(widget, data, 'value_label', 'value')
+
+
 @managedprops('static', 'table_class', *css_managed_props)
-def dict_builder(widget, factory):
-    table_classes = [
-        widget.attrs['table_class'],
-        'key-{0}'.format(widget.attrs['key_class']),
-        'value-{0}'.format(widget.attrs['value_class'])
-    ]
-    widget['exists'] = factory('hidden', value='1')
-    table = widget['table'] = factory('table', props={
-        'structural': True,
-        'class': ' '.join(table_classes),
-    })
-    head = table['head'] = factory('thead', props={
-        'structural': True,
-    })
-    row = head['row'] = factory('tr', props={
-        'structural': True,
-    })
-    key_label = widget.attrs.get('key_label', '')
-    # B/C
-    if not key_label:
-        key_label = widget.attrs.get('head', {}).get('key', ' ')
-    if callable(key_label):
-        key_label = key_label()
-    row['key'] = factory('th', props={
-        'structural': True,
-        'label': key_label,
-    })
-    value_label = widget.attrs.get('value_label', '')
-    # B/C
-    if not value_label:
-        value_label = widget.attrs.get('head', {}).get('value', ' ')
-    if callable(value_label):
-        value_label = value_label()
-    row['value'] = factory('th', props={
-        'structural': True,
-        'label': value_label,
-    })
-    if not widget.attrs['static']:
-        row['actions'] = factory('th:dict_actions', props={
-            'structural': True,
-            'add': True,
-            'class': 'actions',
-        })
-    table['body'] = factory('tbody', props={
-        'structural': True,
-    })
-
-
-@managedprops('static', *css_managed_props)
 def dict_edit_renderer(widget, data):
-    static = widget.attrs['static']
-    table = widget['table']
-    table.attrs['id'] = 'dictwidget_{}.entry'.format(widget.dottedpath)
-    body = table['body']
-    body.clear()
-    if data.errors and static:
-        basename = '%s.entry' % body.dottedpath
-        value = extract_static(data, basename)
-    else:
-        value = fetch_value(widget, data)
+    widget['exists'] = factory('hidden', value='1')
+    table = widget['table'] = factory(
+        'table',
+        props={
+            'structural': True,
+            'id': 'dictwidget_{}.entry'.format(widget.dottedpath),
+            'class': ' '.join([
+                attr_value('table_class', widget, data),
+                'key-{0}'.format(attr_value('key_class', widget, data)),
+                'value-{0}'.format(attr_value('value_class', widget, data))
+            ])
+        })
+    head = table['head'] = factory(
+        'thead',
+        props={
+            'structural': True
+        })
+    row = head['row'] = factory(
+        'tr',
+        props={
+            'structural': True
+        })
+    row['key'] = factory(
+        'th',
+        props={
+            'structural': True,
+            'label': key_label(widget, data)
+        })
+    row['value'] = factory(
+        'th',
+        props={
+            'structural': True,
+            'label': value_label(widget, data)
+        })
+    static = attr_value('static', widget, data)
+    if not static:
+        row['actions'] = factory(
+            'th:dict_actions',
+            props={
+                'structural': True,
+                'add': True,
+                'class': 'actions'
+            })
+    body = table['body'] = factory(
+        'tbody',
+        props={
+            'structural': True
+        })
+    # if data.errors and static:
+    #     basename = '{}.entry'.format(body.dottedpath)
+    #     value = extract_static(data, basename)
+    # else:
+    #     value = fetch_value(widget, data)
+    # XXX: static?
+    value = fetch_value(widget, data)
     if not value:
         return
     i = 0
     for key, val in value.items():
-        row = body['entry%i' % i] = factory('tr')
+        row = body['entry{}'.format(i)] = factory('tr')
         k_props = {
             'td.class': 'key',
-            'text.class': attr_value('key_class', widget, data),
+            'text.class': attr_value('key_class', widget, data)
         }
         if static:
             k_props['disabled'] = 'disabled'
-        row['key'] = factory('td:text', value=key, name='key', props=k_props)
-        row['value'] = factory('td:text', value=val, name='value', props={
-            'td.class': 'value',
-            'text.class': attr_value('value_class', widget, data),
-        })
-        if not static:
-            row['actions'] = factory('td:dict_actions', props={
-                'add': True,
-                'remove': True,
-                'up': True,
-                'down': True,
-                'class': 'actions',
+        row['key'] = factory(
+            'td:text',
+            value=key,
+            name='key',
+            props=k_props
+        )
+        row['value'] = factory(
+            'td:text',
+            value=val,
+            name='value',
+            props={
+                'td.class': 'value',
+                'text.class': attr_value('value_class', widget, data)
             })
+        if not static:
+            row['actions'] = factory(
+                'td:dict_actions',
+                props={
+                    'add': True,
+                    'remove': True,
+                    'up': True,
+                    'down': True,
+                    'class': 'actions'
+                })
         i += 1
 
 
@@ -180,11 +209,10 @@ def extract_dynamic(data, basename):
 
 @managedprops('static', 'required')
 def dict_extractor(widget, data):
-    if '{}.exists'.format(widget.dottedpath) not in data.request:
-        return UNSET
-    static = widget.attrs['static']
+    # if '{}.exists'.format(widget.dottedpath) not in data.request:
+    #     return UNSET
+    static = attr_value('static', widget, data)
     body = widget['table']['body']
-    compound_extractor(body, data)
     basename = '{}.entry'.format(body.dottedpath)
     if static:
         ret = extract_static(data, basename)
@@ -212,22 +240,12 @@ def dict_display_renderer(widget, data):
     for key, val in value.items():
         values.append(data.tag('dt', key) + data.tag('dd', val))
     head = u''
-    key_label = widget.attrs.get('key_label')
-    # B/C
-    if not key_label:
-        key_label = widget.attrs.get('head', {}).get('key', '')
-    if callable(key_label):
-        key_label = key_label()
-    value_label = widget.attrs.get('value_label')
-    # B/C
-    if not value_label:
-        value_label = widget.attrs.get('head', {}).get('value', '')
-    if callable(value_label):
-        value_label = value_label()
-    if key_label and value_label:
+    k_label = key_label(widget, data)
+    v_label = value_label(widget, data)
+    if k_label and v_label:
         head = u'{}: {}'.format(
-            data.tag.translate(key_label),
-            data.tag.translate(value_label)
+            data.tag.translate(k_label),
+            data.tag.translate(v_label)
         )
         head = data.tag('h5', head)
     return head + data.tag('dl', *values)
@@ -235,10 +253,18 @@ def dict_display_renderer(widget, data):
 
 factory.register(
     'dict',
-    extractors=[dict_extractor],
-    edit_renderers=[dict_edit_renderer, compound_renderer],
-    display_renderers=[dict_display_renderer],
-    builders=[dict_builder])
+    extractors=[
+        compound_extractor,
+        dict_extractor
+    ],
+    edit_renderers=[
+        dict_edit_renderer,
+        compound_renderer
+    ],
+    display_renderers=[
+        dict_display_renderer
+    ],
+)
 
 factory.doc['blueprint']['dict'] = """\
 Add-on widget `yafowil.widget.dict
