@@ -21,6 +21,7 @@ Dict where key/value pairs can be added, deleted and sorted.
     })
 """
 
+
 def mutable_dict():
     form = factory('fieldset', name='yafowil.widget.dict.mutable_dict')
     value = odict()
@@ -58,6 +59,7 @@ Dict where only values can be edited.
         'value_label': 'Value'
     })
 """
+
 
 def immutable_dict():
     form = factory('fieldset', name='yafowil.widget.dict.immutable_dict')

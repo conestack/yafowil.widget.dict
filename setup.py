@@ -50,4 +50,5 @@ setup(
     [yafowil.plugin]
     register = yafowil.widget.dict:register
     example = yafowil.widget.dict.example:get_example
-    """)
+    """
+)

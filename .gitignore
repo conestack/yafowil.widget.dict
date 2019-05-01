@@ -9,6 +9,7 @@
 /.mr.developer.cfg
 /.project
 /.pydevproject
+/coverage/
 /bin/
 /develop-eggs/
 /dist/
@@ -16,3 +17,7 @@
 /eggs/
 /parts/
 /var/
+/devsrc/
+/include/
+/lib/
+/share/
