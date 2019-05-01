@@ -66,9 +66,19 @@ def value_label(widget, data):
     return dict_label(widget, data, 'value_label', 'value')
 
 
-@managedprops('static', 'table_class', *css_managed_props)
+@managedprops(
+    'static',
+    'table_class',
+    'key_class',
+    'value_class',
+    'key_label',
+    'value_label',
+    'head',
+    *css_managed_props)
 def dict_edit_renderer(widget, data):
     widget['exists'] = factory('hidden', value='1')
+    key_class = attr_value('key_class', widget, data)
+    value_class = attr_value('value_class', widget, data)
     table = widget['table'] = factory(
         'table',
         props={
@@ -76,8 +86,8 @@ def dict_edit_renderer(widget, data):
             'id': 'dictwidget_{}.entry'.format(widget.dottedpath),
             'class': ' '.join([
                 attr_value('table_class', widget, data),
-                'key-{0}'.format(attr_value('key_class', widget, data)),
-                'value-{0}'.format(attr_value('value_class', widget, data))
+                'key-{0}'.format(key_class),
+                'value-{0}'.format(value_class)
             ])
         })
     head = table['head'] = factory(
@@ -124,7 +134,7 @@ def dict_edit_renderer(widget, data):
         row = body['entry{}'.format(i)] = factory('tr')
         k_props = {
             'td.class': 'key',
-            'text.class': attr_value('key_class', widget, data)
+            'text.class': key_class
         }
         if static:
             k_props['disabled'] = 'disabled'
@@ -140,7 +150,7 @@ def dict_edit_renderer(widget, data):
             name='value',
             props={
                 'td.class': 'value',
-                'text.class': attr_value('value_class', widget, data)
+                'text.class': value_class
             })
         if not static:
             row['actions'] = factory(
@@ -155,6 +165,7 @@ def dict_edit_renderer(widget, data):
         i += 1
 
 
+@managedprops('key_label', 'value_label', 'head')
 def dict_display_renderer(widget, data):
     value = data.value
     if not value:
@@ -174,6 +185,7 @@ def dict_display_renderer(widget, data):
     return head + data.tag('dl', *values)
 
 
+@managedprops('static')
 def dict_extractor(widget, data):
     if '{}.exists'.format(widget.dottedpath) not in data.request:
         return UNSET
@@ -214,7 +226,7 @@ def static_dict_required_extractor(widget, data):
         if isinstance(required, STR_TYPE):
             raise ExtractionError(required)
         raise ExtractionError(_(
-            'static_dict_values_required',
+            'dict_values_required',
             default='Dict values must not be empty'
         ))
     return extracted
