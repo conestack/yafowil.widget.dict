@@ -44,7 +44,8 @@ class TestDictWidget(YafowilTestCase):
         ])
         self.check_output("""
         <div>
-          <input class="hidden" name="mydict" type="hidden" value=""/>
+          <input class="hidden" id="input-mydict-exists"
+                 name="mydict.exists" type="hidden" value="1"/>
           <table class="dictwidget key-keyfield value-valuefield"
                  id="dictwidget_mydict.entry">
             <thead>
@@ -226,25 +227,28 @@ class TestDictWidget(YafowilTestCase):
 
     def test_unset_extraction(self):
         widget = factory('dict', name='mydict')
-        widget()  # need to call widget in order to instanciate subwidgets
+        # need to call widget in order to instanciate subwidgets
+        widget()
         request = {}
         data = widget.extract(request)
         self.assertEqual(data.extracted, UNSET)
 
     def test_empty_extraction(self):
         widget = factory('dict', name='mydict')
-        widget()  # need to call widget in order to instanciate subwidgets
+        # need to call widget in order to instanciate subwidgets
+        widget()
         request = {
-            'mydict': ''  # exists marker
+            'mydict.exists': '1'
         }
         data = widget.extract(request=request)
         self.assertEqual(data.extracted, odict())
 
     def test_non_empty_extraction(self):
         widget = factory('dict', name='mydict')
-        widget()  # need to call widget in order to instanciate subwidgets
+        # need to call widget in order to instanciate subwidgets
+        widget()
         request = {
-            'mydict': '',  # exists marker
+            'mydict.exists': '1',
             'mydict.entry0.key': 'key1',
             'mydict.entry0.value': 'Value1',
             'mydict.entry1.key': 'key2',
@@ -265,9 +269,10 @@ class TestDictWidget(YafowilTestCase):
             name='mydict',
             value=odict([('key1', 'Value1'), ('key2', 'Value2')])
         )
-        widget()  # need to call widget in order to instanciate subwidgets
+        # need to call widget in order to instanciate subwidgets
+        widget()
         request = {
-            'mydict': '',  # exists marker
+            'mydict.exists': '1',
             'mydict.entry0.key': 'key1',
             'mydict.entry0.value': 'Value1',
             'mydict.entry1.key': 'key2',
@@ -288,9 +293,10 @@ class TestDictWidget(YafowilTestCase):
             name='mydict',
             value=odict([('key1', 'Value1')])
         )
-        widget()  # need to call widget in order to instanciate subwidgets
+        # need to call widget in order to instanciate subwidgets
+        widget()
         request = {
-            'mydict': '',  # exists marker
+            'mydict.exists': '1',
             'mydict.entry0.key': 'key1',
             'mydict.entry0.value': 'Value1',
             'mydict.entry1.key': 'key2',
@@ -311,9 +317,10 @@ class TestDictWidget(YafowilTestCase):
             name='mydict',
             value=odict([('key1', 'Value1'), ('key2', 'Value2')])
         )
-        widget()  # need to call widget in order to instanciate subwidgets
+        # need to call widget in order to instanciate subwidgets
+        widget()
         request = {
-            'mydict': '',  # exists marker
+            'mydict.exists': '1',
             'mydict.entry0.key': 'key1',
             'mydict.entry0.value': 'Value1'
         }
@@ -332,9 +339,10 @@ class TestDictWidget(YafowilTestCase):
             name='mydict',
             value=odict([('key1', 'Value1'), ('key2', 'Value2')])
         )
-        widget()  # need to call widget in order to instanciate subwidgets
+        # need to call widget in order to instanciate subwidgets
+        widget()
         request = {
-            'mydict': '',  # exists marker
+            'mydict.exists': '1',
             'mydict.entry0.key': 'key1',
             'mydict.entry0.value': 'New Value1',
             'mydict.entry1.key': '',
@@ -356,7 +364,8 @@ class TestDictWidget(YafowilTestCase):
             props={
                 'required': 'Dict entires required'
             })
-        widget()  # need to call widget in order to instanciate subwidgets
+        # need to call widget in order to instanciate subwidgets
+        widget()
         request = {}
         data = widget.extract(request)
         self.assertEqual(data.extracted, UNSET)
@@ -369,9 +378,10 @@ class TestDictWidget(YafowilTestCase):
             props={
                 'required': 'Dict entries required'
             })
-        widget()  # need to call widget in order to instanciate subwidgets
+        # need to call widget in order to instanciate subwidgets
+        widget()
         request = {
-            'mydict': ''  # exists marker
+            'mydict.exists': '1'
         }
         data = widget.extract(request)
         self.assertEqual(data.extracted, odict())
@@ -385,9 +395,10 @@ class TestDictWidget(YafowilTestCase):
             props={
                 'required': 'Dict entries required'
             })
-        widget()  # need to call widget in order to instanciate subwidgets
+        # need to call widget in order to instanciate subwidgets
+        widget()
         request = {
-            'mydict': '',  # exists marker
+            'mydict.exists': '1',
             'mydict.entry0.key': 'key1',
             'mydict.entry0.value': 'Value1'
         }
@@ -403,9 +414,10 @@ class TestDictWidget(YafowilTestCase):
             props={
                 'required': 'Dict entries required'
             })
-        widget()  # need to call widget in order to instanciate subwidgets
+        # need to call widget in order to instanciate subwidgets
+        widget()
         request = {
-            'mydict': ''  # exists marker
+            'mydict.exists': '1'
         }
         data = widget.extract(request=request)
         self.assertEqual(data.extracted, odict())
@@ -414,31 +426,39 @@ class TestDictWidget(YafowilTestCase):
         rendered = widget(data=data)
         self.assertFalse(rendered.find('value="Value1"') > -1)
         self.assertFalse(rendered.find('value="Value2"') > -1)
+        self.assertTrue(rendered.find('<tbody></tbody>') > -1)
 
-    def _test_render_static_dict(self):
-        # Use dict widget as static widget
-        form = factory(
-            'form',
-            name='myform',
-            props={
-                'action': 'myaction'
-            })
-        form['mydict'] = factory(
+    def test_static_dict(self):
+        widget = factory(
             'error:dict',
+            name='mydict',
             value=odict([('k1', 'v1')]),
             props={
-                'required': 'I am required',
                 'static': True,
                 'key_label': 'Key',
                 'value_label': 'Value'
             })
+        rendered = widget()
+        self.assertEqual(widget.treerepr().split('\n'), [
+            "<class 'yafowil.base.Widget'>: mydict",
+            "  <class 'yafowil.base.Widget'>: exists",
+            "  <class 'yafowil.base.Widget'>: table",
+            "    <class 'yafowil.base.Widget'>: head",
+            "      <class 'yafowil.base.Widget'>: row",
+            "        <class 'yafowil.base.Widget'>: key",
+            "        <class 'yafowil.base.Widget'>: value",
+            "    <class 'yafowil.base.Widget'>: body",
+            "      <class 'yafowil.base.Widget'>: entry0",
+            "        <class 'yafowil.base.Widget'>: key",
+            "        <class 'yafowil.base.Widget'>: value",
+            ""
+        ])
         self.check_output("""
-        <form action="myaction" enctype="multipart/form-data" id="form-myform"
-              method="post" novalidate="novalidate">
-          <input class="hidden" id="input-myform-mydict-exists"
-                 name="myform.mydict.exists" type="hidden" value="1"/>
+        <div>
+          <input class="hidden" id="input-mydict-exists"
+                 name="mydict.exists" type="hidden" value="1"/>
           <table class="dictwidget key-keyfield value-valuefield"
-                 id="dictwidget_myform.mydict.entry">
+                 id="dictwidget_mydict.entry">
             <thead>
               <tr>
                 <th>Key</th>
@@ -449,160 +469,117 @@ class TestDictWidget(YafowilTestCase):
               <tr>
                 <td class="key">
                   <input class="keyfield" disabled="disabled"
-                         id="input-myform-mydict-entry0-key"
-                         name="myform.mydict.entry0.key"
+                         id="input-mydict-entry0-key"
+                         name="mydict.entry0.key"
                          type="text" value="k1"/>
                 </td>
                 <td class="value">
-                  <input class="valuefield"
-                         id="input-myform-mydict-entry0-value"
-                         name="myform.mydict.entry0.value"
-                         type="text" value="v1"/>
+                  <input class="valuefield" id="input-mydict-entry0-value"
+                         name="mydict.entry0.value" type="text" value="v1"/>
                 </td>
               </tr>
             </tbody>
           </table>
-        </form>
-        """, fxml(form()))
+        </div>
+        """, fxml('<div>' + rendered + '</div>'))
 
-    def _test_extract_static_dict(self):
+    def test_static_extraction(self):
         # Static dict extraction. Disabled form fields are not transmitted, but
-        # since order is fixed dict could be reconstructed from original value
-        form = factory(
-            'form',
-            name='myform',
-            props={
-                'action': 'myaction'
-            })
-        form['mydict'] = factory(
-            'error:dict',
+        # since order is fixed, dict can be reconstructed from original value
+        widget = factory(
+            'dict',
+            name='mydict',
             value=odict([('k1', 'v1')]),
             props={
                 'static': True,
                 'key_label': 'Key',
                 'value_label': 'Value'
             })
-
+        # need to call widget in order to instanciate subwidgets
+        widget()
         request = {
-            'myform.mydict.exists': '1',
-            'myform.mydict.entry0.value': 'New Value 1',
+            'mydict.exists': '1',
+            'mydict.entry0.value': 'New Value1',
         }
-        data = form.extract(request=request)
-        self.assertEqual(
-            data.fetch('myform.mydict').extracted,
-            odict([('k1', 'New Value 1')])
-        )
+        data = widget.extract(request=request)
+        self.assertEqual(data.extracted, odict([('k1', 'New Value1')]))
 
-        # Since its static, we expect an extraction error if someone tries to
-        # add values
-        request = {
-            'myform.mydict.exists': '1',
-            'myform.mydict.entry0.value': 'New Value 1',
-            'myform.mydict.entry1.key': 'Wrong Key 2',
-            'myform.mydict.entry1.value': 'Wrong Value 2',
-        }
-        data = form.extract(request=request)
-        self.assertEqual(
-            data['mydict'].errors,
-            [ExtractionError('Invalid number of static values')]
-        )
-
-    def _test_required_static_dict(self):
-        # Static dicts required. By default checks if there's a value in
-        # every entry
-        form = factory(
-            'form',
-            name='myform',
-            props={
-                'action': 'myaction'
-            })
-        form['mydict'] = factory(
+    def test_static_required_extraction_error(self):
+        # if static dict is required, dict values must not be empty
+        widget = factory(
             'error:dict',
+            name='mydict',
             value=odict([('k1', 'v1')]),
             props={
-                'required': 'I am required',
+                'required': True,
                 'static': True,
                 'key_label': 'Key',
                 'value_label': 'Value'
             })
-
+        # need to call widget in order to instanciate subwidgets
+        widget()
         request = {
-            'myform.mydict.exists': '1',
+            'mydict.exists': '1',
+            'mydict.entry0.value': '',
         }
-        data = form.extract(request=request)
+        data = widget.extract(request=request)
+        self.assertTrue(data.has_errors)
         self.assertEqual(
-            data.fetch('myform.mydict').errors,
-            [ExtractionError('I am required')]
+            data.errors,
+            [ExtractionError('Dict values must not be empty')]
         )
+        # custom required message
+        widget.attrs['required'] = 'Doh! no values.'
+        data = widget.extract(request=request)
+        self.assertTrue(data.has_errors)
+        self.assertEqual(
+            data.errors,
+            [ExtractionError('Doh! no values.')]
+        )
+        # check rendered
+        rendered = widget(data=data)
+        expected = '<div class="errormessage">Doh! no values.</div>'
+        self.assertTrue(rendered.find(expected) > -1)
+        expected = 'name="mydict.entry0.value" type="text" value=""'
+        self.assertTrue(rendered.find(expected) > -1)
 
+    def test_static_required_extraction_success(self):
+        # if static dict is required, dict values must not be empty
+        widget = factory(
+            'error:dict',
+            name='mydict',
+            value=odict([('k1', 'v1')]),
+            props={
+                'required': True,
+                'static': True,
+                'key_label': 'Key',
+                'value_label': 'Value'
+            })
+        # need to call widget in order to instanciate subwidgets
+        widget()
+        # check valid extraction
         request = {
-            'myform.mydict.exists': '1',
-            'myform.mydict.entry0.value': '',
+            'mydict.exists': '1',
+            'mydict.entry0.value': 'Value1',
         }
-        data = form.extract(request=request)
+        data = widget.extract(request=request)
+        self.assertFalse(data.has_errors)
         self.assertEqual(
-            data.fetch('myform.mydict').errors,
-            [ExtractionError('I am required')]
+            data.extracted,
+            odict([('k1', 'Value1')])
         )
+        # check rendered
+        rendered = widget(data=data)
+        expected = '<div class="errormessage">'
+        self.assertFalse(rendered.find(expected) > -1)
+        expected = 'name="mydict.entry0.value" type="text" value="Value1"'
+        self.assertTrue(rendered.find(expected) > -1)
 
-        # Static required rendering
-        self.check_output("""
-        <form action="myaction" enctype="multipart/form-data" id="form-myform"
-              method="post" novalidate="novalidate">
-          <div class="error">
-            <div class="errormessage">I am required</div>
-            <input class="hidden" id="input-myform-mydict-exists"
-                   name="myform.mydict.exists" type="hidden" value="1"/>
-            <table class="dictwidget key-keyfield value-valuefield"
-                   id="dictwidget_myform.mydict.entry">
-              <thead>
-                <tr>
-                  <th>Key</th>
-                  <th>Value</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="key">
-                    <input class="keyfield" disabled="disabled"
-                           id="input-myform-mydict-entry0-key"
-                           name="myform.mydict.entry0.key"
-                           type="text" value="k1"/>
-                  </td>
-                  <td class="value">
-                    <input class="valuefield"
-                           id="input-myform-mydict-entry0-value"
-                           name="myform.mydict.entry0.value"
-                           type="text" value=""/>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </form>
-        """, fxml(form(data)))
-
-        # Required message not set directly in widget props
-        form['mydict'].attrs['required'] = True
-        request = {
-            'myform.mydict.exists': '1',
-            'myform.mydict.entry0.value': '',
-        }
-        data = form.extract(request=request)
-        self.assertEqual(
-            data.fetch('myform.mydict').errors,
-            [ExtractionError('Mandatory field was empty')]
-        )
-
-    def _test_display_renderer(self):
-        # Dict display renderer
-        value = odict()
-        value['foo'] = 'Foo'
-        value['bar'] = 'Bar'
+    def test_display_dict(self):
         widget = factory(
             'dict',
             name='display_dict',
-            value=value,
+            value=odict([('foo', 'Foo'), ('bar', 'Bar')]),
             props={
                 'key_label': 'Key',
                 'value_label': 'Value',
@@ -620,8 +597,7 @@ class TestDictWidget(YafowilTestCase):
         </div>
         """, fxml('<div>{}</div>'.format(widget())))
 
-    def _test_display_renderer_empty_values(self):
-        # Display dict empty values
+    def test_display_empty_value(self):
         widget = factory(
             'dict',
             name='display_dict',
@@ -637,14 +613,13 @@ class TestDictWidget(YafowilTestCase):
         </div>
         """, fxml('<div>{}</div>'.format(widget())))
 
-    def _test_display_renderer_callable_labels(self):
-        # Display dict callable labels
+    def test_display_callable_labels(self):
         widget = factory(
             'dict',
             name='display_dict',
             props={
-                'key_label': lambda: 'Computed Key',
-                'value_label': lambda: 'Computed Value'
+                'key_label': lambda w, d: 'Computed Key',
+                'value_label': lambda w, d: 'Computed Value'
             },
             mode='display')
         self.check_output("""
@@ -654,8 +629,23 @@ class TestDictWidget(YafowilTestCase):
         </div>
         """, fxml('<div>{}</div>'.format(widget())))
 
-    def _test_display_renderer_bc_labels(self):
-        # Display dict, B/C labels
+    def test_display_bc_callable_labels(self):
+        widget = factory(
+            'dict',
+            name='display_dict',
+            props={
+                'key_label': lambda: 'B/C Computed Key',
+                'value_label': lambda: 'B/C Computed Value'
+            },
+            mode='display')
+        self.check_output("""
+        <div>
+          <h5>B/C Computed Key: B/C Computed Value</h5>
+          <dl/>
+        </div>
+        """, fxml('<div>{}</div>'.format(widget())))
+
+    def test_display_bc_labels(self):
         widget = factory(
             'dict',
             name='display_dict',
@@ -673,15 +663,14 @@ class TestDictWidget(YafowilTestCase):
         </div>
         """, fxml('<div>{}</div>'.format(widget())))
 
-    def _test_display_renderer_computed_bc_labels(self):
-        # Display dict, computed B/C labels
+    def test_display_computed_bc_labels(self):
         widget = factory(
             'dict',
             name='display_dict',
             props={
                 'head': {
-                    'key': lambda: 'Computed B/C Key',
-                    'value': lambda: 'Computed B/C Value',
+                    'key': lambda w, d: 'Computed B/C Key',
+                    'value': lambda w, d: 'Computed B/C Value',
                 }
             },
             mode='display')
@@ -692,8 +681,25 @@ class TestDictWidget(YafowilTestCase):
         </div>
         """, fxml('<div>{}</div>'.format(widget())))
 
-    def _test_display_renderer_no_labels(self):
-        # Display dict, no labels
+    def test_display_bc_computed_bc_labels(self):
+        widget = factory(
+            'dict',
+            name='display_dict',
+            props={
+                'head': {
+                    'key': lambda: 'B/C Computed B/C Key',
+                    'value': lambda: 'B/C Computed B/C Value',
+                }
+            },
+            mode='display')
+        self.check_output("""
+        <div>
+          <h5>B/C Computed B/C Key: B/C Computed B/C Value</h5>
+          <dl/>
+        </div>
+        """, fxml('<div>{}</div>'.format(widget())))
+
+    def test_display_renderer_no_labels(self):
         widget = factory(
             'dict',
             name='display_dict',

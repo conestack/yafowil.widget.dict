@@ -68,11 +68,7 @@ def value_label(widget, data):
 
 @managedprops('static', 'table_class', *css_managed_props)
 def dict_edit_renderer(widget, data):
-    widget['exists'] = factory(
-        'hidden',
-        props={
-            'structural': True
-        })
+    widget['exists'] = factory('hidden', value='1')
     table = widget['table'] = factory(
         'table',
         props={
@@ -120,14 +116,8 @@ def dict_edit_renderer(widget, data):
         props={
             'structural': True
         })
-    # if data.errors and static:
-    #     basename = '{}.entry'.format(body.dottedpath)
-    #     value = extract_static(data, basename)
-    # else:
-    #     value = fetch_value(widget, data)
-    # XXX: static?
     value = fetch_value(widget, data)
-    if value is UNSET:
+    if not value:
         return
     i = 0
     for key, val in value.items():
@@ -175,7 +165,7 @@ def dict_display_renderer(widget, data):
     head = u''
     k_label = key_label(widget, data)
     v_label = value_label(widget, data)
-    if k_label and v_label:
+    if k_label.strip() and v_label.strip():
         head = u'{}: {}'.format(
             data.tag.translate(k_label),
             data.tag.translate(v_label)
@@ -184,82 +174,57 @@ def dict_display_renderer(widget, data):
     return head + data.tag('dl', *values)
 
 
-def raise_extraction_error(widget, data):
-    required = attr_value('required', widget, data)
-    if isinstance(required, STR_TYPE):
-        raise ExtractionError(required)
-    required_message = attr_value('required_message', widget, data)
-    raise ExtractionError(required_message)
-
-
-def extract_static(data, basename):
+def dict_extractor(widget, data):
+    if '{}.exists'.format(widget.dottedpath) not in data.request:
+        return UNSET
+    extracted = odict()
     request = data.request
-    ret = odict()
-    index = 0
-    keys = data.value.keys()
-    while True:
-        valuename = '{}{}.value'.format(basename, index)
-        if valuename in request:
-            if index >= len(keys):
-                message = _(
-                    'invalid_number_static_values',
-                    default=u'Invalid number of static values'
-                )
-                raise ExtractionError(message)
-            ret[keys[index]] = request[valuename]
-            index += 1
-            continue
-        break
-    return ret
-
-
-def extract_dynamic(data, basename):
-    request = data.request
-    ret = odict()
+    base_name = '{}.entry'.format(widget['table']['body'].dottedpath)
+    if attr_value('static', widget, data):
+        keys = data.value.keys()
+        for index in range(len(keys)):
+            value_name = '{}{}.value'.format(base_name, index)
+            extracted[keys[index]] = request[value_name]
+        return extracted
     index = 0
     while True:
-        keyname = '{}{}.key'.format(basename, index)
-        valuename = '{}{}.value'.format(basename, index)
-        if keyname in request:
-            key = request[keyname].strip()
+        key_name = '{}{}.key'.format(base_name, index)
+        value_name = '{}{}.value'.format(base_name, index)
+        if key_name in request:
+            key = request[key_name].strip()
             if key:
-                ret[key] = request[valuename]
+                extracted[key] = request[value_name]
             index += 1
             continue
         break
-    return ret
+    return extracted
 
 
 @managedprops('static', 'required')
-def dict_extractor(widget, data):
-    if widget.dottedpath not in data.request:
-        return UNSET
-    static = attr_value('static', widget, data)
-    body = widget['table']['body']
-    basename = '{}.entry'.format(body.dottedpath)
-    if static:
-        ret = extract_static(data, basename)
-    else:
-        ret = extract_dynamic(data, basename)
-    return ret
-    # if len(ret) == 0:
-    #     ret = UNSET
-    # if attr_value('required', widget, data):
-    #     if not ret:  # if ret is UNSET:
-    #         # HACK
-    #         data.extracted = ret
-    #         raise_extraction_error(widget, data)
-    #     if static:
-    #         for val in ret.values():
-    #             if not val:
-    #                 raise_extraction_error(widget, data)
-    # return ret
+def static_dict_required_extractor(widget, data):
+    extracted = data.extracted
+    if extracted is UNSET:
+        return extracted
+    required = attr_value('required', widget, data)
+    if not (required and attr_value('static', widget, data)):
+        return extracted
+    for value in extracted.values():
+        if value:
+            continue
+        if isinstance(required, STR_TYPE):
+            raise ExtractionError(required)
+        raise ExtractionError(_(
+            'static_dict_values_required',
+            default='Dict values must not be empty'
+        ))
+    return extracted
 
 
 factory.register(
     'dict',
     extractors=[
         dict_extractor,
+        static_dict_required_extractor,
         generic_required_extractor
     ],
     edit_renderers=[

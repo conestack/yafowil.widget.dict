@@ -9,6 +9,7 @@
 /.mr.developer.cfg
 /.project
 /.pydevproject
+/coverage/
 /bin/
 /develop-eggs/
 /dist/
