@@ -3,12 +3,12 @@ from odict import odict
 from yafowil.base import ExtractionError
 from yafowil.base import factory
 from yafowil.base import fetch_value
+from yafowil.common import generic_required_extractor
 from yafowil.compat import STR_TYPE
-from yafowil.compound import compound_extractor
 from yafowil.compound import compound_renderer
-from yafowil.utils import callable_value
 from yafowil.tsf import TSF
 from yafowil.utils import attr_value
+from yafowil.utils import callable_value
 from yafowil.utils import css_managed_props
 from yafowil.utils import managedprops
 
@@ -68,7 +68,11 @@ def value_label(widget, data):
 
 @managedprops('static', 'table_class', *css_managed_props)
 def dict_edit_renderer(widget, data):
-    widget['exists'] = factory('hidden', value='1')
+    widget['exists'] = factory(
+        'hidden',
+        props={
+            'structural': True
+        })
     table = widget['table'] = factory(
         'table',
         props={
@@ -123,7 +127,7 @@ def dict_edit_renderer(widget, data):
     #     value = fetch_value(widget, data)
     # XXX: static?
     value = fetch_value(widget, data)
-    if not value:
+    if value is UNSET:
         return
     i = 0
     for key, val in value.items():
@@ -159,6 +163,25 @@ def dict_edit_renderer(widget, data):
                     'class': 'actions'
                 })
         i += 1
+
+
+def dict_display_renderer(widget, data):
+    value = data.value
+    if not value:
+        value = dict()
+    values = list()
+    for key, val in value.items():
+        values.append(data.tag('dt', key) + data.tag('dd', val))
+    head = u''
+    k_label = key_label(widget, data)
+    v_label = value_label(widget, data)
+    if k_label and v_label:
+        head = u'{}: {}'.format(
+            data.tag.translate(k_label),
+            data.tag.translate(v_label)
+        )
+        head = data.tag('h5', head)
+    return head + data.tag('dl', *values)
 
 
 def raise_extraction_error(widget, data):
@@ -209,8 +232,8 @@ def extract_dynamic(data, basename):
 
 @managedprops('static', 'required')
 def dict_extractor(widget, data):
-    # if '{}.exists'.format(widget.dottedpath) not in data.request:
-    #     return UNSET
+    if widget.dottedpath not in data.request:
+        return UNSET
     static = attr_value('static', widget, data)
     body = widget['table']['body']
     basename = '{}.entry'.format(body.dottedpath)
@@ -218,44 +241,26 @@ def dict_extractor(widget, data):
         ret = extract_static(data, basename)
     else:
         ret = extract_dynamic(data, basename)
+    return ret
     # if len(ret) == 0:
     #     ret = UNSET
-    if attr_value('required', widget, data):
-        if not ret:  # if ret is UNSET:
-            # HACK
-            data.extracted = ret
-            raise_extraction_error(widget, data)
-        if static:
-            for val in ret.values():
-                if not val:
-                    raise_extraction_error(widget, data)
-    return ret
-
-
-def dict_display_renderer(widget, data):
-    value = data.value
-    if not value:
-        value = dict()
-    values = list()
-    for key, val in value.items():
-        values.append(data.tag('dt', key) + data.tag('dd', val))
-    head = u''
-    k_label = key_label(widget, data)
-    v_label = value_label(widget, data)
-    if k_label and v_label:
-        head = u'{}: {}'.format(
-            data.tag.translate(k_label),
-            data.tag.translate(v_label)
-        )
-        head = data.tag('h5', head)
-    return head + data.tag('dl', *values)
+    # if attr_value('required', widget, data):
+    #     if not ret:  # if ret is UNSET:
+    #         # HACK
+    #         data.extracted = ret
+    #         raise_extraction_error(widget, data)
+    #     if static:
+    #         for val in ret.values():
+    #             if not val:
+    #                 raise_extraction_error(widget, data)
+    # return ret
 
 
 factory.register(
     'dict',
     extractors=[
-        compound_extractor,
-        dict_extractor
+        dict_extractor,
+        generic_required_extractor
     ],
     edit_renderers=[
         dict_edit_renderer,
