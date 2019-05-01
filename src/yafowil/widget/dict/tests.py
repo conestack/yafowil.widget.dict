@@ -75,7 +75,7 @@ class TestDictWidget(YafowilTestCase):
                 'key_label': lambda w, d: 'Computed Key',
                 'value_label': lambda w, d: 'Computed Value'
             })
-        rendered = fxml('<div>' + widget() + '</div>')
+        rendered = fxml('<div>{}</div>'.format(widget()))
         self.assertTrue(rendered.find('Computed Key') > -1)
         self.assertTrue(rendered.find('Computed Value') > -1)
 
@@ -88,7 +88,7 @@ class TestDictWidget(YafowilTestCase):
                 'key_label': lambda: 'B/C Computed Key',
                 'value_label': lambda: 'B/C Computed Value'
             })
-        rendered = fxml('<div>' + widget() + '</div>')
+        rendered = fxml('<div>{}</div>'.format(widget()))
         self.assertTrue(rendered.find('B/C Computed Key') > -1)
         self.assertTrue(rendered.find('B/C Computed Value') > -1)
 
@@ -103,7 +103,7 @@ class TestDictWidget(YafowilTestCase):
                     'value': 'B/C Value',
                 }
             })
-        rendered = fxml('<div>' + widget() + '</div>')
+        rendered = fxml('<div>{}</div>'.format(widget()))
         self.assertTrue(rendered.find('B/C Key') > -1)
         self.assertTrue(rendered.find('B/C Value') > -1)
 
@@ -117,7 +117,7 @@ class TestDictWidget(YafowilTestCase):
                     'value': lambda w, d: 'Computed B/C Value',
                 }
             })
-        rendered = fxml('<div>' + widget() + '</div>')
+        rendered = fxml('<div>{}</div>'.format(widget()))
         self.assertTrue(rendered.find('Computed B/C Key') > -1)
         self.assertTrue(rendered.find('Computed B/C Value') > -1)
 
@@ -131,13 +131,13 @@ class TestDictWidget(YafowilTestCase):
                     'value': lambda: 'B/C Computed B/C Value',
                 }
             })
-        rendered = fxml('<div>' + widget() + '</div>')
+        rendered = fxml('<div>{}</div>'.format(widget()))
         self.assertTrue(rendered.find('B/C Computed B/C Key') > -1)
         self.assertTrue(rendered.find('B/C Computed B/C Value') > -1)
 
     def test_skip_labels(self):
         widget = factory('dict', name='mydict')
-        rendered = fxml('<div>' + widget() + '</div>')
+        rendered = fxml('<div>{}</div>'.format(widget()))
         # search for empty th
         index = rendered.find('<th> </th>')
         self.assertTrue(index > -1)
@@ -154,7 +154,7 @@ class TestDictWidget(YafowilTestCase):
                 'key_label': 'Key',
                 'value_label': 'Value',
             })
-        result = widget()
+        rendered = widget()
         self.assertEqual(widget.treerepr().split('\n'), [
             "<class 'yafowil.base.Widget'>: mydict",
             "  <class 'yafowil.base.Widget'>: exists",
@@ -223,20 +223,16 @@ class TestDictWidget(YafowilTestCase):
           </tbody>
           ...
         </div>
-        """, fxml('<div>' + result + '</div>'))
+        """, fxml('<div>{}</div>'.format(rendered)))
 
     def test_unset_extraction(self):
         widget = factory('dict', name='mydict')
-        # need to call widget in order to instanciate subwidgets
-        widget()
         request = {}
         data = widget.extract(request)
         self.assertEqual(data.extracted, UNSET)
 
     def test_empty_extraction(self):
         widget = factory('dict', name='mydict')
-        # need to call widget in order to instanciate subwidgets
-        widget()
         request = {
             'mydict.exists': '1'
         }
@@ -245,8 +241,6 @@ class TestDictWidget(YafowilTestCase):
 
     def test_non_empty_extraction(self):
         widget = factory('dict', name='mydict')
-        # need to call widget in order to instanciate subwidgets
-        widget()
         request = {
             'mydict.exists': '1',
             'mydict.entry0.key': 'key1',
@@ -269,8 +263,6 @@ class TestDictWidget(YafowilTestCase):
             name='mydict',
             value=odict([('key1', 'Value1'), ('key2', 'Value2')])
         )
-        # need to call widget in order to instanciate subwidgets
-        widget()
         request = {
             'mydict.exists': '1',
             'mydict.entry0.key': 'key1',
@@ -293,8 +285,6 @@ class TestDictWidget(YafowilTestCase):
             name='mydict',
             value=odict([('key1', 'Value1')])
         )
-        # need to call widget in order to instanciate subwidgets
-        widget()
         request = {
             'mydict.exists': '1',
             'mydict.entry0.key': 'key1',
@@ -317,8 +307,6 @@ class TestDictWidget(YafowilTestCase):
             name='mydict',
             value=odict([('key1', 'Value1'), ('key2', 'Value2')])
         )
-        # need to call widget in order to instanciate subwidgets
-        widget()
         request = {
             'mydict.exists': '1',
             'mydict.entry0.key': 'key1',
@@ -339,8 +327,6 @@ class TestDictWidget(YafowilTestCase):
             name='mydict',
             value=odict([('key1', 'Value1'), ('key2', 'Value2')])
         )
-        # need to call widget in order to instanciate subwidgets
-        widget()
         request = {
             'mydict.exists': '1',
             'mydict.entry0.key': 'key1',
@@ -364,8 +350,6 @@ class TestDictWidget(YafowilTestCase):
             props={
                 'required': 'Dict entires required'
             })
-        # need to call widget in order to instanciate subwidgets
-        widget()
         request = {}
         data = widget.extract(request)
         self.assertEqual(data.extracted, UNSET)
@@ -378,8 +362,6 @@ class TestDictWidget(YafowilTestCase):
             props={
                 'required': 'Dict entries required'
             })
-        # need to call widget in order to instanciate subwidgets
-        widget()
         request = {
             'mydict.exists': '1'
         }
@@ -395,8 +377,6 @@ class TestDictWidget(YafowilTestCase):
             props={
                 'required': 'Dict entries required'
             })
-        # need to call widget in order to instanciate subwidgets
-        widget()
         request = {
             'mydict.exists': '1',
             'mydict.entry0.key': 'key1',
@@ -414,8 +394,6 @@ class TestDictWidget(YafowilTestCase):
             props={
                 'required': 'Dict entries required'
             })
-        # need to call widget in order to instanciate subwidgets
-        widget()
         request = {
             'mydict.exists': '1'
         }
@@ -481,7 +459,7 @@ class TestDictWidget(YafowilTestCase):
             </tbody>
           </table>
         </div>
-        """, fxml('<div>' + rendered + '</div>'))
+        """, fxml('<div>{}</div>'.format(rendered)))
 
     def test_static_extraction(self):
         # Static dict extraction. Disabled form fields are not transmitted, but
@@ -495,8 +473,6 @@ class TestDictWidget(YafowilTestCase):
                 'key_label': 'Key',
                 'value_label': 'Value'
             })
-        # need to call widget in order to instanciate subwidgets
-        widget()
         request = {
             'mydict.exists': '1',
             'mydict.entry0.value': 'New Value1',
@@ -516,8 +492,6 @@ class TestDictWidget(YafowilTestCase):
                 'key_label': 'Key',
                 'value_label': 'Value'
             })
-        # need to call widget in order to instanciate subwidgets
-        widget()
         request = {
             'mydict.exists': '1',
             'mydict.entry0.value': '',
@@ -555,8 +529,6 @@ class TestDictWidget(YafowilTestCase):
                 'key_label': 'Key',
                 'value_label': 'Value'
             })
-        # need to call widget in order to instanciate subwidgets
-        widget()
         # check valid extraction
         request = {
             'mydict.exists': '1',

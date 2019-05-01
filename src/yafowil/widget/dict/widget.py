@@ -179,7 +179,7 @@ def dict_extractor(widget, data):
         return UNSET
     extracted = odict()
     request = data.request
-    base_name = '{}.entry'.format(widget['table']['body'].dottedpath)
+    base_name = '{}.entry'.format(widget.dottedpath)
     if attr_value('static', widget, data):
         keys = data.value.keys()
         for index in range(len(keys)):
