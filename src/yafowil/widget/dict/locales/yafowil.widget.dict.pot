@@ -1,21 +1,22 @@
-# 
+#
 # SOME DESCRIPTIVE TITLE
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2019.
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2014-08-06 16:44+0200\n"
+"POT-Creation-Date: 2019-05-01 20:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
+"Generated-By: Lingua 4.13\n"
 
-#. Default: Invalid number of static values
-#: ./src/yafowil/widget/dict/widget.py:140
-msgid "invalid_number_static_values"
+#. Default: Dict values must not be empty
+#: ./src/yafowil/widget/dict/widget.py:228
+msgid "dict_values_required"
 msgstr ""
