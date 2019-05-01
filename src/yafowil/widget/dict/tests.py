@@ -120,123 +120,74 @@ class TestDictWidget(YafowilTestCase):
         self.assertTrue(rendered.find('B/C Computed B/C Key') > -1)
         self.assertTrue(rendered.find('B/C Computed B/C Value') > -1)
 
-    def _test_skip_labels(self):
-        form = factory(
-            'form',
-            name='myform',
-            props={
-                'action': 'myaction'
-            })
-        form['mydict'] = factory('dict')
-        self.check_output("""
-        <form action="myaction" enctype="multipart/form-data" id="form-myform"
-              method="post" novalidate="novalidate">
-          <input class="hidden" id="input-myform-mydict-exists"
-                 name="myform.mydict.exists" type="hidden" value="1"/>
-          <table class="dictwidget key-keyfield value-valuefield"
-                 id="dictwidget_myform.mydict.entry">
-            <thead>
-              <tr>
-                <th> </th>
-                <th> </th>
-                ...
-              </tr>
-            </thead>
-            <tbody/>
-          </table>
-        </form>
-        """, fxml(form()))
+    def test_skip_labels(self):
+        widget = factory('dict', name='mydict')
+        rendered = fxml('<div>' + widget() + '</div>')
+        # search for empty th
+        index = rendered.find('<th> </th>')
+        self.assertTrue(index > -1)
+        # search for second empty th
+        self.assertTrue(rendered.find('<th> </th>', index + 1) > index)
 
-    def _test_dict_with_preset_values(self):
+    def test_dict_with_preset_values(self):
         # Create dict widget with preset values
-        form = factory(
-            'form',
-            name='myform',
-            props={
-                'action': 'myaction'
-            })
-        value = odict()
-        value['key1'] = u'Value1'
-        value['key2'] = u'Value2'
-        form['mydict'] = factory(
+        widget = factory(
             'dict',
-            value=value,
+            name='mydict',
+            value=odict([('key1', 'Value1'), ('key2', 'Values2')]),
             props={
                 'key_label': 'Key',
                 'value_label': 'Value',
             })
         self.check_output("""
-        <form action="myaction" enctype="multipart/form-data" id="form-myform"
-              method="post" novalidate="novalidate">
-          <input class="hidden" id="input-myform-mydict-exists"
-                 name="myform.mydict.exists" type="hidden" value="1"/>
-          <table class="dictwidget key-keyfield value-valuefield"
-                 id="dictwidget_myform.mydict.entry">
-            <thead>
-              <tr>
-                <th>Key</th>
-                <th>Value</th>
-                <th class="actions">
-                  <div class="dict_actions">
-                    <a class="dict_row_add" href="#">
-                      <span class="icon-plus-sign"> </span>
-                    </a>
-                  </div>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="key">
-                  <input class="keyfield" id="input-myform-mydict-entry0-key"
-                         name="myform.mydict.entry0.key" type="text"
-                         value="key1"/>
-                </td>
-                <td class="value">
-                  <input class="valuefield"
-                         id="input-myform-mydict-entry0-value"
-                         name="myform.mydict.entry0.value"
-                         type="text" value="Value1"/>
-                </td>
-                <td class="actions">
-                  <div class="dict_actions">
-                    <a class="dict_row_add" href="#">
-                      <span class="icon-plus-sign"> </span>
-                    </a>
-                    <a class="dict_row_remove" href="#">
-                      <span class="icon-minus-sign"> </span>
-                    </a>
-                    <a class="dict_row_up" href="#">
-                      <span class="icon-circle-arrow-up"> </span>
-                    </a>
-                    <a class="dict_row_down" href="#">
-                      <span class="icon-circle-arrow-down"> </span>
-                    </a>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class="key">
-                  <input class="keyfield" id="input-myform-mydict-entry1-key"
-                         name="myform.mydict.entry1.key" type="text"
-                         value="key2"/>
-                </td>
-                <td class="value">
-                  <input class="valuefield"
-                         id="input-myform-mydict-entry1-value"
-                         name="myform.mydict.entry1.value"
-                         type="text" value="Value2"/>
-                </td>
-                <td class="actions">
-                  <div class="dict_actions">
-                    ...
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </form>
-        """, fxml(form()))
+        <div>
+          ...
+          <tbody>
+            <tr>
+              <td class="key">
+                <input class="keyfield" id="input-mydict-entry0-key"
+                       name="mydict.entry0.key" type="text" value="key1"/>
+              </td>
+              <td class="value">
+                <input class="valuefield" id="input-mydict-entry0-value"
+                       name="mydict.entry0.value" type="text" value="Value1"/>
+              </td>
+              <td class="actions">
+                <div class="dict_actions">
+                  <a class="dict_row_add" href="#">
+                    <span class="icon-plus-sign"> </span>
+                  </a>
+                  <a class="dict_row_remove" href="#">
+                    <span class="icon-minus-sign"> </span>
+                  </a>
+                  <a class="dict_row_up" href="#">
+                    <span class="icon-circle-arrow-up"> </span>
+                  </a>
+                  <a class="dict_row_down" href="#">
+                    <span class="icon-circle-arrow-down"> </span>
+                  </a>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="key">
+                <input class="keyfield" id="input-mydict-entry1-key"
+                       name="mydict.entry1.key" type="text" value="key2"/>
+              </td>
+              <td class="value">
+                <input class="valuefield" id="input-mydict-entry1-value"
+                       name="mydict.entry1.value" type="text" value="Value2"/>
+              </td>
+              <td class="actions">
+                <div class="dict_actions">
+                  ...
+                </div>
+              </td>
+            </tr>
+          </tbody>
+          ...
+        </div>
+        """, fxml('<div>' + widget() + '</div>'))
 
     def _test_extraction(self):
         # Base Extraction
