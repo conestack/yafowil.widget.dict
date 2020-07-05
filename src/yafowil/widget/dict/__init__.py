@@ -4,6 +4,7 @@ import os
 
 
 resourcedir = os.path.join(os.path.dirname(__file__), 'resources')
+
 js = [{
     'group': 'yafowil.widget.dict.common',
     'resource': 'widget.js',
@@ -28,7 +29,7 @@ plone5_css = [{
 
 @entry_point(order=10)
 def register():
-    import yafowil.widget.dict.widget
+    import yafowil.widget.dict.widget  # noqa
     factory.register_theme('default', 'yafowil.widget.dict',
                            resourcedir, js=js, css=default_css)
     factory.register_theme('bootstrap', 'yafowil.widget.dict',
