@@ -1,7 +1,7 @@
 Changes
 =======
 
-1.8 (unreleased)
+1.8 (2020-07-09)
 ----------------
 
 - Fix re-rendering of widget if values required but empty dict passed.
