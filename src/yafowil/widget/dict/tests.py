@@ -79,19 +79,6 @@ class TestDictWidget(YafowilTestCase):
         self.assertTrue(rendered.find('Computed Key') > -1)
         self.assertTrue(rendered.find('Computed Value') > -1)
 
-    def test_key_label_and_value_label_bc_callables(self):
-        # test B/C callable signature
-        widget = factory(
-            'dict',
-            name='mydict',
-            props={
-                'key_label': lambda: 'B/C Computed Key',
-                'value_label': lambda: 'B/C Computed Value'
-            })
-        rendered = fxml('<div>{}</div>'.format(widget()))
-        self.assertTrue(rendered.find('B/C Computed Key') > -1)
-        self.assertTrue(rendered.find('B/C Computed Value') > -1)
-
     def test_bc_head_property(self):
         # Test B/C ``head`` property
         widget = factory(
@@ -120,20 +107,6 @@ class TestDictWidget(YafowilTestCase):
         rendered = fxml('<div>{}</div>'.format(widget()))
         self.assertTrue(rendered.find('Computed B/C Key') > -1)
         self.assertTrue(rendered.find('Computed B/C Value') > -1)
-
-    def test_bc_head_property_bc_callables(self):
-        widget = factory(
-            'dict',
-            name='mydict',
-            props={
-                'head': {
-                    'key': lambda: 'B/C Computed B/C Key',
-                    'value': lambda: 'B/C Computed B/C Value',
-                }
-            })
-        rendered = fxml('<div>{}</div>'.format(widget()))
-        self.assertTrue(rendered.find('B/C Computed B/C Key') > -1)
-        self.assertTrue(rendered.find('B/C Computed B/C Value') > -1)
 
     def test_skip_labels(self):
         widget = factory('dict', name='mydict')
@@ -601,22 +574,6 @@ class TestDictWidget(YafowilTestCase):
         </div>
         """, fxml('<div>{}</div>'.format(widget())))
 
-    def test_display_bc_callable_labels(self):
-        widget = factory(
-            'dict',
-            name='display_dict',
-            props={
-                'key_label': lambda: 'B/C Computed Key',
-                'value_label': lambda: 'B/C Computed Value'
-            },
-            mode='display')
-        self.check_output("""
-        <div>
-          <h5>B/C Computed Key: B/C Computed Value</h5>
-          <dl/>
-        </div>
-        """, fxml('<div>{}</div>'.format(widget())))
-
     def test_display_bc_labels(self):
         widget = factory(
             'dict',
@@ -649,24 +606,6 @@ class TestDictWidget(YafowilTestCase):
         self.check_output("""
         <div>
           <h5>Computed B/C Key: Computed B/C Value</h5>
-          <dl/>
-        </div>
-        """, fxml('<div>{}</div>'.format(widget())))
-
-    def test_display_bc_computed_bc_labels(self):
-        widget = factory(
-            'dict',
-            name='display_dict',
-            props={
-                'head': {
-                    'key': lambda: 'B/C Computed B/C Key',
-                    'value': lambda: 'B/C Computed B/C Value',
-                }
-            },
-            mode='display')
-        self.check_output("""
-        <div>
-          <h5>B/C Computed B/C Key: B/C Computed B/C Value</h5>
           <dl/>
         </div>
         """, fxml('<div>{}</div>'.format(widget())))

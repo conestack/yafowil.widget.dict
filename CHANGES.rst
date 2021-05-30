@@ -4,7 +4,9 @@ Changes
 1.9 (unreleased)
 ----------------
 
-- No changes yet.
+- Remove B/C property callback tests. Property callbacks always
+  gets passed ``widget`` and ``data`` as of yafowil 3.0.0.
+  [rnix]
 
 
 1.8 (2020-07-09)
