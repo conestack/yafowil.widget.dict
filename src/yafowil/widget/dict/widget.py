@@ -250,7 +250,7 @@ factory.register(
 
 factory.doc['blueprint']['dict'] = """\
 Add-on widget `yafowil.widget.dict
-<http://github.com/bluedynamics/yafowil.widget.dict/>`_.
+<http://github.com/conestack/yafowil.widget.dict/>`_.
 """
 
 factory.defaults['dict.default'] = odict()
