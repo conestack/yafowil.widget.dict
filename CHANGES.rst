@@ -1,8 +1,11 @@
 Changes
 =======
 
-1.9 (unreleased)
+2.0 (unreleased)
 ----------------
+
+- Rewrite JavaScript using ES6.
+  [rnix]
 
 - Remove B/C property callback tests. Property callbacks always
   gets passed ``widget`` and ``data`` as of yafowil 3.0.0.

@@ -9,5 +9,9 @@ Contributors
 ============
 
 - Robert Niederrreiter
+
 - Peter Holzer
+
 - Georg Bernhard
+
+- Lena Daxenbichler

@@ -1,4 +1,4 @@
-(function (exports, $) {
+var yafowil_dict = (function (exports, $) {
     'use strict';
 
     class DictWidget {
@@ -165,4 +165,3 @@
     return exports;
 
 })({}, jQuery);
-//# sourceMappingURL=widget.js.map
