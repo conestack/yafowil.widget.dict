@@ -1,7 +1,9 @@
-name: Test dict
+name: PY Test dict
 
 on:
   push:
+    paths:
+    - '**.py'
 
 jobs:
   test:
