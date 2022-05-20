@@ -9,8 +9,8 @@ export class DictWidget {
     }
 
     constructor(elem) {
+        elem.data('yafowil-dict', this);
         this.elem = elem;
-        elem.data('dict', this);
         let head_actions = $('> thead .dict_actions', elem),
             add_handle = this.add_first_handle.bind(this);
         $('a.dict_row_add', head_actions).off().on('click', add_handle);
