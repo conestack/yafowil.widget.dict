@@ -7,6 +7,8 @@ export * from './widget.js';
 $(function() {
     if (window.ts !== undefined) {
         ts.ajax.register(DictWidget.initialize, true);
+    } else if (window.bdajax !== undefined) {
+        bdajax.register(DictWidget.initialize, true);
     } else {
         DictWidget.initialize();
     }
