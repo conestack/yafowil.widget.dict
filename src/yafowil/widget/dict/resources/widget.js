@@ -8,8 +8,8 @@ var yafowil_dict = (function (exports, $) {
             });
         }
         constructor(elem) {
+            elem.data('yafowil-dict', this);
             this.elem = elem;
-            elem.data('dict', this);
             let head_actions = $('> thead .dict_actions', elem),
                 add_handle = this.add_first_handle.bind(this);
             $('a.dict_row_add', head_actions).off().on('click', add_handle);
@@ -141,6 +141,8 @@ var yafowil_dict = (function (exports, $) {
     $(function() {
         if (window.ts !== undefined) {
             ts.ajax.register(DictWidget.initialize, true);
+        } else if (window.bdajax !== undefined) {
+            bdajax.register(DictWidget.initialize, true);
         } else {
             DictWidget.initialize();
         }
@@ -156,9 +158,7 @@ var yafowil_dict = (function (exports, $) {
     Object.defineProperty(exports, '__esModule', { value: true });
 
 
-    if (window.yafowil === undefined) {
-        window.yafowil = {};
-    }
+    window.yafowil = window.yafowil || {};
     window.yafowil.dict = exports;
 
 
