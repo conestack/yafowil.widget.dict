@@ -13,7 +13,10 @@ resources_dir = os.path.join(os.path.dirname(__file__), 'resources')
 
 # webresource ################################################################
 
-scripts = wr.ResourceGroup(name='yafowil-dict-scripts')
+scripts = wr.ResourceGroup(
+    name='yafowil-dict-scripts',
+    path='yafowil.widget.dict'
+)
 scripts.add(wr.ScriptResource(
     name='yafowil-dict-js',
     depends='jquery-js',
@@ -37,7 +40,10 @@ js = [{
 
 # webresource ################################################################
 
-default_styles = wr.ResourceGroup(name='yafowil-dict-styles')
+default_styles = wr.ResourceGroup(
+    name='yafowil-dict-styles',
+    path='yafowil.widget.dict'
+)
 default_styles.add(wr.StyleResource(
     name='yafowil-dict-css',
     directory=os.path.join(resources_dir, 'default'),
@@ -59,7 +65,10 @@ default_css = [{
 
 # webresource ################################################################
 
-bootstrap_styles = wr.ResourceGroup(name='yafowil-dict-styles')
+bootstrap_styles = wr.ResourceGroup(
+    name='yafowil-dict-styles',
+    path='yafowil.widget.dict'
+)
 bootstrap_styles.add(wr.StyleResource(
     name='yafowil-dict-css',
     directory=os.path.join(resources_dir, 'bootstrap'),
@@ -81,7 +90,10 @@ bootstrap_css = [{
 
 # webresource ################################################################
 
-plone5_styles = wr.ResourceGroup(name='yafowil-dict-styles')
+plone5_styles = wr.ResourceGroup(
+    name='yafowil-dict-styles',
+    path='yafowil.widget.dict'
+)
 plone5_styles.add(wr.StyleResource(
     name='yafowil-dict-css',
     directory=os.path.join(resources_dir, 'plone5'),
