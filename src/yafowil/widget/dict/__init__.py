@@ -13,7 +13,7 @@ resources_dir = os.path.join(os.path.dirname(__file__), 'resources')
 
 # webresource ################################################################
 
-scripts = wr.ResourceGroup(name='scripts')
+scripts = wr.ResourceGroup(name='yafowil-dict-scripts')
 scripts.add(wr.ScriptResource(
     name='yafowil-dict-js',
     depends='jquery-js',
@@ -37,16 +37,12 @@ js = [{
 
 # webresource ################################################################
 
-default_styles = wr.ResourceGroup(name='styles')
+default_styles = wr.ResourceGroup(name='yafowil-dict-styles')
 default_styles.add(wr.StyleResource(
     name='yafowil-dict-css',
     directory=os.path.join(resources_dir, 'default'),
     resource='widget.css'
 ))
-
-default_resources = wr.ResourceGroup(name='dict-resources')
-default_resources.add(scripts)
-default_resources.add(default_styles)
 
 # B/C resources ##############################################################
 
@@ -63,16 +59,12 @@ default_css = [{
 
 # webresource ################################################################
 
-bootstrap_styles = wr.ResourceGroup(name='styles')
+bootstrap_styles = wr.ResourceGroup(name='yafowil-dict-styles')
 bootstrap_styles.add(wr.StyleResource(
     name='yafowil-dict-css',
     directory=os.path.join(resources_dir, 'bootstrap'),
     resource='widget.css'
 ))
-
-bootstrap_resources = wr.ResourceGroup(name='dict-resources')
-bootstrap_resources.add(scripts)
-bootstrap_resources.add(bootstrap_styles)
 
 # B/C resources ##############################################################
 
@@ -89,16 +81,12 @@ bootstrap_css = [{
 
 # webresource ################################################################
 
-plone5_styles = wr.ResourceGroup(name='styles')
+plone5_styles = wr.ResourceGroup(name='yafowil-dict-styles')
 plone5_styles.add(wr.StyleResource(
     name='yafowil-dict-css',
     directory=os.path.join(resources_dir, 'plone5'),
     resource='widget.css'
 ))
-
-plone5_resources = wr.ResourceGroup(name='dict-resources')
-plone5_resources.add(scripts)
-plone5_resources.add(plone5_styles)
 
 # B/C resources ##############################################################
 
@@ -120,15 +108,31 @@ def register():
     # Default
     factory.register_theme(
         'default', 'yafowil.widget.dict', resources_dir,
-        js=js, css=default_css, resources=default_resources
+        js=js, css=default_css
     )
+    factory.register_scripts('default', 'yafowil.widget.dict', scripts)
+    factory.register_styles('default', 'yafowil.widget.dict', default_styles)
+
     # Bootstrap
     factory.register_theme(
-        'bootstrap', 'yafowil.widget.dict', resources_dir,
-        js=js, css=bootstrap_css, resources=bootstrap_resources
+        ['bootstrap', 'bootstrap3'], 'yafowil.widget.dict', resources_dir,
+        js=js, css=bootstrap_css
     )
+    factory.register_scripts(
+        ['bootstrap', 'bootstrap3'],
+        'yafowil.widget.dict',
+        scripts
+    )
+    factory.register_styles(
+        ['bootstrap', 'bootstrap3'],
+        'yafowil.widget.dict',
+        bootstrap_styles
+    )
+
     # Plone 5
     factory.register_theme(
         'plone5', 'yafowil.widget.dict', resources_dir,
-        js=js, css=plone5_css, resources=plone5_resources
+        js=js, css=plone5_css
     )
+    factory.register_scripts('plone5', 'yafowil.widget.dict', scripts)
+    factory.register_styles('plone5', 'yafowil.widget.dict', plone5_styles)
