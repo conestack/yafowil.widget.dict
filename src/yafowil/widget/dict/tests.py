@@ -42,7 +42,7 @@ class TestDictWidget(YafowilTestCase):
             "    <class 'yafowil.base.Widget'>: body",
             ""
         ])
-        self.check_output("""
+        self.checkOutput("""
         <div>
           <input class="hidden" id="input-mydict-exists"
                  name="mydict.exists" type="hidden" value="1"/>
@@ -148,7 +148,7 @@ class TestDictWidget(YafowilTestCase):
             "        <class 'yafowil.base.Widget'>: actions",
             ""
         ])
-        self.check_output("""
+        self.checkOutput("""
         <div>
           ...
           <tbody>
@@ -404,7 +404,7 @@ class TestDictWidget(YafowilTestCase):
             "        <class 'yafowil.base.Widget'>: value",
             ""
         ])
-        self.check_output("""
+        self.checkOutput("""
         <div>
           <input class="hidden" id="input-mydict-exists"
                  name="mydict.exists" type="hidden" value="1"/>
@@ -530,7 +530,7 @@ class TestDictWidget(YafowilTestCase):
                 'value_label': 'Value',
             },
             mode='display')
-        self.check_output("""
+        self.checkOutput("""
         <div>
           <h5>Key: Value</h5>
           <dl>
@@ -551,7 +551,7 @@ class TestDictWidget(YafowilTestCase):
                 'value_label': 'Value'
             },
             mode='display')
-        self.check_output("""
+        self.checkOutput("""
         <div>
           <h5>Key: Value</h5>
           <dl/>
@@ -567,7 +567,7 @@ class TestDictWidget(YafowilTestCase):
                 'value_label': lambda w, d: 'Computed Value'
             },
             mode='display')
-        self.check_output("""
+        self.checkOutput("""
         <div>
           <h5>Computed Key: Computed Value</h5>
           <dl/>
@@ -585,7 +585,7 @@ class TestDictWidget(YafowilTestCase):
                 }
             },
             mode='display')
-        self.check_output("""
+        self.checkOutput("""
         <div>
           <h5>B/C Key: B/C Value</h5>
           <dl/>
@@ -603,7 +603,7 @@ class TestDictWidget(YafowilTestCase):
                 }
             },
             mode='display')
-        self.check_output("""
+        self.checkOutput("""
         <div>
           <h5>Computed B/C Key: Computed B/C Value</h5>
           <dl/>
@@ -616,7 +616,7 @@ class TestDictWidget(YafowilTestCase):
             name='display_dict',
             mode='display'
         )
-        self.check_output("""
+        self.checkOutput("""
         <div>
           <dl/>
         </div>
