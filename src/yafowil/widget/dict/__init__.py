@@ -36,7 +36,7 @@ js = [{
 # webresource ################################################################
 
 default_resources = wr.ResourceGroup(
-    name='yafowil-dict-resources',
+    name='yafowil.widget.dict',
     directory=resources_dir,
     path='yafowil-dict'
 )
@@ -64,7 +64,7 @@ default_css = [{
 # webresource ################################################################
 
 bootstrap_resources = wr.ResourceGroup(
-    name='yafowil-dict-resources',
+    name='yafowil.widget.dict',
     directory=resources_dir,
     path='yafowil-dict'
 )
@@ -92,7 +92,7 @@ bootstrap_css = [{
 # webresource ################################################################
 
 plone5_resources = wr.ResourceGroup(
-    name='yafowil-dict-resources',
+    name='yafowil.widget.dict',
     directory=resources_dir,
     path='yafowil-dict'
 )

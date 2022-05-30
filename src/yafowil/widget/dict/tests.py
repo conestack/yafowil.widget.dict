@@ -632,6 +632,7 @@ class TestDictWidget(YafowilTestCase):
         factory.theme = 'default'
         resources = factory.get_resources('yafowil.widget.dict')
         self.assertTrue(resources.directory.endswith(np('/dict/resources')))
+        self.assertEqual(resources.name, 'yafowil.widget.dict')
         self.assertEqual(resources.path, 'yafowil-dict')
 
         scripts = resources.scripts
@@ -655,6 +656,7 @@ class TestDictWidget(YafowilTestCase):
         factory.theme = 'bootstrap3'
         resources = factory.get_resources('yafowil.widget.dict')
         self.assertTrue(resources.directory.endswith(np('/dict/resources')))
+        self.assertEqual(resources.name, 'yafowil.widget.dict')
         self.assertEqual(resources.path, 'yafowil-dict')
 
         scripts = resources.scripts
@@ -678,6 +680,7 @@ class TestDictWidget(YafowilTestCase):
         factory.theme = 'plone5'
         resources = factory.get_resources('yafowil.widget.dict')
         self.assertTrue(resources.directory.endswith(np('/dict/resources')))
+        self.assertEqual(resources.name, 'yafowil.widget.dict')
         self.assertEqual(resources.path, 'yafowil-dict')
 
         scripts = resources.scripts
