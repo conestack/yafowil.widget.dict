@@ -121,7 +121,7 @@ plone5_css = [{
 def register():
     import yafowil.widget.dict.widget  # noqa
 
-    widget_name = 'yafowil.widget.dic'
+    widget_name = 'yafowil.widget.dict'
 
     # Default
     factory.register_theme(
