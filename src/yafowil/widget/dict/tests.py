@@ -22,7 +22,8 @@ class TestDictWidget(YafowilTestCase):
     def setUp(self):
         super(TestDictWidget, self).setUp()
         from yafowil.widget import dict
-        reload(dict.widget)
+        from yafowil.widget.dict import widget
+        reload(widget)
         dict.register()
 
     def test_empty_dict(self):
