@@ -4,6 +4,9 @@ Changes
 2.0 (unreleased)
 ----------------
 
+- Add support for key and value datatypes.
+  [rnix]
+
 - Rewrite JavaScript using ES6.
   [rnix]
 

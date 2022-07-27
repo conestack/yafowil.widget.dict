@@ -526,6 +526,46 @@ class TestDictWidget(YafowilTestCase):
         expected = 'name="mydict.entry0.value" type="text" value="Value1"'
         self.assertTrue(rendered.find(expected) > -1)
 
+    def test_datatype_extraction(self):
+        widget = factory(
+            'error:dict',
+            name='mydict',
+            props={
+                'key_type': int,
+                'value_type': int
+            })
+        request = {
+            'mydict.exists': '1',
+            'mydict.entry0.key': '0',
+            'mydict.entry0.value': '1',
+        }
+        data = widget.extract(request=request)
+        self.assertFalse(data.has_errors)
+        self.assertEqual(
+            data.extracted,
+            odict([(0, 1)])
+        )
+        request = {
+            'mydict.exists': '1',
+            'mydict.entry0.key': 'a',
+            'mydict.entry0.value': '1',
+        }
+        data = widget.extract(request=request)
+        self.assertEqual(
+            data.errors,
+            [ExtractionError('Key a is not a valid integer.',)]
+        )
+        request = {
+            'mydict.exists': '1',
+            'mydict.entry0.key': '0',
+            'mydict.entry0.value': 'b',
+        }
+        data = widget.extract(request=request)
+        self.assertEqual(
+            data.errors,
+            [ExtractionError('Value b is not a valid integer.',)]
+        )
+
     def test_display_dict(self):
         widget = factory(
             'dict',

@@ -3,6 +3,7 @@ from odict import odict
 from yafowil.base import ExtractionError
 from yafowil.base import factory
 from yafowil.base import fetch_value
+from yafowil.common import DATATYPE_LABELS
 from yafowil.common import generic_required_extractor
 from yafowil.compat import STR_TYPE
 from yafowil.compound import compound_renderer
@@ -212,6 +213,47 @@ def dict_extractor(widget, data):
     return extracted
 
 
+@managedprops('key_type', 'value_type')
+def dict_datatype_extractor(widget, data):
+    extracted = data.extracted
+    if extracted is UNSET:
+        return extracted
+    key_type = widget.attrs['key_type']
+    value_type = widget.attrs['value_type']
+    if key_type is UNSET and value_type is UNSET:
+        return extracted
+    typed_extracted = odict()
+    for key, value in extracted.items():
+        if key_type is not UNSET:
+            try:
+                key = key_type(key)
+            except (ValueError, UnicodeEncodeError, UnicodeDecodeError):
+                datatype_label = DATATYPE_LABELS.get(key_type)
+                raise ExtractionError(_(
+                    'dict_key_type_mismatch',
+                    default=u'Key ${key} is not a valid ${datatype}.',
+                    mapping={
+                        'key': key,
+                        'datatype': datatype_label
+                    }
+                ))
+        if value_type is not UNSET:
+            try:
+                value = value_type(value)
+            except (ValueError, UnicodeEncodeError, UnicodeDecodeError):
+                datatype_label = DATATYPE_LABELS.get(value_type)
+                raise ExtractionError(_(
+                    'dict_value_type_mismatch',
+                    default=u'Value ${value} is not a valid ${datatype}.',
+                    mapping={
+                        'value': value,
+                        'datatype': datatype_label
+                    }
+                ))
+        typed_extracted[key] = value
+    return typed_extracted
+
+
 @managedprops('static', 'required')
 def static_dict_required_extractor(widget, data):
     extracted = data.extracted
@@ -237,6 +279,7 @@ factory.register(
     extractors=[
         dict_extractor,
         static_dict_required_extractor,
+        dict_datatype_extractor,
         generic_required_extractor
     ],
     edit_renderers=[
@@ -282,6 +325,16 @@ Label for dict keys column.
 factory.defaults['dict.value_label'] = UNSET
 factory.doc['props']['dict.value_label'] = """\
 Label for dict values column.
+"""
+
+factory.defaults['dict.key_type'] = UNSET
+factory.doc['props']['dict.key_type'] = """\
+Datatype for dict keys.
+"""
+
+factory.defaults['dict.value_type'] = UNSET
+factory.doc['props']['dict.value_type'] = """\
+Datatype for dict values.
 """
 
 factory.defaults['dict.head'] = {}
