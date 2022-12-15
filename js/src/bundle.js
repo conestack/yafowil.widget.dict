@@ -12,7 +12,7 @@ $(function() {
     } else {
         DictWidget.initialize();
     }
-    if (window.yafowil.array !== undefined) {
+    if (window.yafowil.array !== undefined && window.ts === undefined) {
         $.extend(yafowil.array.hooks.add, {
             dictwidget_binder: DictWidget.initialize
         });

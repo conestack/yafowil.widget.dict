@@ -151,3 +151,18 @@ export class DictWidget {
         this.reset_indices(row.parent());
     }
 }
+
+//////////////////////////////////////////////////////////////////////////////
+// yafowil.widget.array integration
+//////////////////////////////////////////////////////////////////////////////
+
+function dict_on_array_add(inst, context) {
+    DictWidget.initialize(context);
+}
+
+$(function() {
+    if (yafowil_array === undefined) {
+        return;
+    }
+    yafowil_array.on_array_event('on_add', dict_on_array_add);
+});

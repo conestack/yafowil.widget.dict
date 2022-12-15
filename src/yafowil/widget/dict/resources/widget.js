@@ -137,6 +137,15 @@ var yafowil_dict = (function (exports, $) {
             this.reset_indices(row.parent());
         }
     }
+    function dict_on_array_add(inst, context) {
+        DictWidget.initialize(context);
+    }
+    $(function() {
+        if (yafowil_array === undefined) {
+            return;
+        }
+        yafowil_array.on_array_event('on_add', dict_on_array_add);
+    });
 
     $(function() {
         if (window.ts !== undefined) {
@@ -146,7 +155,7 @@ var yafowil_dict = (function (exports, $) {
         } else {
             DictWidget.initialize();
         }
-        if (window.yafowil.array !== undefined) {
+        if (window.yafowil.array !== undefined && window.ts === undefined) {
             $.extend(yafowil.array.hooks.add, {
                 dictwidget_binder: DictWidget.initialize
             });
