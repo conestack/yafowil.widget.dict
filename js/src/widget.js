@@ -160,9 +160,12 @@ function dict_on_array_add(inst, context) {
     DictWidget.initialize(context);
 }
 
-$(function() {
-    if (yafowil_array === undefined) {
-        return;
+export function register_array_subscribers() {
+    if (window.yafowil_array !== undefined) {
+        window.yafowil_array.on_array_event('on_add', dict_on_array_add);
+    } else if (yafowil.array !== undefined) {
+        $.extend(yafowil.array.hooks.add, {
+            dictwidget_binder: DictWidget.initialize
+        });
     }
-    yafowil_array.on_array_event('on_add', dict_on_array_add);
-});
+}
