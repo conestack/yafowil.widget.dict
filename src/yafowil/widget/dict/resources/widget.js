@@ -4,7 +4,12 @@ var yafowil_dict = (function (exports, $) {
     class DictWidget {
         static initialize(context) {
             $('table.dictwidget', context).each(function() {
-                new DictWidget($(this));
+                let elem = $(this);
+                if (window.yafowil_array !== undefined &&
+                    window.yafowil_array.inside_template(elem)) {
+                    return;
+                }
+                new DictWidget(elem);
             });
         }
         constructor(elem) {
@@ -137,6 +142,18 @@ var yafowil_dict = (function (exports, $) {
             this.reset_indices(row.parent());
         }
     }
+    function dict_on_array_add(inst, context) {
+        DictWidget.initialize(context);
+    }
+    function register_array_subscribers() {
+        if (window.yafowil_array !== undefined) {
+            window.yafowil_array.on_array_event('on_add', dict_on_array_add);
+        } else if (yafowil.array !== undefined) {
+            $.extend(yafowil.array.hooks.add, {
+                dictwidget_binder: DictWidget.initialize
+            });
+        }
+    }
 
     $(function() {
         if (window.ts !== undefined) {
@@ -146,14 +163,11 @@ var yafowil_dict = (function (exports, $) {
         } else {
             DictWidget.initialize();
         }
-        if (window.yafowil.array !== undefined) {
-            $.extend(yafowil.array.hooks.add, {
-                dictwidget_binder: DictWidget.initialize
-            });
-        }
+        register_array_subscribers();
     });
 
     exports.DictWidget = DictWidget;
+    exports.register_array_subscribers = register_array_subscribers;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 

@@ -1,6 +1,7 @@
 import $ from 'jquery';
 
 import {DictWidget} from './widget.js';
+import {register_array_subscribers} from './widget.js';
 
 export * from './widget.js';
 
@@ -12,9 +13,5 @@ $(function() {
     } else {
         DictWidget.initialize();
     }
-    if (window.yafowil.array !== undefined) {
-        $.extend(yafowil.array.hooks.add, {
-            dictwidget_binder: DictWidget.initialize
-        });
-    }
+    register_array_subscribers();
 });
