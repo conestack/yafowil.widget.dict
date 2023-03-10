@@ -4,7 +4,12 @@ export class DictWidget {
 
     static initialize(context) {
         $('table.dictwidget', context).each(function() {
-            new DictWidget($(this));
+            let elem = $(this);
+            if (window.yafowil_array !== undefined &&
+                window.yafowil_array.inside_template(elem)) {
+                return;
+            }
+            new DictWidget(elem);
         });
     }
 
