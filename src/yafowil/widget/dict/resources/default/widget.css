@@ -17,6 +17,10 @@
     text-decoration:none;
     float:right;
     margin-top:1px;
+    background: none;
+}
+.dict_actions span {
+    color: var(--yafowil-accent-color, #0d6efd);
 }
 .dict_actions a.dict_row_add {
     background:url('images/icon_add.png') 50% 50% no-repeat;

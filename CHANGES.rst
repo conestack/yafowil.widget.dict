@@ -1,8 +1,27 @@
 Changes
 =======
 
-1.9 (unreleased)
-----------------
+2.0a2 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
+2.0a1 (2023-05-15)
+------------------
+
+- Add ``webresource`` support.
+  [rnix]
+
+- Extend JS by ``dict_on_array_add`` and ``register_array_subscribers``
+  functions to enable usage in ``yafowil.widget.array``.
+  [lenadax]
+
+- Add support for key and value datatypes.
+  [rnix]
+
+- Rewrite JavaScript using ES6.
+  [rnix]
 
 - Remove B/C property callback tests. Property callbacks always
   gets passed ``widget`` and ``data`` as of yafowil 3.0.0.

@@ -39,6 +39,10 @@
 }
 .dict_actions a {
     float:right;
+    background: none;
+}
+.dict_actions span {
+    color: var(--yafowil-accent-color, #0d6efd);
 }
 .dict_actions a.array_row_up_disabled,
 .dict_actions a.array_row_down_disabled {
