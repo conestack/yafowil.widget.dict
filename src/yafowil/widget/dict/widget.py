@@ -3,10 +3,10 @@ from odict import odict
 from yafowil.base import ExtractionError
 from yafowil.base import factory
 from yafowil.base import fetch_value
-from yafowil.common import DATATYPE_LABELS
 from yafowil.common import generic_required_extractor
 from yafowil.compat import STR_TYPE
 from yafowil.compound import compound_renderer
+from yafowil.datatypes import DATATYPE_LABELS
 from yafowil.tsf import TSF
 from yafowil.utils import attr_value
 from yafowil.utils import callable_value
