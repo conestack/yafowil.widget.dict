@@ -86,6 +86,39 @@ bootstrap_css = [{
 
 
 ##############################################################################
+# Bootstrap 5
+##############################################################################
+
+# webresource ################################################################
+bootstrap5_js = wr.ScriptResource(
+    name='yafowil-dict-js',
+    depends='jquery-js',
+    resource='bootstrap5/widget.js',
+    compressed='bootstrap5/widget.min.js'
+)
+bootstrap5_resources = wr.ResourceGroup(
+    name='yafowil.widget.dict',
+    directory=resources_dir,
+    path='yafowil-dict'
+)
+bootstrap5_resources.add(bootstrap5_js)
+bootstrap5_resources.add(wr.StyleResource(
+    name='yafowil-dict-css',
+    directory=os.path.join(resources_dir, 'bootstrap5'),
+    path='yafowil-dict/bootstrap5',
+    resource='widget.css'
+))
+
+# B/C resources ##############################################################
+
+bootstrap5_css = [{
+    'group': 'yafowil.widget.dict.common',
+    'resource': 'bootstrap5/widget.css',
+    'order': 20,
+}]
+
+
+##############################################################################
 # Plone5
 ##############################################################################
 
@@ -145,6 +178,21 @@ def register():
         ['bootstrap', 'bootstrap3'],
         widget_name,
         bootstrap_resources
+    )
+
+    # Bootstrap 5
+    factory.register_theme(
+        ['bootstrap5'],
+        widget_name,
+        resources_dir,
+        js=bootstrap5_js,
+        css=bootstrap5_css
+    )
+
+    factory.register_resources(
+        ['bootstrap5'],
+        widget_name,
+        bootstrap5_resources
     )
 
     # Plone 5

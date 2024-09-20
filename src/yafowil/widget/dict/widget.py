@@ -23,15 +23,22 @@ ICON_CSS = {
     'up': 'icon-circle-arrow-up',
     'down': 'icon-circle-arrow-down',
 }
+BS_ICON = {
+    'add': 'bi-plus-circle-fill',
+    'remove': 'bi-dash-circle-fill',
+    'up': 'bi-arrow-up-circle-fill',
+    'down': 'bi-arrow-down-circle-fill',
+}
 
 
 def actions_renderer(widget, data):
     tag = data.tag
     actions = list()
+    icons = BS_ICON if factory.theme == 'bootstrap5' else ICON_CSS
     for key in ['add', 'remove', 'up', 'down']:
         if widget.attrs.get(key):
             class_ = 'dict_row_{}'.format(key)
-            icon = tag('span', ' ', class_=ICON_CSS[key])
+            icon = tag('span', ' ', class_=icons[key])
             action = tag('a', icon, href='#', class_=class_)
             actions.append(action)
     kw = dict(class_='dict_actions')
@@ -80,7 +87,14 @@ def dict_edit_renderer(widget, data):
     widget['exists'] = factory('hidden', value='1')
     key_class = attr_value('key_class', widget, data)
     value_class = attr_value('value_class', widget, data)
-    table = widget['table'] = factory(
+    wrapper = widget['wrapper'] = factory(
+        'fieldset',
+        props={
+            'structural': True,
+            'class': 'card card-body p-0'
+        }
+    )
+    table = wrapper['table'] = factory(
         'table',
         props={
             'structural': True,
@@ -302,7 +316,7 @@ factory.defaults['dict.error_class'] = 'error'
 
 factory.defaults['dict.message_class'] = 'errormessage'
 
-factory.defaults['dict.table_class'] = 'dictwidget'
+factory.defaults['dict.table_class'] = 'dictwidget table table-sm'
 factory.doc['props']['dict.table_class'] = """\
 CSS classes rendered on dict table.
 """
