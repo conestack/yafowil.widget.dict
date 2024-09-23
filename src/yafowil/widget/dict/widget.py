@@ -316,7 +316,7 @@ factory.defaults['dict.error_class'] = 'error'
 
 factory.defaults['dict.message_class'] = 'errormessage'
 
-factory.defaults['dict.table_class'] = 'dictwidget table table-sm'
+factory.defaults['dict.table_class'] = 'dictwidget'
 factory.doc['props']['dict.table_class'] = """\
 CSS classes rendered on dict table.
 """
