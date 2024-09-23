@@ -1,9 +1,9 @@
 import $ from 'jquery';
 
-import {DictWidget} from './widget_bs5.js';
-import {register_array_subscribers} from './widget_bs5.js';
+import {DictWidget} from './widget.js';
+import {register_array_subscribers} from './widget.js';
 
-export * from './widget_bs5.js';
+export * from './widget.js';
 
 $(function() {
     if (window.ts !== undefined) {

@@ -16,7 +16,7 @@ resources_dir = os.path.join(os.path.dirname(__file__), 'resources')
 dict_js = wr.ScriptResource(
     name='yafowil-dict-js',
     depends='jquery-js',
-    resource='widget.js',
+    resource='default/widget.js',
     compressed='widget.min.js'
 )
 
@@ -24,7 +24,7 @@ dict_js = wr.ScriptResource(
 
 js = [{
     'group': 'yafowil.widget.dict.common',
-    'resource': 'widget.js',
+    'resource': 'default/widget.js',
     'order': 20,
 }]
 
@@ -188,7 +188,6 @@ def register():
         js=bootstrap5_js,
         css=bootstrap5_css
     )
-
     factory.register_resources(
         ['bootstrap5'],
         widget_name,
