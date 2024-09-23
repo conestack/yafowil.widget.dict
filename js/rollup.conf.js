@@ -66,7 +66,7 @@ export default args => {
     };
     if (args.configDebug !== true) {
         conf2.output.push({
-            name: 'another_bundle',
+            name: 'yafowil_dict',
             file: `${out_dir_bs5}/widget.min.js`,
             format: 'iife',
             plugins: [
