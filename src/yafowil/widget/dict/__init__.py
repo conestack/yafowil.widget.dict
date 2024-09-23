@@ -17,7 +17,7 @@ dict_js = wr.ScriptResource(
     name='yafowil-dict-js',
     depends='jquery-js',
     resource='default/widget.js',
-    compressed='widget.min.js'
+    compressed='default/widget.min.js'
 )
 
 # B/C resources ##############################################################
