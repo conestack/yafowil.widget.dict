@@ -1,0 +1,46 @@
+/* yafowil.widget.dict - default theme styles */
+.dictwidget {
+    border-collapse:collapse;
+
+    input {
+        width:150px;
+    }
+    th {
+        width:150px;
+        color:#333;
+        font-weight:normal;
+    }
+}
+.dict_actions {
+    a {
+        line-height:16px;
+        font-size:16px;
+        padding-left:16px;
+        text-decoration:none;
+        float:right;
+        margin-top:1px;
+        background: none;
+
+        &.dict_row_add {
+            background:url('images/icon_add.png') 50% 50% no-repeat;
+        }
+        &.dict_row_remove {
+            background:url('images/icon_remove.png') 50% 50% no-repeat;
+        }
+        &.dict_row_up {
+            background:url('images/icon_up.png') 50% 50% no-repeat;
+        }
+        &.dict_row_up_disabled {
+            background:url('images/icon_up_disabled.png') 50% 50% no-repeat !important;
+        }
+        &.dict_row_down {
+            background:url('images/icon_down.png') 50% 50% no-repeat;
+        }
+        &.dict_row_down_disabled {
+            background:url('images/icon_down_disabled.png') 50% 50% no-repeat !important;
+        }
+    }
+    span {
+        color: var(--yafowil-accent-color, #0d6efd);
+    }
+}

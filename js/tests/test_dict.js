@@ -1,5 +1,6 @@
 import { DictWidget } from "../src/widget";
 import {register_array_subscribers} from "../src/widget";
+import $ from 'jquery';
 
 QUnit.test('test', assert => {
     let el = $('<table />').addClass('dictwidget').appendTo('body');
