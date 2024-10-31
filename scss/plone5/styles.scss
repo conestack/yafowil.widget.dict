@@ -1,0 +1,83 @@
+/* yafowil.widget.dict - bootstrap theme styles */
+.dictwidget {
+    margin-bottom:0;
+    border:none;
+    background:transparent;
+
+    .icon-plus-sign,
+    .icon-minus-sign,
+    .icon-circle-arrow-up,
+    .icon-circle-arrow-down {
+        display:inline-block;
+        font-family:'yafowil-fontello';
+        font-style:normal;
+        font-weight:400;
+        font-variant:normal;
+        text-transform:none;
+        text-decoration:none;
+        text-align:center;
+        line-height:1em;
+        position:relative;
+        top:1px;
+        width:1em;
+        margin-right:2px;
+        margin-left:2px;
+        speak:none;
+        -webkit-font-smoothing:antialiased;
+        -moz-osx-font-smoothing:grayscale;
+    }
+
+    .icon-plus-sign:before {
+        font-family:'yafowil-fontello';
+        content:"\e800";
+    }
+    .icon-minus-sign:before {
+        font-family:'yafowil-fontello';
+        content:"\e801";
+    }
+    .icon-circle-arrow-up:before {
+        font-family:'yafowil-fontello';
+        content:"\e803";
+    }
+    .icon-circle-arrow-down:before {
+        font-family:'yafowil-fontello';
+        content:"\e802";
+    }
+    tr,
+    td {
+        border:none;
+    }
+    th {
+        border:none;
+        border-bottom:#ddd 2px solid;
+        vertical-align:middle;
+    }
+    th.actions,
+    td.actions {
+        width:6.5em;
+    }
+    td {
+        padding-top:0.5em;
+    }
+}
+
+.dict_actions {
+    display:inline-block;
+    margin-top:0.3em;
+    padding-right:0.45em;
+    width:6.5em;
+
+    a {
+        float:right;
+        background: none;
+
+        &.array_row_up_disabled,
+        &.array_row_down_disabled {
+            opacity:0.4;
+            filter:alpha(opacity=40);
+        }
+    }
+    span {
+        color: var(--yafowil-accent-color, #0d6efd);
+    }
+}

@@ -1,0 +1,66 @@
+/* yafowil.widget.dict - bootstrap 5 theme styles */
+.dictwidget {
+    margin-bottom: 0;
+
+    th {
+        vertical-align:middle;
+        background: none;
+        border: 0;
+    }
+    th.actions,
+    td.actions {
+        width: 5.5em;
+    }
+    thead {
+        height: 30px;
+        background-color: rgba(0, 128, 255, 0.1019607843);
+
+        tr th {
+            padding-left: 10px;
+        }
+    }
+    tr:last-child td {
+        border: 0;
+    }
+    tr td:last-child.value {
+        padding-right: 10px;
+    }
+    .dict_actions > a {
+        float: right;
+        background: none;
+        margin-left: 2px;
+    }
+    td.key, .dictwidget td.value {
+        padding: 10px 0px 10px 10px;
+    }
+    td {
+        background: none;
+    }
+}
+.dict_actions {
+    display:inline-block;
+    width: 5.5em;
+
+    > a {
+        float:right;
+        background: none;
+        margin-left: 2px;
+    }
+    span {
+        color: var(--yafowil-accent-color, #0d6efd);
+    }
+    a.dict_row_up_disabled,
+    a.dict_row_down_disabled {
+        opacity:0.4;
+        filter:alpha(opacity=40);
+    }
+}
+
+@keyframes boxShadowAnimation {
+    30% {
+      background: rgba(0, 128, 255, 0.1019607843);
+    }
+}
+.row-moved {
+  animation: boxShadowAnimation 1000ms;
+}

@@ -39,36 +39,40 @@ class TestDictWidget(YafowilTestCase):
         self.assertEqual(widget.treerepr().split('\n'), [
             "<class 'yafowil.base.Widget'>: mydict",
             "  <class 'yafowil.base.Widget'>: exists",
-            "  <class 'yafowil.base.Widget'>: table",
-            "    <class 'yafowil.base.Widget'>: head",
-            "      <class 'yafowil.base.Widget'>: row",
-            "        <class 'yafowil.base.Widget'>: key",
-            "        <class 'yafowil.base.Widget'>: value",
-            "        <class 'yafowil.base.Widget'>: actions",
-            "    <class 'yafowil.base.Widget'>: body",
+            "  <class 'yafowil.base.Widget'>: wrapper",
+            "    <class 'yafowil.base.Widget'>: table",
+            "      <class 'yafowil.base.Widget'>: head",
+            "        <class 'yafowil.base.Widget'>: row",
+            "          <class 'yafowil.base.Widget'>: key",
+            "          <class 'yafowil.base.Widget'>: value",
+            "          <class 'yafowil.base.Widget'>: actions",
+            "      <class 'yafowil.base.Widget'>: body",
             ""
         ])
+
         self.checkOutput("""
         <div>
-          <input class="hidden" id="input-mydict-exists"
-                 name="mydict.exists" type="hidden" value="1"/>
-          <table class="dictwidget key-keyfield value-valuefield"
-                 id="dictwidget_mydict.entry">
-            <thead>
-              <tr>
-                <th>Key</th>
-                <th>Value</th>
-                <th class="actions">
-                  <div class="dict_actions">
-                    <a class="dict_row_add" href="#">
-                      <span class="icon-plus-sign"> </span>
-                    </a>
-                  </div>
-                </th>
-              </tr>
-            </thead>
-            <tbody/>
-          </table>
+          <input class="hidden" id="input-mydict-exists" name="mydict.exists"
+                 type="hidden" value="1"/>
+          <fieldset class="card card-body p-0">
+            <table class="dictwidget key-keyfield value-valuefield"
+                   id="dictwidget_mydict.entry">
+              <thead>
+                <tr>
+                  <th>Key</th>
+                  <th>Value</th>
+                  <th class="actions">
+                    <div class="dict_actions">
+                      <a class="dict_row_add" href="#">
+                        <span class="icon-plus-sign"> </span>
+                      </a>
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody/>
+            </table>
+          </fieldset>
         </div>
         """, fxml('<div>' + result + '</div>'))
 
@@ -137,21 +141,22 @@ class TestDictWidget(YafowilTestCase):
         self.assertEqual(widget.treerepr().split('\n'), [
             "<class 'yafowil.base.Widget'>: mydict",
             "  <class 'yafowil.base.Widget'>: exists",
-            "  <class 'yafowil.base.Widget'>: table",
-            "    <class 'yafowil.base.Widget'>: head",
-            "      <class 'yafowil.base.Widget'>: row",
-            "        <class 'yafowil.base.Widget'>: key",
-            "        <class 'yafowil.base.Widget'>: value",
-            "        <class 'yafowil.base.Widget'>: actions",
-            "    <class 'yafowil.base.Widget'>: body",
-            "      <class 'yafowil.base.Widget'>: entry0",
-            "        <class 'yafowil.base.Widget'>: key",
-            "        <class 'yafowil.base.Widget'>: value",
-            "        <class 'yafowil.base.Widget'>: actions",
-            "      <class 'yafowil.base.Widget'>: entry1",
-            "        <class 'yafowil.base.Widget'>: key",
-            "        <class 'yafowil.base.Widget'>: value",
-            "        <class 'yafowil.base.Widget'>: actions",
+            "  <class 'yafowil.base.Widget'>: wrapper",
+            "    <class 'yafowil.base.Widget'>: table",
+            "      <class 'yafowil.base.Widget'>: head",
+            "        <class 'yafowil.base.Widget'>: row",
+            "          <class 'yafowil.base.Widget'>: key",
+            "          <class 'yafowil.base.Widget'>: value",
+            "          <class 'yafowil.base.Widget'>: actions",
+            "      <class 'yafowil.base.Widget'>: body",
+            "        <class 'yafowil.base.Widget'>: entry0",
+            "          <class 'yafowil.base.Widget'>: key",
+            "          <class 'yafowil.base.Widget'>: value",
+            "          <class 'yafowil.base.Widget'>: actions",
+            "        <class 'yafowil.base.Widget'>: entry1",
+            "          <class 'yafowil.base.Widget'>: key",
+            "          <class 'yafowil.base.Widget'>: value",
+            "          <class 'yafowil.base.Widget'>: actions",
             ""
         ])
         self.checkOutput("""
@@ -399,44 +404,46 @@ class TestDictWidget(YafowilTestCase):
         self.assertEqual(widget.treerepr().split('\n'), [
             "<class 'yafowil.base.Widget'>: mydict",
             "  <class 'yafowil.base.Widget'>: exists",
-            "  <class 'yafowil.base.Widget'>: table",
-            "    <class 'yafowil.base.Widget'>: head",
-            "      <class 'yafowil.base.Widget'>: row",
-            "        <class 'yafowil.base.Widget'>: key",
-            "        <class 'yafowil.base.Widget'>: value",
-            "    <class 'yafowil.base.Widget'>: body",
-            "      <class 'yafowil.base.Widget'>: entry0",
-            "        <class 'yafowil.base.Widget'>: key",
-            "        <class 'yafowil.base.Widget'>: value",
+            "  <class 'yafowil.base.Widget'>: wrapper",
+            "    <class 'yafowil.base.Widget'>: table",
+            "      <class 'yafowil.base.Widget'>: head",
+            "        <class 'yafowil.base.Widget'>: row",
+            "          <class 'yafowil.base.Widget'>: key",
+            "          <class 'yafowil.base.Widget'>: value",
+            "      <class 'yafowil.base.Widget'>: body",
+            "        <class 'yafowil.base.Widget'>: entry0",
+            "          <class 'yafowil.base.Widget'>: key",
+            "          <class 'yafowil.base.Widget'>: value",
             ""
         ])
         self.checkOutput("""
         <div>
           <input class="hidden" id="input-mydict-exists"
-                 name="mydict.exists" type="hidden" value="1"/>
-          <table class="dictwidget key-keyfield value-valuefield"
-                 id="dictwidget_mydict.entry">
-            <thead>
-              <tr>
-                <th>Key</th>
-                <th>Value</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="key">
-                  <input class="keyfield" disabled="disabled"
-                         id="input-mydict-entry0-key"
-                         name="mydict.entry0.key"
-                         type="text" value="k1"/>
-                </td>
-                <td class="value">
-                  <input class="valuefield" id="input-mydict-entry0-value"
-                         name="mydict.entry0.value" type="text" value="v1"/>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                        name="mydict.exists" type="hidden" value="1"/>
+          <fieldset class="card card-body p-0">
+            <table class="dictwidget key-keyfield value-valuefield"
+                   id="dictwidget_mydict.entry">
+              <thead>
+                <tr>
+                  <th>Key</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="key">
+                    <input class="keyfield" disabled="disabled"
+                           id="input-mydict-entry0-key"
+                           name="mydict.entry0.key" type="text" value="k1"/>
+                  </td>
+                  <td class="value">
+                    <input class="valuefield" id="input-mydict-entry0-value"
+                           name="mydict.entry0.value" type="text" value="v1"/>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </fieldset>
         </div>
         """, fxml('<div>{}</div>'.format(rendered)))
 
@@ -680,7 +687,7 @@ class TestDictWidget(YafowilTestCase):
 
         self.assertTrue(scripts[0].directory.endswith(np('/dict/resources')))
         self.assertEqual(scripts[0].path, 'yafowil-dict')
-        self.assertEqual(scripts[0].file_name, 'widget.min.js')
+        self.assertEqual(scripts[0].file_name, 'default/widget.min.js')
         self.assertTrue(os.path.exists(scripts[0].file_path))
 
         styles = resources.styles
@@ -704,7 +711,7 @@ class TestDictWidget(YafowilTestCase):
 
         self.assertTrue(scripts[0].directory.endswith(np('/dict/resources')))
         self.assertEqual(scripts[0].path, 'yafowil-dict')
-        self.assertEqual(scripts[0].file_name, 'widget.min.js')
+        self.assertEqual(scripts[0].file_name, 'default/widget.min.js')
         self.assertTrue(os.path.exists(scripts[0].file_path))
 
         styles = resources.styles
@@ -728,7 +735,7 @@ class TestDictWidget(YafowilTestCase):
 
         self.assertTrue(scripts[0].directory.endswith(np('/dict/resources')))
         self.assertEqual(scripts[0].path, 'yafowil-dict')
-        self.assertEqual(scripts[0].file_name, 'widget.min.js')
+        self.assertEqual(scripts[0].file_name, 'default/widget.min.js')
         self.assertTrue(os.path.exists(scripts[0].file_path))
 
         styles = resources.styles
