@@ -685,9 +685,9 @@ class TestDictWidget(YafowilTestCase):
         scripts = resources.scripts
         self.assertEqual(len(scripts), 1)
 
-        self.assertTrue(scripts[0].directory.endswith(np('/dict/resources')))
+        self.assertTrue(scripts[0].directory.endswith(np('/dict/resources/default')))
         self.assertEqual(scripts[0].path, 'yafowil-dict')
-        self.assertEqual(scripts[0].file_name, 'default/widget.min.js')
+        self.assertEqual(scripts[0].file_name, 'widget.min.js')
         self.assertTrue(os.path.exists(scripts[0].file_path))
 
         styles = resources.styles
@@ -697,7 +697,7 @@ class TestDictWidget(YafowilTestCase):
             styles[0].directory.endswith(np('/dict/resources/default'))
         )
         self.assertEqual(styles[0].path, 'yafowil-dict/default')
-        self.assertEqual(styles[0].file_name, 'widget.css')
+        self.assertEqual(styles[0].file_name, 'widget.min.css')
         self.assertTrue(os.path.exists(styles[0].file_path))
 
         factory.theme = 'bootstrap3'
@@ -709,9 +709,9 @@ class TestDictWidget(YafowilTestCase):
         scripts = resources.scripts
         self.assertEqual(len(scripts), 1)
 
-        self.assertTrue(scripts[0].directory.endswith(np('/dict/resources')))
+        self.assertTrue(scripts[0].directory.endswith(np('/dict/resources/default')))
         self.assertEqual(scripts[0].path, 'yafowil-dict')
-        self.assertEqual(scripts[0].file_name, 'default/widget.min.js')
+        self.assertEqual(scripts[0].file_name, 'widget.min.js')
         self.assertTrue(os.path.exists(scripts[0].file_path))
 
         styles = resources.styles
@@ -721,7 +721,7 @@ class TestDictWidget(YafowilTestCase):
             styles[0].directory.endswith(np('/dict/resources/bootstrap'))
         )
         self.assertEqual(styles[0].path, 'yafowil-dict/bootstrap')
-        self.assertEqual(styles[0].file_name, 'widget.css')
+        self.assertEqual(styles[0].file_name, 'widget.min.css')
         self.assertTrue(os.path.exists(styles[0].file_path))
 
         factory.theme = 'plone5'
@@ -733,9 +733,9 @@ class TestDictWidget(YafowilTestCase):
         scripts = resources.scripts
         self.assertEqual(len(scripts), 1)
 
-        self.assertTrue(scripts[0].directory.endswith(np('/dict/resources')))
+        self.assertTrue(scripts[0].directory.endswith(np('/dict/resources/default')))
         self.assertEqual(scripts[0].path, 'yafowil-dict')
-        self.assertEqual(scripts[0].file_name, 'default/widget.min.js')
+        self.assertEqual(scripts[0].file_name, 'widget.min.js')
         self.assertTrue(os.path.exists(scripts[0].file_path))
 
         styles = resources.styles
@@ -745,7 +745,7 @@ class TestDictWidget(YafowilTestCase):
             styles[0].directory.endswith(np('/dict/resources/plone5'))
         )
         self.assertEqual(styles[0].path, 'yafowil-dict/plone5')
-        self.assertEqual(styles[0].file_name, 'widget.css')
+        self.assertEqual(styles[0].file_name, 'widget.min.css')
         self.assertTrue(os.path.exists(styles[0].file_path))
 
 
