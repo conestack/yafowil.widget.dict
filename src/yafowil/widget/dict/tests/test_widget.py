@@ -686,7 +686,7 @@ class TestDictWidget(YafowilTestCase):
         self.assertEqual(len(scripts), 1)
 
         self.assertTrue(scripts[0].directory.endswith(np('/dict/resources/default')))
-        self.assertEqual(scripts[0].path, 'yafowil-dict')
+        self.assertEqual(scripts[0].path, 'yafowil-dict/default')
         self.assertEqual(scripts[0].file_name, 'widget.min.js')
         self.assertTrue(os.path.exists(scripts[0].file_path))
 
@@ -710,7 +710,7 @@ class TestDictWidget(YafowilTestCase):
         self.assertEqual(len(scripts), 1)
 
         self.assertTrue(scripts[0].directory.endswith(np('/dict/resources/default')))
-        self.assertEqual(scripts[0].path, 'yafowil-dict')
+        self.assertEqual(scripts[0].path, 'yafowil-dict/default')
         self.assertEqual(scripts[0].file_name, 'widget.min.js')
         self.assertTrue(os.path.exists(scripts[0].file_path))
 
@@ -734,7 +734,7 @@ class TestDictWidget(YafowilTestCase):
         self.assertEqual(len(scripts), 1)
 
         self.assertTrue(scripts[0].directory.endswith(np('/dict/resources/default')))
-        self.assertEqual(scripts[0].path, 'yafowil-dict')
+        self.assertEqual(scripts[0].path, 'yafowil-dict/default')
         self.assertEqual(scripts[0].file_name, 'widget.min.js')
         self.assertTrue(os.path.exists(scripts[0].file_path))
 

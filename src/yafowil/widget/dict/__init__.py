@@ -16,6 +16,7 @@ resources_dir = os.path.join(os.path.dirname(__file__), 'resources')
 dict_js = wr.ScriptResource(
     name='yafowil-dict-js',
     directory=os.path.join(resources_dir, 'default'),
+    path='yafowil-dict/default',
     depends='jquery-js',
     resource='widget.js',
     compressed='widget.min.js'
@@ -99,6 +100,7 @@ bootstrap5_resources = wr.ResourceGroup(
 bootstrap5_js = wr.ScriptResource(
     name='yafowil-dict-js',
     directory=os.path.join(resources_dir, 'bootstrap5'),
+    path='yafowil-dict/bootstrap5',
     depends='jquery-js',
     resource='widget.js',
     compressed='widget.min.js'
@@ -115,7 +117,7 @@ bootstrap5_resources.add(wr.StyleResource(
 
 bootstrap5_css = [{
     'group': 'yafowil.widget.dict.common',
-    'resource': 'bootstrap5/widget.css',
+    'resource': 'bootstrap5/widget.min.css',
     'order': 20,
 }]
 
