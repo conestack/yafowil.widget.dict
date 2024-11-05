@@ -3,6 +3,9 @@ import {DictBase} from '../dict.js';
 
 export class DictWidget extends DictBase {
 
+    /**
+     * @param {jQuery} context - DOM context for initialization.
+     */
     static initialize(context) {
         $('table.dictwidget', context).each(function() {
             let elem = $(this);
@@ -14,6 +17,12 @@ export class DictWidget extends DictBase {
         });
     }
 
+    /**
+     * Creates a new row for the dictionary widget with input fields for key
+     * and value, as well as action buttons for managing the row.
+     * @param {string} action - The action type for styling the row.
+     * @returns {jQuery} - A jQuery object representing the new row.
+     */
     create_row(action) {
         let key_css = this.row_class(action, 'key'),
             val_css = this.row_class(action, 'value'),
@@ -45,6 +54,10 @@ export class DictWidget extends DictBase {
         return $(row);
     }
 
+    /**
+     * Marks a row as moved by adding a CSS class and removing it after a timeout.
+     * @param {jQuery} row - The row element that has been moved.
+     */
     on_row_moved(row) {
         row.addClass('row-moved');
         setTimeout(function() {
@@ -52,11 +65,21 @@ export class DictWidget extends DictBase {
         }, 1000);
     }
 
+    /**
+     * Handles the event when the first row is added.
+     * @param {Event} evt - The event object triggered by the addition.
+     * @returns {jQuery} - The newly added row element.
+     */
     add_first_handle(evt) {
         let row = super.add_first_handle(evt);
         this.on_row_moved(row);
+        return row;
     }
 
+    /**
+     * Handles the event when a new row is added.
+     * @param {Event} evt - The event object triggered by the addition.
+     */
     add_handle(evt) {
         super.add_handle(evt);
         let action = evt.currentTarget,
@@ -64,6 +87,10 @@ export class DictWidget extends DictBase {
         this.on_row_moved(row.next());
     }
 
+    /**
+     * Moves the selected row up in the table.
+     * @param {Event} evt - The event object triggered by the up action.
+     */
     up_handle(evt) {
         evt.preventDefault();
         let row = this.get_row(evt.currentTarget);
@@ -72,6 +99,10 @@ export class DictWidget extends DictBase {
         this.on_row_moved(row);
     }
 
+    /**
+     * Moves the selected row down in the table.
+     * @param {Event} evt - The event object triggered by the down action.
+     */
     down_handle(evt) {
         evt.preventDefault();
         let row = this.get_row(evt.currentTarget);
@@ -85,10 +116,16 @@ export class DictWidget extends DictBase {
 // yafowil.widget.array integration
 //////////////////////////////////////////////////////////////////////////////
 
+/**
+ * Re-initializes widget on array add event.
+ */
 function dict_on_array_add(inst, context) {
     DictWidget.initialize(context);
 }
 
+/**
+ * Registers subscribers to yafowil array events.
+ */
 export function register_array_subscribers() {
     if (window.yafowil_array !== undefined) {
         window.yafowil_array.on_array_event('on_add', dict_on_array_add);
