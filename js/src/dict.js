@@ -83,6 +83,7 @@ export class DictBase {
             container = $('> tbody', this.elem);
         container.prepend(new_row);
         this.reset_indices(container);
+        return new_row;
     }
 
     add_handle(evt) {

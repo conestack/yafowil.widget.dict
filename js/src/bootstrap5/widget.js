@@ -42,7 +42,7 @@ export class DictWidget extends DictBase {
         row +=     '</div>';
         row +=   '</td>';
         row += '</tr>';
-        return row;
+        return $(row);
     }
 
     on_row_moved(row) {
@@ -50,6 +50,18 @@ export class DictWidget extends DictBase {
         setTimeout(function() {
             row.removeClass('row-moved');
         }, 1000);
+    }
+
+    add_first_handle(evt) {
+        let row = super.add_first_handle(evt);
+        this.on_row_moved(row);
+    }
+
+    add_handle(evt) {
+        super.add_handle(evt);
+        let action = evt.currentTarget,
+            row = this.get_row(action);
+        this.on_row_moved(row.next());
     }
 
     up_handle(evt) {
