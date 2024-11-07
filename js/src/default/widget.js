@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import {DictBase} from '../dict.js';
+import {DictBase} from '../base/dict.js';
 
 export class DictWidget extends DictBase {
 

@@ -1,9 +1,11 @@
 import $ from 'jquery';
-import {DictBase} from '../dict.js';
+import {DictBase} from '../base/dict.js';
 
 export class DictWidget extends DictBase {
 
     /**
+     * Initializes each widget in the given DOM context.
+     * 
      * @param {jQuery} context - DOM context for initialization.
      */
     static initialize(context) {
@@ -58,7 +60,7 @@ export class DictWidget extends DictBase {
      * Marks a row as moved by adding a CSS class and removing it after a timeout.
      * @param {jQuery} row - The row element that has been moved.
      */
-    on_row_moved(row) {
+    highlight(row) {
         row.addClass('row-moved');
         setTimeout(function() {
             row.removeClass('row-moved');
@@ -72,7 +74,7 @@ export class DictWidget extends DictBase {
      */
     add_first_handle(evt) {
         let row = super.add_first_handle(evt);
-        this.on_row_moved(row);
+        this.highlight(row);
         return row;
     }
 
@@ -84,7 +86,7 @@ export class DictWidget extends DictBase {
         super.add_handle(evt);
         let action = evt.currentTarget,
             row = this.get_row(action);
-        this.on_row_moved(row.next());
+        this.highlight(row.next());
     }
 
     /**
@@ -96,7 +98,7 @@ export class DictWidget extends DictBase {
         let row = this.get_row(evt.currentTarget);
         row.insertBefore(row.prev());
         this.reset_indices(row.parent());
-        this.on_row_moved(row);
+        this.highlight(row);
     }
 
     /**
@@ -108,7 +110,7 @@ export class DictWidget extends DictBase {
         let row = this.get_row(evt.currentTarget);
         row.insertAfter(row.next());
         this.reset_indices(row.parent());
-        this.on_row_moved(row);
+        this.highlight(row);
     }
 }
 

@@ -147,7 +147,7 @@ var yafowil_dict = (function (exports, $) {
             row += '</tr>';
             return $(row);
         }
-        on_row_moved(row) {
+        highlight(row) {
             row.addClass('row-moved');
             setTimeout(function() {
                 row.removeClass('row-moved');
@@ -155,27 +155,28 @@ var yafowil_dict = (function (exports, $) {
         }
         add_first_handle(evt) {
             let row = super.add_first_handle(evt);
-            this.on_row_moved(row);
+            this.highlight(row);
+            return row;
         }
         add_handle(evt) {
             super.add_handle(evt);
             let action = evt.currentTarget,
                 row = this.get_row(action);
-            this.on_row_moved(row.next());
+            this.highlight(row.next());
         }
         up_handle(evt) {
             evt.preventDefault();
             let row = this.get_row(evt.currentTarget);
             row.insertBefore(row.prev());
             this.reset_indices(row.parent());
-            this.on_row_moved(row);
+            this.highlight(row);
         }
         down_handle(evt) {
             evt.preventDefault();
             let row = this.get_row(evt.currentTarget);
             row.insertAfter(row.next());
             this.reset_indices(row.parent());
-            this.on_row_moved(row);
+            this.highlight(row);
         }
     }
     function dict_on_array_add(inst, context) {
