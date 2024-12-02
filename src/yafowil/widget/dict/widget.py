@@ -76,6 +76,7 @@ def value_label(widget, data):
 
 @managedprops(
     'static',
+    'scrollable',
     'table_class',
     'key_class',
     'value_class',
@@ -87,11 +88,12 @@ def dict_edit_renderer(widget, data):
     widget['exists'] = factory('hidden', value='1')
     key_class = attr_value('key_class', widget, data)
     value_class = attr_value('value_class', widget, data)
+    scrollable = attr_value('scrollable', widget, data)
     wrapper = widget['wrapper'] = factory(
         'fieldset',
         props={
             'structural': True,
-            'class': 'card card-body p-0'
+            'class': 'card card-body p-0 scrollable-x' if scrollable else 'card card-body p-0'
         }
     )
     table = wrapper['table'] = factory(
@@ -102,7 +104,8 @@ def dict_edit_renderer(widget, data):
             'class': ' '.join([
                 attr_value('table_class', widget, data),
                 'key-{0}'.format(key_class),
-                'value-{0}'.format(value_class)
+                'value-{0}'.format(value_class),
+                'scrollable-content' if scrollable else ''
             ])
         })
     head = table['head'] = factory(
@@ -360,4 +363,10 @@ B/C Labels for dict keys and values columns. Expect a dict containing
 factory.defaults['dict.static'] = False
 factory.doc['props']['dict.static'] = """\
 Flag whether dict is immutable.
+"""
+
+factory.defaults['dict.scrollable'] = False
+factory.doc['props']['dict.scrollable'] = """\
+Flag whether to render scrollbar for large widgets on smaller viewports.
+Depends on yafowil.widget.scrollbar.
 """
