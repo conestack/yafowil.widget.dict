@@ -4,7 +4,32 @@ Changes
 2.0a2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Update jQuery to version ``4.0.0-beta.2``.
+  [lenadax]
+
+- Add new ``scrollable`` option for large widgets on smaller viewports (depends on cone.app scrollbar).
+  [lenadax]
+
+- Use ``bootstrap-icons`` font instead of glyphicons.
+  [lenadax]
+
+- Add visual effects to distinguish rows that have been moved or created.
+  [lenadax]
+
+- Implement dark theme for ``Bootstrap5`` dark theme mode.
+  [lenadax]
+
+- Use rollup for bundling scss. Use ``make rollup`` to compile js and scss.
+  [lenadax]
+
+- Use ``webtestrunner`` instead of ``karma`` for js tests. Use ``make wtr`` to run tests.
+  [lenadax]
+
+- Use ``pnpm`` as package manager.
+  [lenadax]
+
+- Create Bootstrap5 widget version.
+  [lenadax]
 
 
 2.0a1 (2023-05-15)
