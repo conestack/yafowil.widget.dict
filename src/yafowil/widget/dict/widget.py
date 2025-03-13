@@ -12,6 +12,7 @@ from yafowil.utils import attr_value
 from yafowil.utils import callable_value
 from yafowil.utils import css_managed_props
 from yafowil.utils import managedprops
+from yafowil.utils import cssclasses
 
 
 _ = TSF('yafowil.widget.dict')
@@ -77,6 +78,7 @@ def value_label(widget, data):
 @managedprops(
     'static',
     'scrollable',
+    'wrapper_class',
     'table_class',
     'key_class',
     'value_class',
@@ -89,11 +91,12 @@ def dict_edit_renderer(widget, data):
     key_class = attr_value('key_class', widget, data)
     value_class = attr_value('value_class', widget, data)
     scrollable = attr_value('scrollable', widget, data)
+    wrapper_class = cssclasses(widget, data, classattr='wrapper_class')
     wrapper = widget['wrapper'] = factory(
         'fieldset',
         props={
             'structural': True,
-            'class': 'card card-body p-0 scrollable-x' if scrollable else 'card card-body p-0'
+            'class': wrapper_class + ' scrollable-x' if scrollable else wrapper_class
         }
     )
     table = wrapper['table'] = factory(
@@ -318,6 +321,11 @@ factory.defaults['dict.default'] = odict()
 factory.defaults['dict.error_class'] = 'error'
 
 factory.defaults['dict.message_class'] = 'errormessage'
+
+factory.defaults['dict.wrapper_class'] = 'dictwidget-wrapper card card-body p-0'
+factory.doc['props']['dict.wrapper_class'] = """\
+CSS classes rendered on dict wrapper.
+"""
 
 factory.defaults['dict.table_class'] = 'dictwidget'
 factory.doc['props']['dict.table_class'] = """\

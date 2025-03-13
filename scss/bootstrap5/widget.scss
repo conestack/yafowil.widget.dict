@@ -1,4 +1,12 @@
 /* yafowil.widget.dict - bootstrap 5 theme styles */
+.dictwidget-wrapper {
+    &.is-valid {
+        border-color: var(--bs-form-valid-border-color);
+    }
+    &.is-invalid {
+        border-color: var(--bs-form-invalid-border-color);
+    }
+}
 .dictwidget {
     margin-bottom: 0;
 
