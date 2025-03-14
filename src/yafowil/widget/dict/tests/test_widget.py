@@ -54,7 +54,7 @@ class TestDictWidget(YafowilTestCase):
         <div>
           <input class="hidden" id="input-mydict-exists" name="mydict.exists"
                  type="hidden" value="1"/>
-          <fieldset class="card card-body p-0">
+          <fieldset class="card card-body dictwidget-wrapper p-0">
             <table class="dictwidget key-keyfield value-valuefield"
                    id="dictwidget_mydict.entry">
               <thead>
@@ -420,7 +420,7 @@ class TestDictWidget(YafowilTestCase):
         <div>
           <input class="hidden" id="input-mydict-exists"
                         name="mydict.exists" type="hidden" value="1"/>
-          <fieldset class="card card-body p-0">
+          <fieldset class="card card-body dictwidget-wrapper p-0">
             <table class="dictwidget key-keyfield value-valuefield"
                    id="dictwidget_mydict.entry">
               <thead>
