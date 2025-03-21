@@ -1,22 +1,32 @@
 #
 # SOME DESCRIPTIVE TITLE
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2019.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2019-05-01 20:19+0200\n"
+"POT-Creation-Date: 2025-03-21 10:54+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Lingua 4.13\n"
+"Generated-By: Lingua 4.15.0\n"
+
+#. Default: Key ${key} is not a valid ${datatype}.
+#: ./src/yafowil/widget/dict/widget.py:252
+msgid "dict_key_type_mismatch"
+msgstr ""
+
+#. Default: Value ${value} is not a valid ${datatype}.
+#: ./src/yafowil/widget/dict/widget.py:265
+msgid "dict_value_type_mismatch"
+msgstr ""
 
 #. Default: Dict values must not be empty
-#: ./src/yafowil/widget/dict/widget.py:228
+#: ./src/yafowil/widget/dict/widget.py:290
 msgid "dict_values_required"
 msgstr ""
