@@ -203,7 +203,7 @@ def dict_display_renderer(widget, data):
             data.tag.translate(v_label)
         )
         head = data.tag('h5', head)
-    return head + data.tag('dl', *values)
+    return head + data.tag('dl', *values, **{'class_': attr_value('display_class', widget, data)})
 
 
 @managedprops('static')

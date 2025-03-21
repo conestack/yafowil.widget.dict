@@ -4,6 +4,9 @@ Changes
 2.0a2 (unreleased)
 ------------------
 
+- Introduce ``display_class`` widget property in display renderer.
+  [lenadax]
+
 - Update jQuery to version ``4.0.0-beta.2``.
   [lenadax]
 
