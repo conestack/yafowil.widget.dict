@@ -1,6 +1,0 @@
-include *.py
-include *.rst
-include *.sh
-include buildout.cfg
-recursive-exclude src *.pyc *.pyo
-recursive-include src *
