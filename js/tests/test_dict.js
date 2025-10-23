@@ -1,5 +1,5 @@
-import { DictWidget } from "../src/widget";
-import {register_array_subscribers} from "../src/widget";
+import { DictWidget } from "../src/default/widget";
+import {register_array_subscribers} from "../src/default/widget";
 import $ from 'jquery';
 
 QUnit.test('test', assert => {
