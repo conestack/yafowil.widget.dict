@@ -80,8 +80,47 @@ def immutable_dict():
     }
 
 
+DOC_DISPLAY = """
+Display Mode
+------------
+
+Display mode renders the widget value inside an uneditable ``<dl>`` tag.
+
+The wrapper dl can receive additional classes via the ``display_class``
+widget attribute.
+
+.. code-block:: python
+
+    value = odict()
+    value['Name'] = 'Jane Doe'
+    value['Age'] = 32
+    value['Role'] = 'Management'
+    dict = factory('#field:dict', value=value, mode='display', props={
+        'label': 'Dict Display Mode',
+        # 'display_class': 'my_additional_class'
+    })
+"""
+
+
+def display_mode():
+    form = factory('fieldset', name='yafowil.widget.dict.display')
+    value = odict()
+    value['Name'] = 'Jane Doe'
+    value['Age'] = 32
+    value['Role'] = 'Management'
+    form['dict'] = factory('#field:dict', value=value, mode='display', props={
+        'label': 'Dict Display Mode'
+    })
+    return {
+        'widget': form,
+        'doc': DOC_DISPLAY,
+        'title': 'Display Mode',
+    }
+
+
 def get_example():
     return [
         mutable_dict(),
         immutable_dict(),
+        display_mode()
     ]
