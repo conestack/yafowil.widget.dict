@@ -4,6 +4,9 @@ Changes
 1.9 (unreleased)
 ----------------
 
+- Pin upper versions of dependencies.
+  [lenadax]
+
 - Remove B/C property callback tests. Property callbacks always
   gets passed ``widget`` and ``data`` as of yafowil 3.0.0.
   [rnix]
