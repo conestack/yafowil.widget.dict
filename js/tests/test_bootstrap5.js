@@ -18,17 +18,23 @@ function create_dict(entries) {
               </td>
             </tr>`;
     }
-    return $(`
-        <table class="dictwidget key-keyfield value-valuefield" id="dictwidget_mydict.entry">
-          <thead>
-            <tr>
-              <th class="actions">
-                <div class="dict_actions"><a class="dict_row_add" href="#"></a></div>
-              </th>
-            </tr>
-          </thead>
-          <tbody>${body}</tbody>
-        </table>`).appendTo('body');
+    const wrapper = $(`
+        <div class="dict-fixture">
+          <input id="input-mydict-exists" name="mydict.exists" type="hidden" value="1" />
+          <fieldset class="dictwidget-wrapper">
+            <table class="dictwidget key-keyfield value-valuefield" id="dictwidget_mydict.entry">
+              <thead>
+                <tr>
+                  <th class="actions">
+                    <div class="dict_actions"><a class="dict_row_add" href="#"></a></div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>${body}</tbody>
+            </table>
+          </fieldset>
+        </div>`).appendTo('body');
+    return $('table', wrapper);
 }
 
 function rows(elem) {
@@ -72,7 +78,7 @@ QUnit.module('bootstrap5 DictWidget', (hooks) => {
     hooks.afterEach(() => {
         window.setTimeout = orig_set_timeout;
         if (elem) {
-            elem.remove();
+            elem.closest('.dict-fixture').remove();
             elem = null;
         }
         delete window.yafowil_array;

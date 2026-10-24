@@ -4,6 +4,16 @@ Changes
 2.0.1 (unreleased)
 ------------------
 
+- Fix the input names and ids after adding, removing or moving dict rows. For
+  dict names with spaces or non-ASCII characters the ids differed from the
+  server rendered ones, which yafowil normalizes, e.g.
+  ``input-my dict-entry0-key`` instead of ``input-my_dict-entry0-key``. Inside
+  ``yafowil.widget.array`` names and ids were broken after an array row action,
+  e.g. ``arr.10.key`` instead of ``arr.1.entry0.key``, and the entries were
+  lost on submit. Names and ids are derived from the rendered ``exists`` input
+  now instead of the table id.
+  [rnix]
+
 - Fix the input ids after adding, removing or moving dict rows. They lacked
   the ``input-`` prefix of the server rendered ids, e.g. ``mydict-entry0-key``
   instead of ``input-mydict-entry0-key``.

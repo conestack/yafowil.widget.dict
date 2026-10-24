@@ -52,23 +52,38 @@ export class DictBase {
         return $(action).parent().parent().parent();
     }
 
+    // The hidden ``exists`` input is rendered directly before the wrapper
+    // fieldset of the table. Its id is created by yafowil's ``cssid``, which
+    // normalizes the widget name, and yafowil.widget.array keeps its name and
+    // id up to date, so it is the source for the name and id of the rows.
+    get exists_input() {
+        const exists = this.elem.parent().prev('input[name$=".exists"]');
+        if (!exists.length) {
+            throw new Error('Dict widget "exists" input not found');
+        }
+        return exists;
+    }
+
     get base_name() {
-        const id = this.elem.attr('id');
-        return id.substring(11, id.length);
+        return this.exists_input.attr('name').replace(/exists$/, 'entry');
+    }
+
+    get base_id() {
+        return this.exists_input.attr('id').replace(/exists$/, 'entry');
     }
 
     reset_indices(context) {
         var index = 0,
             base_name = this.base_name,
-            base_id = base_name.replace(/\./g, '-');
+            base_id = this.base_id;
         $('tr', context).each(function () {
             const row = $(this),
                 key = $('td.key input', row),
-                key_id = `input-${base_id}${index}-key`,
+                key_id = `${base_id}${index}-key`,
                 key_name = `${base_name}${index}.key`;
             key.attr('id', key_id).attr('name', key_name);
             const value = $('td.value input', row),
-                value_id = `input-${base_id}${index}-value`,
+                value_id = `${base_id}${index}-value`,
                 value_name = `${base_name}${index}.value`;
             value.attr('id', value_id).attr('name', value_name);
             index++;

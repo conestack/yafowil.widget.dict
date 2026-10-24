@@ -8,39 +8,86 @@ const all_actions =
     '<a class="dict_row_up" href="#"><span class="icon-circle-arrow-up"> </span></a>' +
     '<a class="dict_row_down" href="#"><span class="icon-circle-arrow-down"> </span></a>';
 
-function create_dict(entries) {
+/**
+ * Create dict widget markup as rendered by the server.
+ *
+ * @param {number} entries - Number of rows.
+ * @param {string} name - Dotted path of the widget.
+ * @param {string} id_name - Dotted path as transformed by yafowil's ``cssid``.
+ * @returns {jQuery} The dict table.
+ */
+function create_dict(entries, name = 'mydict', id_name = 'mydict') {
     let body = '';
     for (let i = 0; i < entries; i++) {
         body += `
             <tr>
               <td class="key">
-                <input class="keyfield" id="input-mydict-entry${i}-key"
-                       name="mydict.entry${i}.key" type="text" value="key${i}" />
+                <input class="keyfield" id="input-${id_name}-entry${i}-key"
+                       name="${name}.entry${i}.key" type="text" value="key${i}" />
               </td>
               <td class="value">
-                <input class="valuefield" id="input-mydict-entry${i}-value"
-                       name="mydict.entry${i}.value" type="text" value="value${i}" />
+                <input class="valuefield" id="input-${id_name}-entry${i}-value"
+                       name="${name}.entry${i}.value" type="text" value="value${i}" />
               </td>
               <td class="actions">
                 <div class="dict_actions">${all_actions}</div>
               </td>
             </tr>`;
     }
-    return $(`
-        <table class="dictwidget key-keyfield value-valuefield" id="dictwidget_mydict.entry">
-          <thead>
-            <tr>
-              <th>Key</th>
-              <th>Value</th>
-              <th class="actions">
-                <div class="dict_actions">
-                  <a class="dict_row_add" href="#"><span class="icon-plus-sign"> </span></a>
-                </div>
-              </th>
-            </tr>
-          </thead>
-          <tbody>${body}</tbody>
-        </table>`).appendTo('body');
+    const wrapper = $(`
+        <div class="dict-fixture">
+          <input class="hidden" id="input-${id_name}-exists" name="${name}.exists"
+                 type="hidden" value="1" />
+          <fieldset class="dictwidget-wrapper">
+            <table class="dictwidget key-keyfield value-valuefield"
+                   id="dictwidget_${name}.entry">
+              <thead>
+                <tr>
+                  <th>Key</th>
+                  <th>Value</th>
+                  <th class="actions">
+                    <div class="dict_actions">
+                      <a class="dict_row_add" href="#"><span class="icon-plus-sign"> </span></a>
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>${body}</tbody>
+            </table>
+          </fieldset>
+        </div>`).appendTo('body');
+    return $('table', wrapper);
+}
+
+// Copy of the index rewriting of yafowil.widget.array (``set_row_index``)
+// applied to the nodes of an array row after an array row action.
+function array_set_row_index(node, base_id, index) {
+    const base_name = base_id.replace(/-/g, '.');
+    node.children().each(function () {
+        const child = $(this);
+        array_set_attr_index(child, 'id', base_id, index, '-');
+        array_set_attr_index(child, 'for', base_id, index, '-');
+        array_set_attr_index(child, 'name', base_name, index, '.');
+        array_set_row_index(child, base_id, index);
+    });
+}
+
+function array_set_attr_index(node, attr, base, index, delim) {
+    const value = node.attr(attr);
+    if (value && value.indexOf(base) > -1) {
+        node.attr(attr, array_set_value_index(value, base, index, delim));
+    }
+}
+
+function array_set_value_index(value, base, index, delim) {
+    const idx_0 = value.indexOf(base) + base.length + 1,
+        idx_1 = value.indexOf(delim, idx_0),
+        pre = value.substring(0, idx_0);
+    let post = '';
+    if (idx_1 > -1) {
+        post = value.substring(idx_1, value.length);
+    }
+    return pre + index + post;
 }
 
 function rows(elem) {
@@ -53,14 +100,14 @@ function row_keys(elem) {
         .get();
 }
 
-function assert_ids_and_names(assert, elem) {
+function assert_ids_and_names(assert, elem, name = 'mydict', id_name = 'mydict') {
     rows(elem).each((index, row) => {
         const key = $('td.key input', row),
             value = $('td.value input', row);
-        assert.strictEqual(key.attr('id'), `input-mydict-entry${index}-key`);
-        assert.strictEqual(key.attr('name'), `mydict.entry${index}.key`);
-        assert.strictEqual(value.attr('id'), `input-mydict-entry${index}-value`);
-        assert.strictEqual(value.attr('name'), `mydict.entry${index}.value`);
+        assert.strictEqual(key.attr('id'), `input-${id_name}-entry${index}-key`);
+        assert.strictEqual(key.attr('name'), `${name}.entry${index}.key`);
+        assert.strictEqual(value.attr('id'), `input-${id_name}-entry${index}-value`);
+        assert.strictEqual(value.attr('name'), `${name}.entry${index}.value`);
     });
 }
 
@@ -154,7 +201,7 @@ QUnit.module('DictWidget', (hooks) => {
     let elem;
 
     hooks.afterEach(() => {
-        elem.remove();
+        elem.closest('.dict-fixture').remove();
     });
 
     QUnit.test('initialize respects context', (assert) => {
@@ -172,6 +219,7 @@ QUnit.module('DictWidget', (hooks) => {
         assert.strictEqual(elem.data('yafowil-dict'), wid);
         assert.true(wid.elem.is(elem));
         assert.strictEqual(wid.base_name, 'mydict.entry');
+        assert.strictEqual(wid.base_id, 'input-mydict-entry');
     });
 
     QUnit.test('row_class', (assert) => {
@@ -279,8 +327,7 @@ QUnit.module('DictWidget', (hooks) => {
     });
 
     QUnit.test('ids and names of nested dict after row action', (assert) => {
-        elem = create_dict(2);
-        elem.attr('id', 'dictwidget_myform.mydict.entry');
+        elem = create_dict(2, 'myform.mydict', 'myform-mydict');
         new DictWidget(elem);
         click($('a.dict_row_remove', rows(elem).first()));
         const key = $('td.key input', rows(elem).first()),
@@ -290,6 +337,62 @@ QUnit.module('DictWidget', (hooks) => {
         assert.strictEqual(key.attr('name'), 'myform.mydict.entry0.key');
         assert.strictEqual(value.attr('id'), 'input-myform-mydict-entry0-value');
         assert.strictEqual(value.attr('name'), 'myform.mydict.entry0.value');
+    });
+
+    QUnit.test('ids of dict with space and non-ASCII name after row actions', (assert) => {
+        // yafowil's ``cssid`` normalizes the name for the server rendered ids
+        const name = 'myform.grüße dict',
+            id_name = 'myform-grue_dict';
+        elem = create_dict(0, name, id_name);
+        new DictWidget(elem);
+
+        click($('> thead a.dict_row_add', elem));
+        click($('a.dict_row_add', rows(elem).first()));
+        click($('a.dict_row_add', rows(elem).first()));
+        assert.strictEqual(rows(elem).length, 3);
+        assert_ids_and_names(assert, elem, name, id_name);
+
+        click($('a.dict_row_down', rows(elem).first()));
+        assert_ids_and_names(assert, elem, name, id_name);
+
+        click($('a.dict_row_up', rows(elem).last()));
+        assert_ids_and_names(assert, elem, name, id_name);
+
+        click($('a.dict_row_remove', rows(elem).first()));
+        assert.strictEqual(rows(elem).length, 2);
+        assert_ids_and_names(assert, elem, name, id_name);
+    });
+
+    QUnit.test('ids and names inside array after array row action', (assert) => {
+        elem = create_dict(2, 'arr.0', 'arr-0');
+        new DictWidget(elem);
+
+        // array entry moved from index 0 to 1
+        array_set_row_index(elem.closest('.dict-fixture'), 'arr', 1);
+        assert.strictEqual(
+            $('input[type="hidden"]', elem.closest('.dict-fixture')).attr('name'),
+            'arr.1.exists',
+        );
+        // array breaks the table id, which is not used by the dict widget
+        assert.strictEqual(elem.attr('id'), 'dictwidget_arr.1');
+
+        click($('> thead a.dict_row_add', elem));
+        assert.deepEqual(row_keys(elem), ['', 'key0', 'key1']);
+        assert_ids_and_names(assert, elem, 'arr.1', 'arr-1');
+
+        click($('a.dict_row_down', rows(elem).first()));
+        click($('a.dict_row_remove', rows(elem).last()));
+        assert.deepEqual(row_keys(elem), ['key0', '']);
+        assert_ids_and_names(assert, elem, 'arr.1', 'arr-1');
+    });
+
+    QUnit.test('row action without exists input fails', (assert) => {
+        elem = create_dict(1);
+        $('input[type="hidden"]', elem.closest('.dict-fixture')).remove();
+        new DictWidget(elem);
+        assert.throws(() => {
+            click($('a.dict_row_add', rows(elem).first()));
+        }, /Dict widget "exists" input not found/);
     });
 
     QUnit.test('DictBase.create_row is implemented by subclasses', (assert) => {
