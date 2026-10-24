@@ -6,7 +6,6 @@ from yafowil.base import factory
 from yafowil.tests import fxml
 from yafowil.tests import YafowilTestCase
 import os
-import unittest
 
 
 def np(path):
@@ -743,7 +742,3 @@ class TestDictWidget(YafowilTestCase):
         self.assertEqual(styles[0].path, 'yafowil-dict/plone5')
         self.assertEqual(styles[0].file_name, 'widget.min.css')
         self.assertTrue(os.path.exists(styles[0].file_path))
-
-
-if __name__ == '__main__':
-    unittest.main()
