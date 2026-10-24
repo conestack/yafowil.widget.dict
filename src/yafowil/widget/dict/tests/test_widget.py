@@ -13,11 +13,11 @@ def np(path):
 
 
 class TestDictWidget(YafowilTestCase):
-
     def setUp(self):
         super(TestDictWidget, self).setUp()
         from yafowil.widget import dict
         from yafowil.widget.dict import widget
+
         reload(widget)
         dict.register()
 
@@ -29,23 +29,28 @@ class TestDictWidget(YafowilTestCase):
             props={
                 'key_label': 'Key',
                 'value_label': 'Value',
-            })
+            },
+        )
         result = widget()
-        self.assertEqual(widget.treerepr().split('\n'), [
-            "<class 'yafowil.base.Widget'>: mydict",
-            "  <class 'yafowil.base.Widget'>: exists",
-            "  <class 'yafowil.base.Widget'>: wrapper",
-            "    <class 'yafowil.base.Widget'>: table",
-            "      <class 'yafowil.base.Widget'>: head",
-            "        <class 'yafowil.base.Widget'>: row",
-            "          <class 'yafowil.base.Widget'>: key",
-            "          <class 'yafowil.base.Widget'>: value",
-            "          <class 'yafowil.base.Widget'>: actions",
-            "      <class 'yafowil.base.Widget'>: body",
-            ""
-        ])
+        self.assertEqual(
+            widget.treerepr().split('\n'),
+            [
+                "<class 'yafowil.base.Widget'>: mydict",
+                "  <class 'yafowil.base.Widget'>: exists",
+                "  <class 'yafowil.base.Widget'>: wrapper",
+                "    <class 'yafowil.base.Widget'>: table",
+                "      <class 'yafowil.base.Widget'>: head",
+                "        <class 'yafowil.base.Widget'>: row",
+                "          <class 'yafowil.base.Widget'>: key",
+                "          <class 'yafowil.base.Widget'>: value",
+                "          <class 'yafowil.base.Widget'>: actions",
+                "      <class 'yafowil.base.Widget'>: body",
+                '',
+            ],
+        )
 
-        self.checkOutput("""
+        self.checkOutput(
+            """
         <div>
           <input class="hidden" id="input-mydict-exists" name="mydict.exists"
                  type="hidden" value="1"/>
@@ -69,7 +74,9 @@ class TestDictWidget(YafowilTestCase):
             </table>
           </fieldset>
         </div>
-        """, fxml('<div>' + result + '</div>'))
+        """,
+            fxml('<div>' + result + '</div>'),
+        )
 
     def test_key_label_and_value_label_callables(self):
         # ``key_label`` and ``value_label`` may be callables
@@ -78,9 +85,10 @@ class TestDictWidget(YafowilTestCase):
             name='mydict',
             props={
                 'key_label': lambda w, d: 'Computed Key',
-                'value_label': lambda w, d: 'Computed Value'
-            })
-        rendered = fxml('<div>{}</div>'.format(widget()))
+                'value_label': lambda w, d: 'Computed Value',
+            },
+        )
+        rendered = fxml(f'<div>{widget()}</div>')
         self.assertTrue(rendered.find('Computed Key') > -1)
         self.assertTrue(rendered.find('Computed Value') > -1)
 
@@ -94,8 +102,9 @@ class TestDictWidget(YafowilTestCase):
                     'key': 'B/C Key',
                     'value': 'B/C Value',
                 }
-            })
-        rendered = fxml('<div>{}</div>'.format(widget()))
+            },
+        )
+        rendered = fxml(f'<div>{widget()}</div>')
         self.assertTrue(rendered.find('B/C Key') > -1)
         self.assertTrue(rendered.find('B/C Value') > -1)
 
@@ -108,14 +117,15 @@ class TestDictWidget(YafowilTestCase):
                     'key': lambda w, d: 'Computed B/C Key',
                     'value': lambda w, d: 'Computed B/C Value',
                 }
-            })
-        rendered = fxml('<div>{}</div>'.format(widget()))
+            },
+        )
+        rendered = fxml(f'<div>{widget()}</div>')
         self.assertTrue(rendered.find('Computed B/C Key') > -1)
         self.assertTrue(rendered.find('Computed B/C Value') > -1)
 
     def test_skip_labels(self):
         widget = factory('dict', name='mydict')
-        rendered = fxml('<div>{}</div>'.format(widget()))
+        rendered = fxml(f'<div>{widget()}</div>')
         # search for empty th
         index = rendered.find('<th> </th>')
         self.assertTrue(index > -1)
@@ -131,30 +141,35 @@ class TestDictWidget(YafowilTestCase):
             props={
                 'key_label': 'Key',
                 'value_label': 'Value',
-            })
+            },
+        )
         rendered = widget()
-        self.assertEqual(widget.treerepr().split('\n'), [
-            "<class 'yafowil.base.Widget'>: mydict",
-            "  <class 'yafowil.base.Widget'>: exists",
-            "  <class 'yafowil.base.Widget'>: wrapper",
-            "    <class 'yafowil.base.Widget'>: table",
-            "      <class 'yafowil.base.Widget'>: head",
-            "        <class 'yafowil.base.Widget'>: row",
-            "          <class 'yafowil.base.Widget'>: key",
-            "          <class 'yafowil.base.Widget'>: value",
-            "          <class 'yafowil.base.Widget'>: actions",
-            "      <class 'yafowil.base.Widget'>: body",
-            "        <class 'yafowil.base.Widget'>: entry0",
-            "          <class 'yafowil.base.Widget'>: key",
-            "          <class 'yafowil.base.Widget'>: value",
-            "          <class 'yafowil.base.Widget'>: actions",
-            "        <class 'yafowil.base.Widget'>: entry1",
-            "          <class 'yafowil.base.Widget'>: key",
-            "          <class 'yafowil.base.Widget'>: value",
-            "          <class 'yafowil.base.Widget'>: actions",
-            ""
-        ])
-        self.checkOutput("""
+        self.assertEqual(
+            widget.treerepr().split('\n'),
+            [
+                "<class 'yafowil.base.Widget'>: mydict",
+                "  <class 'yafowil.base.Widget'>: exists",
+                "  <class 'yafowil.base.Widget'>: wrapper",
+                "    <class 'yafowil.base.Widget'>: table",
+                "      <class 'yafowil.base.Widget'>: head",
+                "        <class 'yafowil.base.Widget'>: row",
+                "          <class 'yafowil.base.Widget'>: key",
+                "          <class 'yafowil.base.Widget'>: value",
+                "          <class 'yafowil.base.Widget'>: actions",
+                "      <class 'yafowil.base.Widget'>: body",
+                "        <class 'yafowil.base.Widget'>: entry0",
+                "          <class 'yafowil.base.Widget'>: key",
+                "          <class 'yafowil.base.Widget'>: value",
+                "          <class 'yafowil.base.Widget'>: actions",
+                "        <class 'yafowil.base.Widget'>: entry1",
+                "          <class 'yafowil.base.Widget'>: key",
+                "          <class 'yafowil.base.Widget'>: value",
+                "          <class 'yafowil.base.Widget'>: actions",
+                '',
+            ],
+        )
+        self.checkOutput(
+            """
         <div>
           ...
           <tbody>
@@ -202,7 +217,9 @@ class TestDictWidget(YafowilTestCase):
           </tbody>
           ...
         </div>
-        """, fxml('<div>{}</div>'.format(rendered)))
+        """,
+            fxml(f'<div>{rendered}</div>'),
+        )
 
     def test_unset_extraction(self):
         widget = factory('dict', name='mydict')
@@ -212,9 +229,7 @@ class TestDictWidget(YafowilTestCase):
 
     def test_empty_extraction(self):
         widget = factory('dict', name='mydict')
-        request = {
-            'mydict.exists': '1'
-        }
+        request = {'mydict.exists': '1'}
         data = widget.extract(request=request)
         self.assertEqual(data.extracted, odict())
 
@@ -228,19 +243,14 @@ class TestDictWidget(YafowilTestCase):
             'mydict.entry1.value': 'Value2',
         }
         data = widget.extract(request=request)
-        self.assertEqual(
-            data.extracted,
-            odict([('key1', 'Value1'), ('key2', 'Value2')])
-        )
+        self.assertEqual(data.extracted, odict([('key1', 'Value1'), ('key2', 'Value2')]))
         rendered = widget(data=data)
         self.assertTrue(rendered.find('value="Value1"') > -1)
         self.assertTrue(rendered.find('value="Value2"') > -1)
 
     def test_override_extraction(self):
         widget = factory(
-            'dict',
-            name='mydict',
-            value=odict([('key1', 'Value1'), ('key2', 'Value2')])
+            'dict', name='mydict', value=odict([('key1', 'Value1'), ('key2', 'Value2')])
         )
         request = {
             'mydict.exists': '1',
@@ -251,19 +261,14 @@ class TestDictWidget(YafowilTestCase):
         }
         data = widget.extract(request=request)
         self.assertEqual(
-            data.extracted,
-            odict([('key1', 'Value1'), ('key2', 'New Value2')])
+            data.extracted, odict([('key1', 'Value1'), ('key2', 'New Value2')])
         )
         rendered = widget(data=data)
         self.assertTrue(rendered.find('value="Value1"') > -1)
         self.assertTrue(rendered.find('value="New Value2"') > -1)
 
     def test_entries_increased_extraction(self):
-        widget = factory(
-            'dict',
-            name='mydict',
-            value=odict([('key1', 'Value1')])
-        )
+        widget = factory('dict', name='mydict', value=odict([('key1', 'Value1')]))
         request = {
             'mydict.exists': '1',
             'mydict.entry0.key': 'key1',
@@ -272,39 +277,29 @@ class TestDictWidget(YafowilTestCase):
             'mydict.entry1.value': 'Value2',
         }
         data = widget.extract(request=request)
-        self.assertEqual(
-            data.extracted,
-            odict([('key1', 'Value1'), ('key2', 'Value2')])
-        )
+        self.assertEqual(data.extracted, odict([('key1', 'Value1'), ('key2', 'Value2')]))
         rendered = widget(data=data)
         self.assertTrue(rendered.find('value="Value1"') > -1)
         self.assertTrue(rendered.find('value="Value2"') > -1)
 
     def test_entries_decreased_extraction(self):
         widget = factory(
-            'dict',
-            name='mydict',
-            value=odict([('key1', 'Value1'), ('key2', 'Value2')])
+            'dict', name='mydict', value=odict([('key1', 'Value1'), ('key2', 'Value2')])
         )
         request = {
             'mydict.exists': '1',
             'mydict.entry0.key': 'key1',
-            'mydict.entry0.value': 'Value1'
+            'mydict.entry0.value': 'Value1',
         }
         data = widget.extract(request=request)
-        self.assertEqual(
-            data.extracted,
-            odict([('key1', 'Value1')])
-        )
+        self.assertEqual(data.extracted, odict([('key1', 'Value1')]))
         rendered = widget(data=data)
         self.assertTrue(rendered.find('value="Value1"') > -1)
         self.assertFalse(rendered.find('value="Value2"') > -1)
 
     def test_empty_keys_ignored_extraction(self):
         widget = factory(
-            'dict',
-            name='mydict',
-            value=odict([('key1', 'Value1'), ('key2', 'Value2')])
+            'dict', name='mydict', value=odict([('key1', 'Value1'), ('key2', 'Value2')])
         )
         request = {
             'mydict.exists': '1',
@@ -314,21 +309,15 @@ class TestDictWidget(YafowilTestCase):
             'mydict.entry1.value': 'New Value2',
         }
         data = widget.extract(request=request)
-        self.assertEqual(
-            data.extracted,
-            odict([('key1', 'New Value1')])
-        )
+        self.assertEqual(data.extracted, odict([('key1', 'New Value1')]))
         rendered = widget(data=data)
         self.assertTrue(rendered.find('value="New Value1"') > -1)
         self.assertFalse(rendered.find('value="New Value2"') > -1)
 
     def test_unset_required_extraction(self):
         widget = factory(
-            'dict',
-            name='mydict',
-            props={
-                'required': 'Dict entires required'
-            })
+            'dict', name='mydict', props={'required': 'Dict entires required'}
+        )
         request = {}
         data = widget.extract(request)
         self.assertEqual(data.extracted, UNSET)
@@ -336,14 +325,9 @@ class TestDictWidget(YafowilTestCase):
 
     def test_empty_required_extraction(self):
         widget = factory(
-            'dict',
-            name='mydict',
-            props={
-                'required': 'Dict entries required'
-            })
-        request = {
-            'mydict.exists': '1'
-        }
+            'dict', name='mydict', props={'required': 'Dict entries required'}
+        )
+        request = {'mydict.exists': '1'}
         data = widget.extract(request)
         self.assertEqual(data.extracted, odict())
         self.assertTrue(data.has_errors)
@@ -351,15 +335,12 @@ class TestDictWidget(YafowilTestCase):
 
     def test_non_empty_required_extraction(self):
         widget = factory(
-            'dict',
-            name='mydict',
-            props={
-                'required': 'Dict entries required'
-            })
+            'dict', name='mydict', props={'required': 'Dict entries required'}
+        )
         request = {
             'mydict.exists': '1',
             'mydict.entry0.key': 'key1',
-            'mydict.entry0.value': 'Value1'
+            'mydict.entry0.value': 'Value1',
         }
         data = widget.extract(request=request)
         self.assertEqual(data.extracted, odict([('key1', 'Value1')]))
@@ -370,12 +351,9 @@ class TestDictWidget(YafowilTestCase):
             'dict',
             name='mydict',
             value=odict([('key1', 'Value1'), ('key2', 'Value2')]),
-            props={
-                'required': 'Dict entries required'
-            })
-        request = {
-            'mydict.exists': '1'
-        }
+            props={'required': 'Dict entries required'},
+        )
+        request = {'mydict.exists': '1'}
         data = widget.extract(request=request)
         self.assertEqual(data.extracted, odict())
         self.assertTrue(data.has_errors)
@@ -390,28 +368,29 @@ class TestDictWidget(YafowilTestCase):
             'error:dict',
             name='mydict',
             value=odict([('k1', 'v1')]),
-            props={
-                'static': True,
-                'key_label': 'Key',
-                'value_label': 'Value'
-            })
+            props={'static': True, 'key_label': 'Key', 'value_label': 'Value'},
+        )
         rendered = widget()
-        self.assertEqual(widget.treerepr().split('\n'), [
-            "<class 'yafowil.base.Widget'>: mydict",
-            "  <class 'yafowil.base.Widget'>: exists",
-            "  <class 'yafowil.base.Widget'>: wrapper",
-            "    <class 'yafowil.base.Widget'>: table",
-            "      <class 'yafowil.base.Widget'>: head",
-            "        <class 'yafowil.base.Widget'>: row",
-            "          <class 'yafowil.base.Widget'>: key",
-            "          <class 'yafowil.base.Widget'>: value",
-            "      <class 'yafowil.base.Widget'>: body",
-            "        <class 'yafowil.base.Widget'>: entry0",
-            "          <class 'yafowil.base.Widget'>: key",
-            "          <class 'yafowil.base.Widget'>: value",
-            ""
-        ])
-        self.checkOutput("""
+        self.assertEqual(
+            widget.treerepr().split('\n'),
+            [
+                "<class 'yafowil.base.Widget'>: mydict",
+                "  <class 'yafowil.base.Widget'>: exists",
+                "  <class 'yafowil.base.Widget'>: wrapper",
+                "    <class 'yafowil.base.Widget'>: table",
+                "      <class 'yafowil.base.Widget'>: head",
+                "        <class 'yafowil.base.Widget'>: row",
+                "          <class 'yafowil.base.Widget'>: key",
+                "          <class 'yafowil.base.Widget'>: value",
+                "      <class 'yafowil.base.Widget'>: body",
+                "        <class 'yafowil.base.Widget'>: entry0",
+                "          <class 'yafowil.base.Widget'>: key",
+                "          <class 'yafowil.base.Widget'>: value",
+                '',
+            ],
+        )
+        self.checkOutput(
+            """
         <div>
           <input class="hidden" id="input-mydict-exists"
                         name="mydict.exists" type="hidden" value="1"/>
@@ -440,7 +419,9 @@ class TestDictWidget(YafowilTestCase):
             </table>
           </fieldset>
         </div>
-        """, fxml('<div>{}</div>'.format(rendered)))
+        """,
+            fxml(f'<div>{rendered}</div>'),
+        )
 
     def test_static_extraction(self):
         # Static dict extraction. Disabled form fields are not transmitted, but
@@ -449,11 +430,8 @@ class TestDictWidget(YafowilTestCase):
             'dict',
             name='mydict',
             value=odict([('k1', 'v1')]),
-            props={
-                'static': True,
-                'key_label': 'Key',
-                'value_label': 'Value'
-            })
+            props={'static': True, 'key_label': 'Key', 'value_label': 'Value'},
+        )
         request = {
             'mydict.exists': '1',
             'mydict.entry0.value': 'New Value1',
@@ -471,26 +449,21 @@ class TestDictWidget(YafowilTestCase):
                 'required': True,
                 'static': True,
                 'key_label': 'Key',
-                'value_label': 'Value'
-            })
+                'value_label': 'Value',
+            },
+        )
         request = {
             'mydict.exists': '1',
             'mydict.entry0.value': '',
         }
         data = widget.extract(request=request)
         self.assertTrue(data.has_errors)
-        self.assertEqual(
-            data.errors,
-            [ExtractionError('Dict values must not be empty')]
-        )
+        self.assertEqual(data.errors, [ExtractionError('Dict values must not be empty')])
         # custom required message
         widget.attrs['required'] = 'Doh! no values.'
         data = widget.extract(request=request)
         self.assertTrue(data.has_errors)
-        self.assertEqual(
-            data.errors,
-            [ExtractionError('Doh! no values.')]
-        )
+        self.assertEqual(data.errors, [ExtractionError('Doh! no values.')])
         # check rendered
         rendered = widget(data=data)
         expected = '<div class="errormessage">Doh! no values.</div>'
@@ -508,8 +481,9 @@ class TestDictWidget(YafowilTestCase):
                 'required': True,
                 'static': True,
                 'key_label': 'Key',
-                'value_label': 'Value'
-            })
+                'value_label': 'Value',
+            },
+        )
         # check valid extraction
         request = {
             'mydict.exists': '1',
@@ -517,10 +491,7 @@ class TestDictWidget(YafowilTestCase):
         }
         data = widget.extract(request=request)
         self.assertFalse(data.has_errors)
-        self.assertEqual(
-            data.extracted,
-            odict([('k1', 'Value1')])
-        )
+        self.assertEqual(data.extracted, odict([('k1', 'Value1')]))
         # check rendered
         rendered = widget(data=data)
         expected = '<div class="errormessage">'
@@ -530,12 +501,8 @@ class TestDictWidget(YafowilTestCase):
 
     def test_datatype_extraction(self):
         widget = factory(
-            'error:dict',
-            name='mydict',
-            props={
-                'key_type': int,
-                'value_type': int
-            })
+            'error:dict', name='mydict', props={'key_type': int, 'value_type': int}
+        )
         request = {
             'mydict.exists': '1',
             'mydict.entry0.key': '0',
@@ -543,10 +510,7 @@ class TestDictWidget(YafowilTestCase):
         }
         data = widget.extract(request=request)
         self.assertFalse(data.has_errors)
-        self.assertEqual(
-            data.extracted,
-            odict([(0, 1)])
-        )
+        self.assertEqual(data.extracted, odict([(0, 1)]))
         request = {
             'mydict.exists': '1',
             'mydict.entry0.key': 'a',
@@ -555,7 +519,11 @@ class TestDictWidget(YafowilTestCase):
         data = widget.extract(request=request)
         self.assertEqual(
             data.errors,
-            [ExtractionError('Key a is not a valid integer.',)]
+            [
+                ExtractionError(
+                    'Key a is not a valid integer.',
+                )
+            ],
         )
         request = {
             'mydict.exists': '1',
@@ -565,7 +533,11 @@ class TestDictWidget(YafowilTestCase):
         data = widget.extract(request=request)
         self.assertEqual(
             data.errors,
-            [ExtractionError('Value b is not a valid integer.',)]
+            [
+                ExtractionError(
+                    'Value b is not a valid integer.',
+                )
+            ],
         )
 
     def test_display_dict(self):
@@ -577,8 +549,10 @@ class TestDictWidget(YafowilTestCase):
                 'key_label': 'Key',
                 'value_label': 'Value',
             },
-            mode='display')
-        self.checkOutput("""
+            mode='display',
+        )
+        self.checkOutput(
+            """
         <div>
           <h5>Key: Value</h5>
           <dl>
@@ -588,23 +562,26 @@ class TestDictWidget(YafowilTestCase):
             <dd>Bar</dd>
           </dl>
         </div>
-        """, fxml('<div>{}</div>'.format(widget())))
+        """,
+            fxml(f'<div>{widget()}</div>'),
+        )
 
     def test_display_empty_value(self):
         widget = factory(
             'dict',
             name='display_dict',
-            props={
-                'key_label': 'Key',
-                'value_label': 'Value'
-            },
-            mode='display')
-        self.checkOutput("""
+            props={'key_label': 'Key', 'value_label': 'Value'},
+            mode='display',
+        )
+        self.checkOutput(
+            """
         <div>
           <h5>Key: Value</h5>
           <dl/>
         </div>
-        """, fxml('<div>{}</div>'.format(widget())))
+        """,
+            fxml(f'<div>{widget()}</div>'),
+        )
 
     def test_display_callable_labels(self):
         widget = factory(
@@ -612,15 +589,19 @@ class TestDictWidget(YafowilTestCase):
             name='display_dict',
             props={
                 'key_label': lambda w, d: 'Computed Key',
-                'value_label': lambda w, d: 'Computed Value'
+                'value_label': lambda w, d: 'Computed Value',
             },
-            mode='display')
-        self.checkOutput("""
+            mode='display',
+        )
+        self.checkOutput(
+            """
         <div>
           <h5>Computed Key: Computed Value</h5>
           <dl/>
         </div>
-        """, fxml('<div>{}</div>'.format(widget())))
+        """,
+            fxml(f'<div>{widget()}</div>'),
+        )
 
     def test_display_bc_labels(self):
         widget = factory(
@@ -632,13 +613,17 @@ class TestDictWidget(YafowilTestCase):
                     'value': 'B/C Value',
                 }
             },
-            mode='display')
-        self.checkOutput("""
+            mode='display',
+        )
+        self.checkOutput(
+            """
         <div>
           <h5>B/C Key: B/C Value</h5>
           <dl/>
         </div>
-        """, fxml('<div>{}</div>'.format(widget())))
+        """,
+            fxml(f'<div>{widget()}</div>'),
+        )
 
     def test_display_computed_bc_labels(self):
         widget = factory(
@@ -650,25 +635,28 @@ class TestDictWidget(YafowilTestCase):
                     'value': lambda w, d: 'Computed B/C Value',
                 }
             },
-            mode='display')
-        self.checkOutput("""
+            mode='display',
+        )
+        self.checkOutput(
+            """
         <div>
           <h5>Computed B/C Key: Computed B/C Value</h5>
           <dl/>
         </div>
-        """, fxml('<div>{}</div>'.format(widget())))
+        """,
+            fxml(f'<div>{widget()}</div>'),
+        )
 
     def test_display_renderer_no_labels(self):
-        widget = factory(
-            'dict',
-            name='display_dict',
-            mode='display'
-        )
-        self.checkOutput("""
+        widget = factory('dict', name='display_dict', mode='display')
+        self.checkOutput(
+            """
         <div>
           <dl/>
         </div>
-        """, fxml('<div>{}</div>'.format(widget())))
+        """,
+            fxml(f'<div>{widget()}</div>'),
+        )
 
     def test_resources(self):
         factory.theme = 'default'
@@ -688,9 +676,7 @@ class TestDictWidget(YafowilTestCase):
         styles = resources.styles
         self.assertEqual(len(styles), 1)
 
-        self.assertTrue(
-            styles[0].directory.endswith(np('/dict/resources/default'))
-        )
+        self.assertTrue(styles[0].directory.endswith(np('/dict/resources/default')))
         self.assertEqual(styles[0].path, 'yafowil-dict/default')
         self.assertEqual(styles[0].file_name, 'widget.min.css')
         self.assertTrue(os.path.exists(styles[0].file_path))
@@ -712,9 +698,7 @@ class TestDictWidget(YafowilTestCase):
         styles = resources.styles
         self.assertEqual(len(styles), 1)
 
-        self.assertTrue(
-            styles[0].directory.endswith(np('/dict/resources/bootstrap'))
-        )
+        self.assertTrue(styles[0].directory.endswith(np('/dict/resources/bootstrap')))
         self.assertEqual(styles[0].path, 'yafowil-dict/bootstrap')
         self.assertEqual(styles[0].file_name, 'widget.min.css')
         self.assertTrue(os.path.exists(styles[0].file_path))
@@ -736,9 +720,7 @@ class TestDictWidget(YafowilTestCase):
         styles = resources.styles
         self.assertEqual(len(styles), 1)
 
-        self.assertTrue(
-            styles[0].directory.endswith(np('/dict/resources/plone5'))
-        )
+        self.assertTrue(styles[0].directory.endswith(np('/dict/resources/plone5')))
         self.assertEqual(styles[0].path, 'yafowil-dict/plone5')
         self.assertEqual(styles[0].file_name, 'widget.min.css')
         self.assertTrue(os.path.exists(styles[0].file_path))

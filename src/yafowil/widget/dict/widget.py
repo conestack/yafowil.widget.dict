@@ -10,8 +10,8 @@ from yafowil.tsf import TSF
 from yafowil.utils import attr_value
 from yafowil.utils import callable_value
 from yafowil.utils import css_managed_props
-from yafowil.utils import managedprops
 from yafowil.utils import cssclasses
+from yafowil.utils import managedprops
 
 
 _ = TSF('yafowil.widget.dict')
@@ -37,7 +37,7 @@ def actions_renderer(widget, data):
     icons = BS_ICON if factory.theme == 'bootstrap5' else ICON_CSS
     for key in ['add', 'remove', 'up', 'down']:
         if widget.attrs.get(key):
-            class_ = 'dict_row_{}'.format(key)
+            class_ = f'dict_row_{key}'
             icon = tag('span', ' ', class_=icons[key])
             action = tag('a', icon, href='#', class_=class_)
             actions.append(action)
@@ -45,12 +45,7 @@ def actions_renderer(widget, data):
     return tag('div', *actions, **kw)
 
 
-factory.register(
-    'dict_actions',
-    edit_renderers=[
-        actions_renderer
-    ]
-)
+factory.register('dict_actions', edit_renderers=[actions_renderer])
 
 factory.doc['blueprint']['dict_actions'] = UNSET  # dont document internal widget
 
@@ -59,9 +54,7 @@ def dict_label(widget, data, name, bc_name):
     label = attr_value(name, widget, data)
     if not label:  # B/C
         label = callable_value(
-            attr_value('head', widget, data, default={}).get(bc_name, ' '),
-            widget,
-            data
+            attr_value('head', widget, data, default={}).get(bc_name, ' '), widget, data
         )
     return label
 
@@ -84,7 +77,8 @@ def value_label(widget, data):
     'key_label',
     'value_label',
     'head',
-    *css_managed_props)
+    *css_managed_props,
+)
 def dict_edit_renderer(widget, data):
     widget['exists'] = factory('hidden', value='1')
     key_class = attr_value('key_class', widget, data)
@@ -95,83 +89,54 @@ def dict_edit_renderer(widget, data):
         'fieldset',
         props={
             'structural': True,
-            'class': wrapper_class + ' scrollable-x' if scrollable else wrapper_class
-        }
+            'class': wrapper_class + ' scrollable-x' if scrollable else wrapper_class,
+        },
     )
     table = wrapper['table'] = factory(
         'table',
         props={
             'structural': True,
-            'id': 'dictwidget_{}.entry'.format(widget.dottedpath),
-            'class': ' '.join([
-                attr_value('table_class', widget, data),
-                'key-{0}'.format(key_class),
-                'value-{0}'.format(value_class),
-                'scrollable-content' if scrollable else ''
-            ])
-        })
-    head = table['head'] = factory(
-        'thead',
-        props={
-            'structural': True
-        })
-    row = head['row'] = factory(
-        'tr',
-        props={
-            'structural': True
-        })
+            'id': f'dictwidget_{widget.dottedpath}.entry',
+            'class': ' '.join(
+                [
+                    attr_value('table_class', widget, data),
+                    f'key-{key_class}',
+                    f'value-{value_class}',
+                    'scrollable-content' if scrollable else '',
+                ]
+            ),
+        },
+    )
+    head = table['head'] = factory('thead', props={'structural': True})
+    row = head['row'] = factory('tr', props={'structural': True})
     row['key'] = factory(
-        'th',
-        props={
-            'structural': True,
-            'label': key_label(widget, data)
-        })
+        'th', props={'structural': True, 'label': key_label(widget, data)}
+    )
     row['value'] = factory(
-        'th',
-        props={
-            'structural': True,
-            'label': value_label(widget, data)
-        })
+        'th', props={'structural': True, 'label': value_label(widget, data)}
+    )
     static = attr_value('static', widget, data)
     if not static:
         row['actions'] = factory(
-            'th:dict_actions',
-            props={
-                'structural': True,
-                'add': True,
-                'class': 'actions'
-            })
-    body = table['body'] = factory(
-        'tbody',
-        props={
-            'structural': True
-        })
+            'th:dict_actions', props={'structural': True, 'add': True, 'class': 'actions'}
+        )
+    body = table['body'] = factory('tbody', props={'structural': True})
     value = fetch_value(widget, data)
     if not value:
         return
     i = 0
     for key, val in value.items():
-        row = body['entry{}'.format(i)] = factory('tr')
-        k_props = {
-            'td.class': 'key',
-            'text.class': key_class
-        }
+        row = body[f'entry{i}'] = factory('tr')
+        k_props = {'td.class': 'key', 'text.class': key_class}
         if static:
             k_props['disabled'] = 'disabled'
-        row['key'] = factory(
-            'td:text',
-            value=key,
-            name='key',
-            props=k_props
-        )
+        row['key'] = factory('td:text', value=key, name='key', props=k_props)
         row['value'] = factory(
             'td:text',
             value=val,
             name='value',
-            props={
-                'td.class': 'value',
-                'text.class': value_class
-            })
+            props={'td.class': 'value', 'text.class': value_class},
+        )
         if not static:
             row['actions'] = factory(
                 'td:dict_actions',
@@ -180,8 +145,9 @@ def dict_edit_renderer(widget, data):
                     'remove': True,
                     'up': True,
                     'down': True,
-                    'class': 'actions'
-                })
+                    'class': 'actions',
+                },
+            )
         i += 1
 
 
@@ -193,35 +159,34 @@ def dict_display_renderer(widget, data):
     values = list()
     for key, val in value.items():
         values.append(data.tag('dt', key) + data.tag('dd', val))
-    head = u''
+    head = ''
     k_label = key_label(widget, data)
     v_label = value_label(widget, data)
     if k_label.strip() and v_label.strip():
-        head = u'{}: {}'.format(
-            data.tag.translate(k_label),
-            data.tag.translate(v_label)
-        )
+        head = f'{data.tag.translate(k_label)}: {data.tag.translate(v_label)}'
         head = data.tag('h5', head)
-    return head + data.tag('dl', *values, **{'class_': attr_value('display_class', widget, data)})
+    return head + data.tag(
+        'dl', *values, **{'class_': attr_value('display_class', widget, data)}
+    )
 
 
 @managedprops('static')
 def dict_extractor(widget, data):
-    if '{}.exists'.format(widget.dottedpath) not in data.request:
+    if f'{widget.dottedpath}.exists' not in data.request:
         return UNSET
     extracted = odict()
     request = data.request
-    base_name = '{}.entry'.format(widget.dottedpath)
+    base_name = f'{widget.dottedpath}.entry'
     if attr_value('static', widget, data):
         keys = data.value.keys()
         for index in range(len(keys)):
-            value_name = '{}{}.value'.format(base_name, index)
+            value_name = f'{base_name}{index}.value'
             extracted[keys[index]] = request[value_name]
         return extracted
     index = 0
     while True:
-        key_name = '{}{}.key'.format(base_name, index)
-        value_name = '{}{}.value'.format(base_name, index)
+        key_name = f'{base_name}{index}.key'
+        value_name = f'{base_name}{index}.value'
         if key_name in request:
             key = request[key_name].strip()
             if key:
@@ -248,27 +213,25 @@ def dict_datatype_extractor(widget, data):
                 key = key_type(key)
             except (ValueError, UnicodeEncodeError, UnicodeDecodeError):
                 datatype_label = DATATYPE_LABELS.get(key_type)
-                raise ExtractionError(_(
-                    'dict_key_type_mismatch',
-                    default=u'Key ${key} is not a valid ${datatype}.',
-                    mapping={
-                        'key': key,
-                        'datatype': datatype_label
-                    }
-                ))
+                raise ExtractionError(
+                    _(
+                        'dict_key_type_mismatch',
+                        default='Key ${key} is not a valid ${datatype}.',
+                        mapping={'key': key, 'datatype': datatype_label},
+                    )
+                )
         if value_type is not UNSET:
             try:
                 value = value_type(value)
             except (ValueError, UnicodeEncodeError, UnicodeDecodeError):
                 datatype_label = DATATYPE_LABELS.get(value_type)
-                raise ExtractionError(_(
-                    'dict_value_type_mismatch',
-                    default=u'Value ${value} is not a valid ${datatype}.',
-                    mapping={
-                        'value': value,
-                        'datatype': datatype_label
-                    }
-                ))
+                raise ExtractionError(
+                    _(
+                        'dict_value_type_mismatch',
+                        default='Value ${value} is not a valid ${datatype}.',
+                        mapping={'value': value, 'datatype': datatype_label},
+                    )
+                )
         typed_extracted[key] = value
     return typed_extracted
 
@@ -286,10 +249,9 @@ def static_dict_required_extractor(widget, data):
             continue
         if isinstance(required, str):
             raise ExtractionError(required)
-        raise ExtractionError(_(
-            'dict_values_required',
-            default='Dict values must not be empty'
-        ))
+        raise ExtractionError(
+            _('dict_values_required', default='Dict values must not be empty')
+        )
     return extracted
 
 
@@ -299,15 +261,10 @@ factory.register(
         dict_extractor,
         static_dict_required_extractor,
         dict_datatype_extractor,
-        generic_required_extractor
+        generic_required_extractor,
     ],
-    edit_renderers=[
-        dict_edit_renderer,
-        compound_renderer
-    ],
-    display_renderers=[
-        dict_display_renderer
-    ],
+    edit_renderers=[dict_edit_renderer, compound_renderer],
+    display_renderers=[dict_display_renderer],
 )
 
 factory.doc['blueprint']['dict'] = """\

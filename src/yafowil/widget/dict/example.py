@@ -27,12 +27,16 @@ def mutable_dict():
     value = odict()
     value['foo'] = 'Foo'
     value['bar'] = 'Bar'
-    form['dict'] = factory('#field:dict', value=value, props={
-        'label': 'Fill the dict',
-        'required': 'At least one entry is required',
-        'key_label': 'Key',
-        'value_label': 'Value'
-    })
+    form['dict'] = factory(
+        '#field:dict',
+        value=value,
+        props={
+            'label': 'Fill the dict',
+            'required': 'At least one entry is required',
+            'key_label': 'Key',
+            'value_label': 'Value',
+        },
+    )
     return {
         'widget': form,
         'doc': DOC_MUTABLE_DICT,
@@ -66,13 +70,17 @@ def immutable_dict():
     value = odict()
     value['baz'] = 'Baz'
     value['bam'] = 'Bam'
-    form['dict'] = factory('#field:dict', value=value, props={
-        'label': 'Modify the dict',
-        'required': 'No Empty values allowed',
-        'static': True,
-        'key_label': 'Key',
-        'value_label': 'Value'
-    })
+    form['dict'] = factory(
+        '#field:dict',
+        value=value,
+        props={
+            'label': 'Modify the dict',
+            'required': 'No Empty values allowed',
+            'static': True,
+            'key_label': 'Key',
+            'value_label': 'Value',
+        },
+    )
     return {
         'widget': form,
         'doc': DOC_IMMUTABLE_DICT,
@@ -108,9 +116,9 @@ def display_mode():
     value['Name'] = 'Jane Doe'
     value['Age'] = 32
     value['Role'] = 'Management'
-    form['dict'] = factory('#field:dict', value=value, mode='display', props={
-        'label': 'Dict Display Mode'
-    })
+    form['dict'] = factory(
+        '#field:dict', value=value, mode='display', props={'label': 'Dict Display Mode'}
+    )
     return {
         'widget': form,
         'doc': DOC_DISPLAY,
@@ -119,8 +127,4 @@ def display_mode():
 
 
 def get_example():
-    return [
-        mutable_dict(),
-        immutable_dict(),
-        display_mode()
-    ]
+    return [mutable_dict(), immutable_dict(), display_mode()]

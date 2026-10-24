@@ -19,16 +19,18 @@ dict_js = wr.ScriptResource(
     path='yafowil-dict/default',
     depends='jquery-js',
     resource='widget.js',
-    compressed='widget.min.js'
+    compressed='widget.min.js',
 )
 
 # B/C resources ##############################################################
 
-js = [{
-    'group': 'yafowil.widget.dict.common',
-    'resource': 'default/widget.js',
-    'order': 20,
-}]
+js = [
+    {
+        'group': 'yafowil.widget.dict.common',
+        'resource': 'default/widget.js',
+        'order': 20,
+    }
+]
 
 
 ##############################################################################
@@ -38,25 +40,27 @@ js = [{
 # webresource ################################################################
 
 default_resources = wr.ResourceGroup(
-    name='yafowil.widget.dict',
-    directory=resources_dir,
-    path='yafowil-dict'
+    name='yafowil.widget.dict', directory=resources_dir, path='yafowil-dict'
 )
 default_resources.add(dict_js)
-default_resources.add(wr.StyleResource(
-    name='yafowil-dict-css',
-    directory=os.path.join(resources_dir, 'default'),
-    path='yafowil-dict/default',
-    resource='widget.min.css'
-))
+default_resources.add(
+    wr.StyleResource(
+        name='yafowil-dict-css',
+        directory=os.path.join(resources_dir, 'default'),
+        path='yafowil-dict/default',
+        resource='widget.min.css',
+    )
+)
 
 # B/C resources ##############################################################
 
-default_css = [{
-    'group': 'yafowil.widget.dict.common',
-    'resource': 'default/widget.min.css',
-    'order': 20,
-}]
+default_css = [
+    {
+        'group': 'yafowil.widget.dict.common',
+        'resource': 'default/widget.min.css',
+        'order': 20,
+    }
+]
 
 
 ##############################################################################
@@ -66,25 +70,27 @@ default_css = [{
 # webresource ################################################################
 
 bootstrap_resources = wr.ResourceGroup(
-    name='yafowil.widget.dict',
-    directory=resources_dir,
-    path='yafowil-dict'
+    name='yafowil.widget.dict', directory=resources_dir, path='yafowil-dict'
 )
 bootstrap_resources.add(dict_js)
-bootstrap_resources.add(wr.StyleResource(
-    name='yafowil-dict-css',
-    directory=os.path.join(resources_dir, 'bootstrap'),
-    path='yafowil-dict/bootstrap',
-    resource='widget.min.css'
-))
+bootstrap_resources.add(
+    wr.StyleResource(
+        name='yafowil-dict-css',
+        directory=os.path.join(resources_dir, 'bootstrap'),
+        path='yafowil-dict/bootstrap',
+        resource='widget.min.css',
+    )
+)
 
 # B/C resources ##############################################################
 
-bootstrap_css = [{
-    'group': 'yafowil.widget.dict.common',
-    'resource': 'bootstrap/widget.min.css',
-    'order': 20,
-}]
+bootstrap_css = [
+    {
+        'group': 'yafowil.widget.dict.common',
+        'resource': 'bootstrap/widget.min.css',
+        'order': 20,
+    }
+]
 
 
 ##############################################################################
@@ -93,9 +99,7 @@ bootstrap_css = [{
 
 # webresource ################################################################
 bootstrap5_resources = wr.ResourceGroup(
-    name='yafowil.widget.dict',
-    directory=resources_dir,
-    path='yafowil-dict'
+    name='yafowil.widget.dict', directory=resources_dir, path='yafowil-dict'
 )
 bootstrap5_js = wr.ScriptResource(
     name='yafowil-dict-js',
@@ -103,23 +107,27 @@ bootstrap5_js = wr.ScriptResource(
     path='yafowil-dict/bootstrap5',
     depends='jquery-js',
     resource='widget.js',
-    compressed='widget.min.js'
+    compressed='widget.min.js',
 )
 bootstrap5_resources.add(bootstrap5_js)
-bootstrap5_resources.add(wr.StyleResource(
-    name='yafowil-dict-css',
-    directory=os.path.join(resources_dir, 'bootstrap5'),
-    path='yafowil-dict/bootstrap5',
-    resource='widget.min.css'
-))
+bootstrap5_resources.add(
+    wr.StyleResource(
+        name='yafowil-dict-css',
+        directory=os.path.join(resources_dir, 'bootstrap5'),
+        path='yafowil-dict/bootstrap5',
+        resource='widget.min.css',
+    )
+)
 
 # B/C resources ##############################################################
 
-bootstrap5_css = [{
-    'group': 'yafowil.widget.dict.common',
-    'resource': 'bootstrap5/widget.min.css',
-    'order': 20,
-}]
+bootstrap5_css = [
+    {
+        'group': 'yafowil.widget.dict.common',
+        'resource': 'bootstrap5/widget.min.css',
+        'order': 20,
+    }
+]
 
 
 ##############################################################################
@@ -129,30 +137,33 @@ bootstrap5_css = [{
 # webresource ################################################################
 
 plone5_resources = wr.ResourceGroup(
-    name='yafowil.widget.dict',
-    directory=resources_dir,
-    path='yafowil-dict'
+    name='yafowil.widget.dict', directory=resources_dir, path='yafowil-dict'
 )
 plone5_resources.add(dict_js)
-plone5_resources.add(wr.StyleResource(
-    name='yafowil-dict-css',
-    directory=os.path.join(resources_dir, 'plone5'),
-    path='yafowil-dict/plone5',
-    resource='widget.min.css'
-))
+plone5_resources.add(
+    wr.StyleResource(
+        name='yafowil-dict-css',
+        directory=os.path.join(resources_dir, 'plone5'),
+        path='yafowil-dict/plone5',
+        resource='widget.min.css',
+    )
+)
 
 # B/C resources ##############################################################
 
-plone5_css = [{
-    'group': 'yafowil.widget.dict.common',
-    'resource': 'plone5/widget.min.css',
-    'order': 20,
-}]
+plone5_css = [
+    {
+        'group': 'yafowil.widget.dict.common',
+        'resource': 'plone5/widget.min.css',
+        'order': 20,
+    }
+]
 
 
 ##############################################################################
 # Registration
 ##############################################################################
+
 
 @entry_point(order=10)
 def register():
@@ -161,49 +172,23 @@ def register():
     widget_name = 'yafowil.widget.dict'
 
     # Default
-    factory.register_theme(
-        'default',
-        widget_name,
-        resources_dir,
-        js=js,
-        css=default_css
-    )
+    factory.register_theme('default', widget_name, resources_dir, js=js, css=default_css)
     factory.register_resources('default', widget_name, default_resources)
 
     # Bootstrap
     factory.register_theme(
-        ['bootstrap', 'bootstrap3'],
-        widget_name,
-        resources_dir,
-        js=js,
-        css=bootstrap_css
+        ['bootstrap', 'bootstrap3'], widget_name, resources_dir, js=js, css=bootstrap_css
     )
     factory.register_resources(
-        ['bootstrap', 'bootstrap3'],
-        widget_name,
-        bootstrap_resources
+        ['bootstrap', 'bootstrap3'], widget_name, bootstrap_resources
     )
 
     # Bootstrap 5
     factory.register_theme(
-        ['bootstrap5'],
-        widget_name,
-        resources_dir,
-        js=bootstrap5_js,
-        css=bootstrap5_css
+        ['bootstrap5'], widget_name, resources_dir, js=bootstrap5_js, css=bootstrap5_css
     )
-    factory.register_resources(
-        ['bootstrap5'],
-        widget_name,
-        bootstrap5_resources
-    )
+    factory.register_resources(['bootstrap5'], widget_name, bootstrap5_resources)
 
     # Plone 5
-    factory.register_theme(
-        'plone5',
-        widget_name,
-        resources_dir,
-        js=js,
-        css=plone5_css
-    )
+    factory.register_theme('plone5', widget_name, resources_dir, js=js, css=plone5_css)
     factory.register_resources('plone5', widget_name, plone5_resources)
