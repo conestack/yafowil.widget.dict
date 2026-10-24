@@ -57,11 +57,11 @@ var yafowil_dict = (function (exports, $) {
             $('tr', context).each(function () {
                 const row = $(this),
                     key = $('td.key input', row),
-                    key_id = `${base_id}${index}-key`,
+                    key_id = `input-${base_id}${index}-key`,
                     key_name = `${base_name}${index}.key`;
                 key.attr('id', key_id).attr('name', key_name);
                 const value = $('td.value input', row),
-                    value_id = `${base_id}${index}-value`,
+                    value_id = `input-${base_id}${index}-value`,
                     value_name = `${base_name}${index}.value`;
                 value.attr('id', value_id).attr('name', value_name);
                 index++;
@@ -153,8 +153,8 @@ var yafowil_dict = (function (exports, $) {
     function register_array_subscribers() {
         if (window.yafowil_array !== undefined) {
             window.yafowil_array.on_array_event('on_add', dict_on_array_add);
-        } else if (yafowil.array !== undefined) {
-            $.extend(yafowil.array.hooks.add, {
+        } else if (window.yafowil?.array !== undefined) {
+            $.extend(window.yafowil.array.hooks.add, {
                 dictwidget_binder: DictWidget.initialize,
             });
         }

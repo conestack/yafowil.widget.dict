@@ -64,11 +64,11 @@ export class DictBase {
         $('tr', context).each(function () {
             const row = $(this),
                 key = $('td.key input', row),
-                key_id = `${base_id}${index}-key`,
+                key_id = `input-${base_id}${index}-key`,
                 key_name = `${base_name}${index}.key`;
             key.attr('id', key_id).attr('name', key_name);
             const value = $('td.value input', row),
-                value_id = `${base_id}${index}-value`,
+                value_id = `input-${base_id}${index}-value`,
                 value_name = `${base_name}${index}.value`;
             value.attr('id', value_id).attr('name', value_name);
             index++;

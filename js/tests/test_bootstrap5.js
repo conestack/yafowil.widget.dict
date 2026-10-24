@@ -41,10 +41,14 @@ function row_keys(elem) {
         .get();
 }
 
-function assert_names(assert, elem) {
+function assert_ids_and_names(assert, elem) {
     rows(elem).each((index, row) => {
-        assert.strictEqual($('td.key input', row).attr('name'), `mydict.entry${index}.key`);
-        assert.strictEqual($('td.value input', row).attr('name'), `mydict.entry${index}.value`);
+        const key = $('td.key input', row),
+            value = $('td.value input', row);
+        assert.strictEqual(key.attr('id'), `input-mydict-entry${index}-key`);
+        assert.strictEqual(key.attr('name'), `mydict.entry${index}.key`);
+        assert.strictEqual(value.attr('id'), `input-mydict-entry${index}-value`);
+        assert.strictEqual(value.attr('name'), `mydict.entry${index}.value`);
     });
 }
 
@@ -124,7 +128,7 @@ QUnit.module('bootstrap5 DictWidget', (hooks) => {
         const evt = click($('> thead a.dict_row_add', elem));
         assert.true(evt.isDefaultPrevented());
         assert.deepEqual(row_keys(elem), ['', 'key0']);
-        assert_names(assert, elem);
+        assert_ids_and_names(assert, elem);
         const new_row = rows(elem).first();
         assert.true(new_row.hasClass('row-moved'));
         run_timeouts(assert);
@@ -137,7 +141,7 @@ QUnit.module('bootstrap5 DictWidget', (hooks) => {
         const evt = click($('a.dict_row_add', rows(elem).first()));
         assert.true(evt.isDefaultPrevented());
         assert.deepEqual(row_keys(elem), ['key0', '', 'key1']);
-        assert_names(assert, elem);
+        assert_ids_and_names(assert, elem);
         const new_row = rows(elem).eq(1);
         assert.true(new_row.hasClass('row-moved'));
         assert.false(rows(elem).first().hasClass('row-moved'));
@@ -152,7 +156,7 @@ QUnit.module('bootstrap5 DictWidget', (hooks) => {
         const evt = click($('a.dict_row_up', row));
         assert.true(evt.isDefaultPrevented());
         assert.deepEqual(row_keys(elem), ['key1', 'key0']);
-        assert_names(assert, elem);
+        assert_ids_and_names(assert, elem);
         assert.true(row.hasClass('row-moved'));
         run_timeouts(assert);
         assert.false(row.hasClass('row-moved'));
@@ -165,7 +169,7 @@ QUnit.module('bootstrap5 DictWidget', (hooks) => {
         const evt = click($('a.dict_row_down', row));
         assert.true(evt.isDefaultPrevented());
         assert.deepEqual(row_keys(elem), ['key1', 'key0']);
-        assert_names(assert, elem);
+        assert_ids_and_names(assert, elem);
         assert.true(row.hasClass('row-moved'));
         run_timeouts(assert);
         assert.false(row.hasClass('row-moved'));
@@ -196,6 +200,13 @@ QUnit.module('bootstrap5 DictWidget', (hooks) => {
         window.yafowil = { array: { hooks: { add: {} } } };
         register_array_subscribers();
         assert.strictEqual(window.yafowil.array.hooks.add.dictwidget_binder, DictWidget.initialize);
+    });
+
+    QUnit.test('register_array_subscribers without yafowil namespace', (assert) => {
+        // no global ``yafowil`` if the widgets are used as ES modules
+        register_array_subscribers();
+        assert.strictEqual(window.yafowil, undefined);
+        assert.strictEqual(window.yafowil_array, undefined);
     });
 
     QUnit.test('register_array_subscribers without array widget', (assert) => {

@@ -17,8 +17,6 @@ QUnit.module('default bundle', (hooks) => {
     let initialized;
 
     hooks.beforeEach(() => {
-        // register_array_subscribers expects the yafowil namespace
-        window.yafowil = {};
         initialized = 0;
         DictWidget.initialize = () => {
             initialized++;
@@ -28,7 +26,6 @@ QUnit.module('default bundle', (hooks) => {
         DictWidget.initialize = orig_initialize;
         delete window.ts;
         delete window.bdajax;
-        delete window.yafowil;
     });
 
     QUnit.test('exports', (assert) => {

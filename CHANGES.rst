@@ -4,6 +4,16 @@ Changes
 2.0.1 (unreleased)
 ------------------
 
+- Fix the input ids after adding, removing or moving dict rows. They lacked
+  the ``input-`` prefix of the server rendered ids, e.g. ``mydict-entry0-key``
+  instead of ``input-mydict-entry0-key``.
+  [rnix]
+
+- Fix ``register_array_subscribers`` throwing a ``ReferenceError`` if neither
+  ``window.yafowil_array`` nor the global ``yafowil`` namespace exists, e.g.
+  when the widget is used as ES module.
+  [rnix]
+
 - Do not write a byte order mark into the compiled CSS.
   [rnix]
 
