@@ -1,18 +1,16 @@
 import $ from 'jquery';
-import {DictBase} from '../base/dict.js';
+import { DictBase } from '../base/dict.js';
 
 export class DictWidget extends DictBase {
-
     /**
      * Initializes each widget in the given DOM context.
-     * 
+     *
      * @param {jQuery} context - DOM context for initialization.
      */
     static initialize(context) {
-        $('table.dictwidget', context).each(function() {
-            let elem = $(this);
-            if (window.yafowil_array !== undefined &&
-                window.yafowil_array.inside_template(elem)) {
+        $('table.dictwidget', context).each(function () {
+            const elem = $(this);
+            if (window.yafowil_array?.inside_template(elem)) {
                 return;
             }
             new DictWidget(elem);
@@ -30,28 +28,28 @@ export class DictWidget extends DictBase {
             val_css = this.row_class(action, 'value'),
             row = '';
         row += '<tr>';
-        row +=   '<td class="key">';
-        row +=     '<input type="text" class="' + key_css + '" value="" />';
-        row +=   '</td>';
-        row +=   '<td class="value">';
-        row +=     '<input type="text" class="' + val_css + '" value="" />';
-        row +=   '</td>';
-        row +=   '<td class="actions">';
-        row +=     '<div class="dict_actions">';
-        row +=       '<a class="dict_row_add" href="#">';
-        row +=         '<span class="bi-plus-circle-fill"> </span>';
-        row +=       '</a>';
-        row +=       '<a class="dict_row_remove" href="#">';
-        row +=         '<span class="bi-dash-circle-fill"> </span>';
-        row +=       '</a>';
-        row +=       '<a class="dict_row_up" href="#">';
-        row +=         '<span class="bi-arrow-up-circle-fill"> </span>';
-        row +=       '</a>';
-        row +=       '<a class="dict_row_down" href="#">';
-        row +=         '<span class="bi-arrow-down-circle-fill"> </span>';
-        row +=       '</a>';
-        row +=     '</div>';
-        row +=   '</td>';
+        row += '<td class="key">';
+        row += `<input type="text" class="${key_css}" value="" />`;
+        row += '</td>';
+        row += '<td class="value">';
+        row += `<input type="text" class="${val_css}" value="" />`;
+        row += '</td>';
+        row += '<td class="actions">';
+        row += '<div class="dict_actions">';
+        row += '<a class="dict_row_add" href="#">';
+        row += '<span class="bi-plus-circle-fill"> </span>';
+        row += '</a>';
+        row += '<a class="dict_row_remove" href="#">';
+        row += '<span class="bi-dash-circle-fill"> </span>';
+        row += '</a>';
+        row += '<a class="dict_row_up" href="#">';
+        row += '<span class="bi-arrow-up-circle-fill"> </span>';
+        row += '</a>';
+        row += '<a class="dict_row_down" href="#">';
+        row += '<span class="bi-arrow-down-circle-fill"> </span>';
+        row += '</a>';
+        row += '</div>';
+        row += '</td>';
         row += '</tr>';
         return $(row);
     }
@@ -62,7 +60,7 @@ export class DictWidget extends DictBase {
      */
     highlight(row) {
         row.addClass('row-moved');
-        setTimeout(function() {
+        setTimeout(() => {
             row.removeClass('row-moved');
         }, 1000);
     }
@@ -73,7 +71,7 @@ export class DictWidget extends DictBase {
      * @returns {jQuery} - The newly added row element.
      */
     add_first_handle(evt) {
-        let row = super.add_first_handle(evt);
+        const row = super.add_first_handle(evt);
         this.highlight(row);
         return row;
     }
@@ -84,7 +82,7 @@ export class DictWidget extends DictBase {
      */
     add_handle(evt) {
         super.add_handle(evt);
-        let action = evt.currentTarget,
+        const action = evt.currentTarget,
             row = this.get_row(action);
         this.highlight(row.next());
     }
@@ -95,7 +93,7 @@ export class DictWidget extends DictBase {
      */
     up_handle(evt) {
         evt.preventDefault();
-        let row = this.get_row(evt.currentTarget);
+        const row = this.get_row(evt.currentTarget);
         row.insertBefore(row.prev());
         this.reset_indices(row.parent());
         this.highlight(row);
@@ -107,7 +105,7 @@ export class DictWidget extends DictBase {
      */
     down_handle(evt) {
         evt.preventDefault();
-        let row = this.get_row(evt.currentTarget);
+        const row = this.get_row(evt.currentTarget);
         row.insertAfter(row.next());
         this.reset_indices(row.parent());
         this.highlight(row);
@@ -121,7 +119,7 @@ export class DictWidget extends DictBase {
 /**
  * Re-initializes widget on array add event.
  */
-function dict_on_array_add(inst, context) {
+function dict_on_array_add(_inst, context) {
     DictWidget.initialize(context);
 }
 
@@ -133,7 +131,7 @@ export function register_array_subscribers() {
         window.yafowil_array.on_array_event('on_add', dict_on_array_add);
     } else if (yafowil.array !== undefined) {
         $.extend(yafowil.array.hooks.add, {
-            dictwidget_binder: DictWidget.initialize
+            dictwidget_binder: DictWidget.initialize,
         });
     }
 }

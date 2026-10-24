@@ -1,11 +1,9 @@
 import $ from 'jquery';
-
-import {DictWidget} from './widget.js';
-import {register_array_subscribers} from './widget.js';
+import { DictWidget, register_array_subscribers } from './widget.js';
 
 export * from './widget.js';
 
-$(function() {
+$(() => {
     if (window.ts !== undefined) {
         ts.ajax.register(DictWidget.initialize, true);
     } else if (window.bdajax !== undefined) {
